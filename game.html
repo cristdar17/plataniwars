@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>PlataniWars — Juego</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .game-layout { display: grid; grid-template-columns: 300px 1fr; gap: 16px; min-height: calc(100vh - 100px); }
+    .sidebar { display: flex; flex-direction: column; gap: 12px; }
+    .main-content { display: flex; flex-direction: column; gap: 16px; }
+    @media (max-width: 900px) { .game-layout { grid-template-columns: 1fr; } .sidebar { order: 2; } .main-content { order: 1; } }
+
+    .stats-insight {
+      margin-top: 16px; border-radius: var(--radius-md); overflow: hidden;
+      border: 1px solid rgba(0,122,255,0.2); background: rgba(0,122,255,0.04);
+    }
+    .stats-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; cursor: pointer; font-weight: 700; font-size: 0.9rem;
+      background: rgba(0,122,255,0.08); border: none; width: 100%; text-align: left;
+      font-family: var(--font); color: var(--color-primary); transition: background 0.2s;
+    }
+    .stats-toggle:hover { background: rgba(0,122,255,0.12); }
+    .stats-body { padding: 18px; font-size: 0.88rem; line-height: 1.7; white-space: pre-line; display: none; }
+    .stats-body.open { display: block; }
+
+    .comodin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 600px) { .comodin-grid { grid-template-columns: 1fr; } }
+    .comodin-card {
+      padding: 14px; border: 2px solid rgba(0,0,0,0.06); border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.5); cursor: pointer; transition: all var(--transition);
+    }
+    .comodin-card:hover { border-color: var(--color-danger); transform: translateY(-2px); }
+    .comodin-card.disabled { opacity: 0.3; cursor: not-allowed; }
+    .comodin-card .comodin-icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .comodin-card .comodin-name { font-weight: 800; font-size: 0.85rem; }
+    .comodin-card .comodin-cost { font-size: 0.75rem; color: var(--color-danger); margin-top: 4px; }
+
+    .rival-bar {
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      background: rgba(0,0,0,0.04); border-radius: var(--radius-sm); font-size: 0.82rem;
+    }
+    .rival-bar .rival-cash { font-weight: 800; font-family: var(--font-mono); }
+
+    .result-banner {
+      padding: 20px; border-radius: var(--radius-md); text-align: center;
+      animation: slideUp 0.4s ease-out;
+    }
+    .result-banner.positive { background: rgba(52,199,89,0.1); border: 2px solid rgba(52,199,89,0.3); }
+    .result-banner.negative { background: rgba(255,59,48,0.1); border: 2px solid rgba(255,59,48,0.3); }
+    .result-delta { font-size: 1.8rem; font-weight: 900; font-family: var(--font-mono); }
+    .result-delta.positive { color: var(--color-success); }
+    .result-delta.negative { color: var(--color-danger); }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span id="header-company" style="font-size:1.5rem"></span>
+        <div>
+          <div id="header-name" style="font-weight:800;font-size:1.1rem;color:white"></div>
+          <div id="header-role" style="font-size:0.8rem;color:rgba(255,255,255,0.7)"></div>
+        </div>
+      </div>
+      <div class="glass day-badge">
+        <span>📅 Día</span>
+        <span class="day-number" id="current-day">0</span>
+        <span style="font-size:0.8rem;opacity:0.6">/ ${CONFIG.TOTAL_DAYS}</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" id="helpBtn" title="Ayuda">❓</button>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div id="notifications" style="margin-bottom:12px"></div>
+
+    <!-- Game layout -->
+    <div class="game-layout">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="glass card">
+          <div class="card-title">💵 Caja de la empresa</div>
+          <div class="card-value" id="company-cash" style="color:var(--color-success)">$0</div>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <div><small style="color:var(--text-tertiary)">Ingresos</small><div id="company-revenue" style="font-weight:700;font-size:0.85rem;color:var(--color-success)">$0</div></div>
+            <div><small style="color:var(--text-tertiary)">Gastos</small><div id="company-costs" style="font-weight:700;font-size:0.85rem;color:var(--color-danger)">$0</div></div>
+          </div>
+        </div>
+
+        <div class="glass card">
+          <div class="card-title" id="area-budget-title">📊 Mi Departamento</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><small style="color:var(--text-tertiary)">Presupuesto</small><div id="area-budget" style="font-weight:700;font-size:0.85rem">$0</div></div>
+            <div><small style="color:var(--text-tertiary)">Gastado</small><div id="area-spent" style="font-weight:700;font-size:0.85rem">$0</div></div>
+            <div><small style="color:var(--text-tertiary)">Generado</small><div id="area-revenue" style="font-weight:700;font-size:0.85rem">$0</div></div>
+            <div><small style="color:var(--text-tertiary)">Disponible</small><div id="area-remaining" style="font-weight:800;font-size:0.85rem">$0</div></div>
+          </div>
+        </div>
+
+        <!-- BSC -->
+        <div class="glass card" id="bsc-panel"></div>
+
+        <!-- Rival -->
+        <div class="glass card">
+          <div class="card-title">🆚 Empresa Rival</div>
+          <div id="rival-info"></div>
+        </div>
+
+        <!-- Comodines -->
+        <div class="glass card">
+          <div class="card-title">⚡ Comodines</div>
+          <div id="comodines-panel"></div>
+        </div>
+
+        <!-- Team -->
+        <div class="glass card">
+          <div class="card-title">👥 Mi Equipo</div>
+          <div id="team-list" style="font-size:0.82rem"></div>
+        </div>
+
+        <!-- History -->
+        <div class="glass card">
+          <div class="card-title">📜 Últimas decisiones</div>
+          <div id="history-list"></div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="main-content">
+        <div id="mainArea"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help modal -->
+  <div id="helpModal" style="display:none" class="modal-overlay">
+    <div class="glass modal-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2>🍌 Cómo jugar PlataniWars</h2>
+        <button class="btn btn-sm btn-ghost" onclick="closeHelp()" style="color:var(--text-primary)">✕</button>
+      </div>
+      <div style="font-size:0.88rem;line-height:1.7;color:var(--text-secondary)">
+        <p><strong>🎯 Objetivo:</strong> Tu empresa de platanitos arranca con $500M. Gana la que tenga mejor puntaje final (caja + BSC + salud de áreas).</p>
+        <p style="margin-top:12px"><strong>📊 Decisiones:</strong> Cada departamento enfrenta situaciones con DATOS REALES. Analiza los datos estadísticamente para tomar la mejor decisión. El sentido común funciona, pero la estadística te da ventaja.</p>
+        <p style="margin-top:12px"><strong>⚡ Comodines:</strong> Puedes usar tácticas de competencia desleal (legales en Colombia) contra la empresa rival: acaparar materia prima, robar talento, publicidad comparativa, etc.</p>
+        <p style="margin-top:12px"><strong>📈 BSC:</strong> Cada decisión afecta 4 dimensiones: Financiera, Cliente, Procesos Internos y Aprendizaje. El balance importa.</p>
+        <p style="margin-top:12px"><strong>🔄 Turnos:</strong> Si hay 2 personas en tu departamento, se rotan para decidir. El otro puede asesorar.</p>
+        <p style="margin-top:12px"><strong>📚 Feedback:</strong> Después de cada decisión, puedes ver el ANÁLISIS ESTADÍSTICO que explica por qué esa era (o no) la mejor opción.</p>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:20px" onclick="closeHelp()">Entendido 🚀</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/bsc.js"></script>
+  <script src="js/tree-operations.js"></script>
+  <script src="js/tree-finance.js"></script>
+  <script src="js/tree-marketing.js"></script>
+  <script src="js/tree-hr.js"></script>
+  <script src="js/tree-analyst.js"></script>
+  <script>
+    // =====================================================
+    // Estado local
+    // =====================================================
+    const session = Storage.load();
+    if (!session || !session.id) { window.location.href = 'index.html'; }
+
+    let serverData = null;
+    let pollTimer = null;
+    let lastRenderKey = '';
+
+    // =====================================================
+    // Init
+    // =====================================================
+    (function init() {
+      const company = CONFIG.COMPANIES.find(c => c.id === session.company);
+      const area = CONFIG.AREAS.find(a => a.code === session.area);
+      document.getElementById('header-company').textContent = company?.emoji || '🍌';
+      document.getElementById('header-name').textContent = company?.name || '';
+      document.getElementById('header-role').textContent = `${area?.icon || ''} ${area?.name || ''} · ${session.name}`;
+      document.getElementById('area-budget-title').textContent = `${area?.icon || '📊'} ${area?.name || 'Mi Área'}`;
+
+      document.getElementById('helpBtn').addEventListener('click', () => {
+        document.getElementById('helpModal').style.display = 'flex';
+      });
+
+      // First poll
+      poll();
+      pollTimer = setInterval(poll, CONFIG.POLL_INTERVAL);
+
+      // Onboarding
+      if (!localStorage.getItem('plataniwars_onboarding')) {
+        setTimeout(() => {
+          document.getElementById('helpModal').style.display = 'flex';
+          localStorage.setItem('plataniwars_onboarding', '1');
+        }, 500);
+      }
+    })();
+
+    function closeHelp() { document.getElementById('helpModal').style.display = 'none'; }
+    function logout() {
+      if (confirm('¿Salir del juego?')) { Storage.clear(); window.location.href = 'index.html'; }
+    }
+
+    // =====================================================
+    // Polling
+    // =====================================================
+    async function poll() {
+      try {
+        serverData = await API.fetchAll();
+        Storage.cacheState(serverData);
+        onStateUpdate();
+      } catch (err) {
+        console.warn('Poll error:', err);
+        const cached = Storage.getCachedState();
+        if (cached && !serverData) { serverData = cached; onStateUpdate(); }
+      }
+    }
+
+    // =====================================================
+    // State Update
+    // =====================================================
+    function onStateUpdate() {
+      if (!serverData) return;
+      const { state, companies, areas, students, decisions, events } = serverData;
+      const status = state.status || 'lobby';
+      const day = parseInt(state.day) || 0;
+
+      // Update header
+      document.getElementById('current-day').textContent = day;
+
+      // Update sidebar
+      updateSidebar(companies, areas, students, decisions, events, day);
+
+      // Main area
+      if (status === 'lobby') { renderLobby(); return; }
+      if (status === 'paused') { renderPaused(); return; }
+      if (status === 'ended') { renderEnded(companies, areas, decisions); return; }
+
+      // Playing
+      renderGameState(day, companies, areas, students, decisions, events);
+    }
+
+    // =====================================================
+    // Sidebar
+    // =====================================================
+    function updateSidebar(companies, areas, students, decisions, events, day) {
+      const myCompany = companies.find(c => c.id === session.company);
+      const rivalCompany = companies.find(c => c.id !== session.company);
+      const myArea = areas.find(a => a.company_id === session.company && a.area_code === session.area);
+      const myStudents = students.filter(s => s.company_id === session.company);
+
+      if (myCompany) {
+        document.getElementById('company-cash').textContent = UI.formatCOP(myCompany.total_cash);
+        document.getElementById('company-revenue').textContent = UI.formatCOP(myCompany.total_revenue);
+        document.getElementById('company-costs').textContent = UI.formatCOP(myCompany.total_costs);
+      }
+
+      if (myArea) {
+        document.getElementById('area-budget').textContent = UI.formatCOP(myArea.budget);
+        document.getElementById('area-spent').textContent = UI.formatCOP(myArea.spent);
+        document.getElementById('area-revenue').textContent = UI.formatCOP(myArea.revenue);
+        const remaining = myArea.budget - myArea.spent + myArea.revenue;
+        const remEl = document.getElementById('area-remaining');
+        remEl.textContent = UI.formatCOP(remaining);
+        remEl.style.color = remaining > 0 ? 'var(--color-success)' : 'var(--color-danger)';
+      }
+
+      // BSC
+      if (myCompany) {
+        document.getElementById('bsc-panel').innerHTML =
+          '<div class="card-title">📈 Balanced Scorecard</div>' + BSC.renderFull(myCompany, '');
+      }
+
+      // Rival
+      if (rivalCompany) {
+        document.getElementById('rival-info').innerHTML = `
+          <div class="rival-bar">
+            <span style="font-size:1.3rem">${rivalCompany.emoji || '🏢'}</span>
+            <span style="flex:1;font-weight:700">${escapeHtml(rivalCompany.name)}</span>
+            <span class="rival-cash" style="color:${rivalCompany.total_cash >= CONFIG.INITIAL_CASH ? 'var(--color-success)' : 'var(--color-danger)'}">${UI.formatCOP(rivalCompany.total_cash)}</span>
+          </div>
+          <div style="margin-top:8px">${BSC.renderCompact(rivalCompany)}</div>
+        `;
+      }
+
+      // Comodines
+      renderComodines(day, events);
+
+      // Team
+      document.getElementById('team-list').innerHTML = myStudents.map(s => {
+        const area = CONFIG.AREAS.find(a => a.code === s.area_code);
+        return `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:0.82rem">
+          <span>${area?.icon || '❓'}</span>
+          <span style="flex:1">${escapeHtml(s.name)}</span>
+          ${s.id === session.id ? '<span class="pill" style="background:rgba(52,199,89,0.15);color:var(--color-success);font-size:0.68rem">tú</span>' : ''}
+        </div>`;
+      }).join('');
+
+      // History
+      const myDecisions = decisions
+        .filter(d => d.company_id === session.company && d.area_code === session.area)
+        .sort((a, b) => b.day - a.day)
+        .slice(0, 5);
+      document.getElementById('history-list').innerHTML = myDecisions.length === 0
+        ? '<div style="font-size:0.82rem;color:var(--text-tertiary);padding:12px 0">Sin decisiones aún</div>'
+        : myDecisions.map(d => {
+            const net = (d.revenue_amount || 0) - (d.cost_amount || 0);
+            return `<div class="history-item">
+              <div class="history-day">${d.day}</div>
+              <div class="history-content">
+                <div class="history-title">${escapeHtml(d.node_id)}: Opción ${d.choice}</div>
+                <span class="history-delta ${net >= 0 ? 'positive' : 'negative'}">${net >= 0 ? '+' : ''}${UI.formatCOP(net)}</span>
+              </div>
+            </div>`;
+          }).join('');
+    }
+
+    // =====================================================
+    // Comodines
+    // =====================================================
+    function renderComodines(day, events) {
+      const panel = document.getElementById('comodines-panel');
+      const comodinHistory = Storage.getComodinHistory();
+
+      panel.innerHTML = `<div class="comodin-grid">${CONFIG.COMODINES.map(c => {
+        const lastUse = comodinHistory.find(h => h.id === c.id);
+        const cooldownLeft = lastUse ? Math.max(0, c.cooldown - (day - lastUse.day)) : 0;
+        const available = cooldownLeft === 0 && day > 0;
+
+        return `<div class="comodin-card ${available ? '' : 'disabled'}" onclick="${available ? `useComodin('${c.id}')` : ''}">
+          <div class="comodin-icon">${c.icon}</div>
+          <div class="comodin-name">${c.name}</div>
+          <div class="comodin-cost">💰 ${UI.formatCOP(c.cost)}</div>
+          ${cooldownLeft > 0 ? `<div style="font-size:0.68rem;color:var(--text-tertiary);margin-top:4px">⏳ ${cooldownLeft} días</div>` : ''}
+        </div>`;
+      }).join('')}</div>`;
+    }
+
+    async function useComodin(comodinId) {
+      const comodin = CONFIG.COMODINES.find(c => c.id === comodinId);
+      if (!comodin) return;
+
+      const rivalCompany = serverData.companies.find(c => c.id !== session.company);
+      if (!confirm(`¿Usar "${comodin.name}" contra ${rivalCompany?.name || 'el rival'}?\n\nCosto: ${UI.formatCOP(comodin.cost)}\n\n${comodin.description}\n\n⚖️ ${comodin.legal_basis}`)) return;
+
+      try {
+        const day = parseInt(serverData.state.day) || 0;
+        // Aplicar efectos al atacante
+        await API.applyEvent(day, 'comodin_' + comodinId, `⚡ ${comodin.name}`,
+          comodin.narrative_attacker, session.company, null,
+          comodin.effects_attacker.cash || 0, comodin.effects_attacker.bsc || {});
+
+        // Aplicar efectos a la víctima
+        if (comodin.effects_victim.cash || Object.keys(comodin.effects_victim.bsc || {}).length) {
+          await API.applyEvent(day, 'comodin_attack', `💀 ${comodin.name}`,
+            comodin.narrative_victim, rivalCompany.id, null,
+            comodin.effects_victim.cash || 0, comodin.effects_victim.bsc || {});
+        }
+
+        Storage.addComodinUsed(comodinId, day);
+        UI.toast(`${comodin.icon} ¡${comodin.name} ejecutado!`, 'success');
+        poll();
+      } catch (err) {
+        UI.toast('Error al usar comodín: ' + err.message, 'error');
+      }
+    }
+
+    // =====================================================
+    // Game renders
+    // =====================================================
+    function renderLobby() {
+      const key = 'lobby';
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass card slide-up" style="text-align:center;padding:60px 20px">
+          <div style="font-size:4rem">🍌</div>
+          <h2 style="margin:12px 0">Esperando inicio</h2>
+          <p style="color:var(--text-secondary)">El docente aún no ha iniciado PlataniWars. Revisa que todos estén conectados.</p>
+        </div>
+      `;
+    }
+
+    function renderPaused() {
+      const key = 'paused';
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass card slide-up" style="text-align:center;padding:60px 20px">
+          <div style="font-size:4rem">⏸️</div>
+          <h2 style="margin:12px 0">Juego en pausa</h2>
+          <p style="color:var(--text-secondary)">El docente pausó el simulador. Espera a que lo reanude.</p>
+        </div>
+      `;
+    }
+
+    function renderEnded(companies, areas, decisions) {
+      const key = 'ended';
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+
+      const scores = companies.map(c => ({
+        ...c,
+        score: Engine.calculateFinalScore(c, areas)
+      })).sort((a, b) => b.score.finalScore - a.score.finalScore);
+
+      const myRank = scores.findIndex(c => c.id === session.company) + 1;
+      const medals = ['🥇', '🥈'];
+
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass card slide-up" style="text-align:center;padding:40px 20px">
+          <div style="font-size:5rem">${medals[myRank - 1] || '🏅'}</div>
+          <h1 style="margin:12px 0;font-size:2rem">¡PlataniWars Terminó!</h1>
+          <p style="color:var(--text-secondary);margin-bottom:24px">Tu empresa quedó en el puesto <strong>#${myRank}</strong></p>
+
+          <div class="scoreboard" style="margin-bottom:24px">
+            ${scores.map((c, i) => `
+              <div class="glass score-company ${c.id === session.company ? 'company-' + c.id : ''}" style="border:${c.id === session.company ? '3px solid' : '1px solid rgba(0,0,0,0.06)'}">
+                <div style="font-size:2.5rem">${medals[i] || '🏅'} ${c.emoji}</div>
+                <div class="score-name">${escapeHtml(c.name)}</div>
+                <div class="score-cash" style="color:${c.total_cash >= CONFIG.INITIAL_CASH ? 'var(--color-success)' : 'var(--color-danger)'}">${UI.formatCOP(c.total_cash)}</div>
+                <div style="margin-top:8px;font-size:0.85rem">
+                  <div>BSC: <strong>${c.score.bscScore}/100</strong></div>
+                  <div>Score Final: <strong style="font-size:1.2rem;color:var(--color-primary)">${c.score.finalScore}</strong></div>
+                </div>
+              </div>
+            `).join('<div class="vs">⚔️</div>')}
+          </div>
+        </div>
+      `;
+
+      if (myRank === 1) UI.confetti(document.body);
+    }
+
+    function renderGameState(day, companies, areas, students, decisions, events) {
+      const myArea = areas.find(a => a.company_id === session.company && a.area_code === session.area);
+      const currentNode = Engine.getCurrentNode(session.area, myArea?.current_node);
+
+      // Check if already decided today
+      const alreadyDecided = decisions.some(d =>
+        d.company_id === session.company && d.area_code === session.area && d.day === day
+      );
+
+      // Check if this node is available (day requirement)
+      const nodeAvailable = currentNode && currentNode.day <= day;
+
+      // Check if I'm the decision maker
+      const decisionMaker = Engine.getDecisionMaker(session.area, session.company, students, day);
+      const isMyTurn = decisionMaker && decisionMaker.id === session.id;
+
+      // Show latest result if just decided
+      const latestDecision = decisions
+        .filter(d => d.company_id === session.company && d.area_code === session.area)
+        .sort((a, b) => b.day - a.day)[0];
+
+      if (alreadyDecided && latestDecision && latestDecision.day === day) {
+        renderResult(latestDecision, currentNode);
+        return;
+      }
+
+      if (!currentNode || !nodeAvailable) {
+        renderWaiting(day, currentNode);
+        return;
+      }
+
+      if (!isMyTurn) {
+        renderWaitingForPartner(decisionMaker, currentNode);
+        return;
+      }
+
+      renderDecision(day, currentNode, myArea);
+    }
+
+    // =====================================================
+    // Decision Panel
+    // =====================================================
+    function renderDecision(day, node, myArea) {
+      const key = `decision|${day}|${node.id}`;
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+
+      const area = CONFIG.AREAS.find(a => a.code === session.area);
+
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass decision-panel slide-up">
+          <div class="decision-type-badge choice">${area?.icon || '📊'} ${area?.name || 'Decisión'} · Día ${day}</div>
+          <h2 class="decision-title">${escapeHtml(node.title)}</h2>
+          <div class="decision-context">${formatContext(node.context)}</div>
+
+          <h3 style="font-size:1rem;margin:20px 0 12px">¿Qué decides?</h3>
+          <div class="options-grid cols-2" id="optionsGrid">
+            ${node.options.map(opt => {
+              const net = (opt.revenue || 0) - (opt.cost || 0);
+              const costClass = net > 0 ? 'positive' : net < 0 ? 'negative' : 'neutral';
+              const bscImpact = Object.entries(opt.bsc || {})
+                .filter(([_, v]) => v !== 0)
+                .map(([k, v]) => {
+                  const labels = { bsc_financial: '💰', bsc_customer: '👥', bsc_internal: '⚙️', bsc_learning: '📚' };
+                  return `<span class="pill pill-sm" style="background:${v > 0 ? 'rgba(52,199,89,0.1)' : 'rgba(255,59,48,0.1)'};color:${v > 0 ? 'var(--color-success)' : 'var(--color-danger)'}">${labels[k] || k} ${v > 0 ? '+' : ''}${v}</span>`;
+                }).join(' ');
+
+              return `
+                <div class="option-card" data-choice="${opt.id}" onclick="selectOption(this, '${opt.id}')">
+                  <div class="option-id">${opt.id}</div>
+                  <div class="option-label">${escapeHtml(opt.label)}</div>
+                  <div class="option-desc">${escapeHtml(opt.description || '')}</div>
+                  <div class="option-cost ${costClass}">
+                    ${net !== 0 ? (net > 0 ? '📈 +' : '📉 ') + UI.formatCOP(net) : '💰 Neutro'}
+                  </div>
+                  ${bscImpact ? `<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">${bscImpact}</div>` : ''}
+                  ${opt.crossEffects && opt.crossEffects.length > 0 ? `<div style="margin-top:6px;font-size:0.72rem;color:var(--color-warning)">🔗 Afecta: ${opt.crossEffects.map(ce => ce.area).join(', ')}</div>` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <button class="btn btn-primary btn-lg" style="width:100%;margin-top:20px" id="btnConfirm" disabled onclick="confirmDecision()">
+            ✅ Confirmar Decisión
+          </button>
+        </div>
+      `;
+    }
+
+    let selectedChoice = null;
+
+    function selectOption(el, choiceId) {
+      selectedChoice = choiceId;
+      document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('btnConfirm').disabled = false;
+    }
+
+    async function confirmDecision() {
+      if (!selectedChoice) return;
+      const btn = document.getElementById('btnConfirm');
+      btn.disabled = true;
+      btn.textContent = '⏳ Registrando...';
+
+      const day = parseInt(serverData.state.day) || 0;
+      const myArea = serverData.areas.find(a => a.company_id === session.company && a.area_code === session.area);
+      const node = Engine.getCurrentNode(session.area, myArea?.current_node);
+      const option = node.options.find(o => o.id === selectedChoice);
+      if (!option) return;
+
+      const effects = Engine.calculateEffects(option);
+      const kpiMod = Engine.calculateKPIModifier(session.area, myArea);
+      const riskBonus = Engine.rollRisk(option, kpiMod);
+      const finalRevenue = Math.max(0, (effects.revenue || 0) + (riskBonus > 0 ? riskBonus : 0));
+      const finalCost = Math.max(0, (effects.cost || 0) + (riskBonus < 0 ? Math.abs(riskBonus) : 0));
+
+      try {
+        await API.makeDecision(
+          session.company, session.area, day, node.id, selectedChoice, session.id,
+          finalCost, finalRevenue, effects.bsc, effects.crossEffects,
+          effects.tags, option.feedback || effects.narrative, effects.next || null
+        );
+
+        // Apply cross effects
+        for (const ce of effects.crossEffects) {
+          try {
+            await API.applyCrossEffect(session.company, ce.area, ce.bsc || {}, ce.cost || 0);
+          } catch (e) { console.warn('Cross effect error:', e); }
+        }
+
+        selectedChoice = null;
+        lastRenderKey = '';
+        UI.toast('Decisión registrada', 'success');
+        poll();
+      } catch (err) {
+        UI.toast('Error: ' + err.message, 'error');
+        btn.disabled = false;
+        btn.textContent = '✅ Confirmar Decisión';
+      }
+    }
+
+    // =====================================================
+    // Result Panel (after deciding)
+    // =====================================================
+    function renderResult(decision) {
+      const key = `result|${decision.day}|${decision.node_id}`;
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+
+      const net = (decision.revenue_amount || 0) - (decision.cost_amount || 0);
+      const isPositive = net >= 0;
+      const narrative = decision.narrative || '';
+
+      // Parse feedback into sections
+      const feedbackLines = narrative.split('\n');
+      const headerLine = feedbackLines[0] || '';
+      const bodyLines = feedbackLines.slice(1).join('\n');
+
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass card slide-up">
+          <div class="result-banner ${isPositive ? 'positive' : 'negative'}">
+            <div style="font-size:2.5rem">${isPositive ? '📈' : '📉'}</div>
+            <div class="result-delta ${isPositive ? 'positive' : 'negative'}">
+              ${isPositive ? '+' : ''}${UI.formatCOP(net)}
+            </div>
+            <div style="font-size:0.9rem;color:var(--text-secondary);margin-top:4px">
+              Decisión ${decision.node_id} · Opción ${decision.choice} · Día ${decision.day}
+            </div>
+          </div>
+
+          ${narrative ? `
+            <div class="stats-insight">
+              <button class="stats-toggle" onclick="toggleStats(this)">
+                <span>📊 Análisis Estadístico — ¿Por qué esta decisión?</span>
+                <span class="toggle-arrow">▼</span>
+              </button>
+              <div class="stats-body">
+                <div style="font-weight:700;font-size:1rem;margin-bottom:8px">${escapeHtml(headerLine)}</div>
+                <div style="color:var(--text-secondary)">${escapeHtml(bodyLines)}</div>
+              </div>
+            </div>
+          ` : ''}
+
+          <div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">
+            Esperando el siguiente día para tu próxima decisión...
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleStats(btn) {
+      const body = btn.nextElementSibling;
+      body.classList.toggle('open');
+      btn.querySelector('.toggle-arrow').textContent = body.classList.contains('open') ? '▲' : '▼';
+    }
+
+    // =====================================================
+    // Waiting states
+    // =====================================================
+    function renderWaiting(day, nextNode) {
+      const key = `waiting|${day}`;
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+
+      const nextDay = nextNode ? nextNode.day : '?';
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass card slide-up" style="text-align:center;padding:50px 20px">
+          <div style="font-size:4rem">☕</div>
+          <h2 style="margin:12px 0">Sin decisiones pendientes</h2>
+          <p style="color:var(--text-secondary)">
+            Tu departamento no tiene decisiones hoy (día ${day}).
+            ${nextNode ? `La próxima decisión se desbloquea el <strong>día ${nextDay}</strong>.` : 'Ya completaste todas tus decisiones.'}
+          </p>
+          <p style="color:var(--text-tertiary);font-size:0.85rem;margin-top:16px">
+            Mientras tanto, revisa los KPIs de la empresa, asesora a otros departamentos o planifica tu próximo comodín ⚡
+          </p>
+        </div>
+      `;
+    }
+
+    function renderWaitingForPartner(decisionMaker, node) {
+      const key = `partner|${node.id}`;
+      if (key === lastRenderKey) return;
+      lastRenderKey = key;
+
+      document.getElementById('mainArea').innerHTML = `
+        <div class="glass card slide-up" style="text-align:center;padding:50px 20px">
+          <div style="font-size:4rem">🤝</div>
+          <h2 style="margin:12px 0">${escapeHtml(decisionMaker?.name || 'Tu compañero/a')} decide hoy</h2>
+          <p style="color:var(--text-secondary)">
+            Es el turno de tu compañero/a de departamento para la decisión:<br>
+            <strong>"${escapeHtml(node.title)}"</strong>
+          </p>
+          <p style="color:var(--text-tertiary);font-size:0.85rem;margin-top:16px">
+            Puedes asesorarle con tu análisis de los datos. ¡Discutan juntos!
+          </p>
+        </div>
+      `;
+    }
+
+    // =====================================================
+    // Helpers
+    // =====================================================
+    function formatContext(text) {
+      if (!text) return '';
+      return escapeHtml(text)
+        .replace(/📊[^\n]*/g, '<div style="margin:12px 0;padding:14px 18px;background:rgba(0,122,255,0.06);border-left:4px solid var(--color-primary);border-radius:0 10px 10px 0;font-family:var(--font-mono,monospace);font-size:0.88rem;line-height:1.8">$&</div>')
+        .replace(/\n/g, '<br>');
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+  </script>
+</body>
+</html>

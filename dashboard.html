@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>PlataniWars — Panel del Docente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 800px) { .dash-grid { grid-template-columns: 1fr; } }
+    .ctrl-btn { padding: 16px 24px; font-size: 1.1rem; border-radius: var(--radius-md); }
+    .event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    .stat-card { text-align: center; padding: 16px; }
+    .stat-value { font-size: 2rem; font-weight: 900; }
+    .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; margin-top: 4px; }
+    .area-status-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .area-status-card { padding: 12px; }
+    .area-status-card .area-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .area-status-card .area-hdr .icon { font-size: 1.3rem; }
+    .area-status-card .area-hdr .name { font-weight: 700; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <h1>🍌⚔️ PlataniWars — Panel del Docente</h1>
+      <p>Control del simulador gerencial estadístico</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="glass card" style="margin-bottom:20px;text-align:center">
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+        <button class="btn btn-success ctrl-btn" onclick="startGame()" id="btnStart">▶️ Iniciar</button>
+        <button class="btn btn-warning ctrl-btn" onclick="togglePause()" id="btnPause">⏸️ Pausar</button>
+        <button class="btn btn-primary ctrl-btn" onclick="advanceDay()" id="btnAdvance">⏭️ Avanzar Día</button>
+        <button class="btn btn-danger ctrl-btn" onclick="resetGame()" id="btnReset">🔄 Reiniciar</button>
+      </div>
+      <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap">
+        <div class="glass stat-card">
+          <div class="stat-value" id="dash-status">LOBBY</div>
+          <div class="stat-label">Estado</div>
+        </div>
+        <div class="glass stat-card">
+          <div class="stat-value" id="dash-day">0</div>
+          <div class="stat-label">Día actual</div>
+        </div>
+        <div class="glass stat-card">
+          <div class="stat-value" id="dash-students">0</div>
+          <div class="stat-label">Estudiantes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scoreboard -->
+    <div class="glass card dash-grid" style="margin-bottom:20px" id="scoreboard"></div>
+
+    <!-- Companies detail -->
+    <div class="dash-grid" id="companies-detail"></div>
+
+    <!-- Events -->
+    <div class="glass card" style="margin-bottom:20px">
+      <div class="card-title">🎲 Eventos del Mercado</div>
+      <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px">Lanzar eventos que afectan a ambas empresas:</p>
+      <div class="event-grid" id="events-grid"></div>
+    </div>
+
+    <!-- Decision log -->
+    <div class="glass card" style="margin-bottom:20px">
+      <div class="card-title">📜 Historial de Decisiones</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Día</th><th>Empresa</th><th>Área</th><th>Opción</th><th>Costo</th><th>Ingreso</th><th>Neto</th></tr>
+          </thead>
+          <tbody id="decisions-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/bsc.js"></script>
+  <script>
+    let serverData = null;
+
+    // Market events the teacher can trigger
+    const MARKET_EVENTS = [
+      { emoji: '📈', title: 'Boom del Plátano', desc: 'La demanda de platanitos sube 30%', cash: 40000000, bsc: { bsc_customer: 5, bsc_financial: 5 } },
+      { emoji: '📉', title: 'Crisis Económica', desc: 'Recesión golpea al Eje Cafetero', cash: -35000000, bsc: { bsc_financial: -8, bsc_customer: -3 } },
+      { emoji: '🌧️', title: 'Invierno Severo', desc: 'Lluvias destruyen cosechas de plátano', cash: -25000000, bsc: { bsc_internal: -5 } },
+      { emoji: '🏆', title: 'Premio Nacional', desc: 'El sector platanero gana reconocimiento', cash: 20000000, bsc: { bsc_customer: 8, bsc_learning: 5 } },
+      { emoji: '⚡', title: 'Apagón Regional', desc: 'Racionamiento eléctrico afecta producción', cash: -30000000, bsc: { bsc_internal: -10 } },
+      { emoji: '🎄', title: 'Temporada Navideña', desc: 'Ventas se disparan en diciembre', cash: 50000000, bsc: { bsc_financial: 10, bsc_customer: 5 } },
+      { emoji: '🦠', title: 'Brote de Plagas', desc: 'INVIMA ordena inspecciones extras', cash: -15000000, bsc: { bsc_internal: -5, bsc_learning: 3 } },
+      { emoji: '🚛', title: 'Paro Camionero', desc: 'Distribución paralizada por 3 días', cash: -20000000, bsc: { bsc_customer: -5, bsc_internal: -3 } },
+    ];
+
+    // Init
+    (async function init() {
+      renderEvents();
+      await poll();
+      setInterval(poll, CONFIG.POLL_INTERVAL);
+    })();
+
+    async function poll() {
+      try {
+        serverData = await API.fetchAll();
+        render();
+      } catch (e) { console.warn('Poll error', e); }
+    }
+
+    function render() {
+      if (!serverData) return;
+      const { state, companies, areas, students, decisions } = serverData;
+
+      document.getElementById('dash-status').textContent = (state.status || 'lobby').toUpperCase();
+      document.getElementById('dash-day').textContent = state.day || '0';
+      document.getElementById('dash-students').textContent = students.length;
+
+      // Scoreboard
+      document.getElementById('scoreboard').innerHTML = companies.map(c => {
+        const profit = c.total_revenue - c.total_costs;
+        return `
+          <div class="glass card" style="text-align:center;border:2px solid ${CONFIG.COMPANIES.find(cc => cc.id === c.id)?.color || '#ccc'}22">
+            <div style="font-size:2.5rem">${c.emoji}</div>
+            <div style="font-weight:800;font-size:1.2rem;margin:4px 0">${escapeHtml(c.name)}</div>
+            <div style="font-size:2rem;font-weight:900;color:${c.total_cash >= CONFIG.INITIAL_CASH ? 'var(--color-success)' : 'var(--color-danger)'}">${UI.formatCOP(c.total_cash)}</div>
+            <div style="margin-top:8px;font-size:0.85rem;color:${profit >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}">Utilidad: ${profit >= 0 ? '+' : ''}${UI.formatCOP(profit)}</div>
+            <div style="margin-top:12px">${BSC.renderFull(c)}</div>
+          </div>
+        `;
+      }).join('');
+
+      // Companies detail (areas)
+      document.getElementById('companies-detail').innerHTML = companies.map(c => {
+        const compAreas = areas.filter(a => a.company_id === c.id);
+        const compStudents = students.filter(s => s.company_id === c.id);
+        return `
+          <div class="glass card">
+            <div class="card-title">${c.emoji} ${escapeHtml(c.name)} — Áreas</div>
+            <div class="area-status-grid">
+              ${compAreas.map(a => {
+                const areaInfo = CONFIG.AREAS.find(ai => ai.code === a.area_code);
+                if (!areaInfo) return '';
+                const members = compStudents.filter(s => s.area_code === a.area_code);
+                const remaining = a.budget - a.spent + a.revenue;
+                return `
+                  <div class="glass area-status-card">
+                    <div class="area-hdr">
+                      <span class="icon">${areaInfo.icon}</span>
+                      <span class="name">${areaInfo.name}</span>
+                    </div>
+                    <div style="font-size:0.78rem;color:var(--text-secondary)">
+                      ${members.map(m => escapeHtml(m.name)).join(', ') || '<em>Sin asignar</em>'}
+                    </div>
+                    <div style="margin-top:6px;font-size:0.8rem">
+                      <span style="color:${remaining > 0 ? 'var(--color-success)' : 'var(--color-danger)'}">
+                        ${UI.formatCOP(remaining)} disponible
+                      </span>
+                    </div>
+                    <div style="margin-top:4px">${BSC.renderCompact(a)}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Decisions table
+      const sortedDecisions = [...decisions].sort((a, b) => b.day - a.day).slice(0, 30);
+      document.getElementById('decisions-table').innerHTML = sortedDecisions.map(d => {
+        const company = companies.find(c => c.id === d.company_id);
+        const areaInfo = CONFIG.AREAS.find(a => a.code === d.area_code);
+        const net = (d.revenue_amount || 0) - (d.cost_amount || 0);
+        return `<tr>
+          <td>${d.day}</td>
+          <td>${company?.emoji || ''} ${escapeHtml(company?.name || '')}</td>
+          <td>${areaInfo?.icon || ''} ${areaInfo?.name || d.area_code}</td>
+          <td><strong>${d.choice}</strong></td>
+          <td style="color:var(--color-danger)">${UI.formatCOP(d.cost_amount)}</td>
+          <td style="color:var(--color-success)">${UI.formatCOP(d.revenue_amount)}</td>
+          <td style="font-weight:700;color:${net >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}">${net >= 0 ? '+' : ''}${UI.formatCOP(net)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Events
+    function renderEvents() {
+      document.getElementById('events-grid').innerHTML = MARKET_EVENTS.map((ev, i) => `
+        <div class="event-btn" onclick="triggerEvent(${i})">
+          <span class="event-emoji">${ev.emoji}</span>
+          <span class="event-name">${ev.title}</span>
+          <span class="event-desc">${ev.desc}</span>
+          <span style="font-size:0.7rem;font-weight:700;color:${ev.cash >= 0 ? 'var(--color-success)' : 'var(--color-danger)'}">
+            ${ev.cash >= 0 ? '+' : ''}${UI.formatCOP(ev.cash)}
+          </span>
+        </div>
+      `).join('');
+    }
+
+    // Controls
+    async function startGame() {
+      if (!confirm('¿Iniciar PlataniWars?')) return;
+      try { await API.startGame(); UI.toast('¡PlataniWars iniciado!', 'success'); poll(); } catch (e) { UI.toast('Error: ' + e.message, 'error'); }
+    }
+
+    async function togglePause() {
+      try { const r = await API.togglePause(); UI.toast('Estado: ' + r, 'info'); poll(); } catch (e) { UI.toast('Error: ' + e.message, 'error'); }
+    }
+
+    async function advanceDay() {
+      try { const r = await API.advanceDay(); UI.toast('Día avanzado: ' + r, 'success'); poll(); } catch (e) { UI.toast('Error: ' + e.message, 'error'); }
+    }
+
+    async function resetGame() {
+      if (!confirm('⚠️ ¿REINICIAR TODO? Se borran todos los datos.')) return;
+      if (!confirm('¿Estás seguro? Esta acción no se puede deshacer.')) return;
+      try { await API.resetGame(); UI.toast('Juego reiniciado', 'warning'); poll(); } catch (e) { UI.toast('Error: ' + e.message, 'error'); }
+    }
+
+    async function triggerEvent(idx) {
+      const ev = MARKET_EVENTS[idx];
+      if (!confirm(`¿Lanzar evento "${ev.title}"?\n\n${ev.desc}\nImpacto: ${ev.cash >= 0 ? '+' : ''}${UI.formatCOP(ev.cash)}`)) return;
+      const day = parseInt(serverData?.state?.day) || 0;
+      try {
+        await API.applyEvent(day, 'market', ev.title, ev.desc, null, null, ev.cash, ev.bsc);
+        UI.toast(`${ev.emoji} Evento lanzado`, 'success');
+        poll();
+      } catch (e) { UI.toast('Error: ' + e.message, 'error'); }
+    }
+
+    function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text || ''; return d.innerHTML; }
+  </script>
+</body>
+</html>

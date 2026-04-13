@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>PlataniWars — Simulador Gerencial Estadístico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .app-header h1 { font-size: 2.4rem; }
+    .app-header .subtitle { font-size: 1rem; opacity: 0.85; margin-top: 4px; }
+    .app-header .emoji-big { font-size: 3rem; display: block; margin-bottom: 8px; }
+    .area-card .area-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 8px;
+      font-size: 0.68rem; font-weight: 700; margin-top: 6px;
+    }
+    .area-badge.full { background: rgba(255,59,48,0.12); color: var(--color-danger); }
+    .area-badge.open { background: rgba(52,199,89,0.12); color: var(--color-success); }
+    .rules-box {
+      padding: 20px; margin-top: 20px; font-size: 0.88rem; line-height: 1.7;
+      background: rgba(255,255,255,0.4); border-radius: var(--radius-md);
+    }
+    .rules-box h3 { font-size: 1rem; margin-bottom: 10px; }
+    .rules-box ul { padding-left: 20px; }
+    .rules-box li { margin-bottom: 6px; color: var(--text-secondary); }
+    .rules-box strong { color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <div class="app-container join-container">
+
+    <!-- Header -->
+    <div class="app-header">
+      <span class="emoji-big">🍌⚔️🔥</span>
+      <h1>PlataniWars</h1>
+      <p class="subtitle">Simulador Gerencial Estadístico — Estadística II — UTP</p>
+    </div>
+
+    <!-- Step 1: Nombre -->
+    <div id="step-name" class="glass card slide-up" style="margin-bottom:20px">
+      <div class="card-title">Paso 1 — Tu nombre</div>
+      <div class="input-group">
+        <label for="player-name">Nombre completo</label>
+        <input type="text" id="player-name" class="input" placeholder="Ej: Valentina López" maxlength="40" autofocus>
+      </div>
+      <button class="btn btn-primary btn-lg" style="width:100%" onclick="goToStep2()" id="btn-step1">
+        Continuar →
+      </button>
+    </div>
+
+    <!-- Step 2: Empresa -->
+    <div id="step-company" class="glass card slide-up" style="display:none;margin-bottom:20px">
+      <div class="card-title">Paso 2 — Elige tu empresa de platanitos</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px">
+        Dos empresas compiten en el mercado del Eje Cafetero. Elige tu bando.
+      </p>
+      <div class="company-selector" id="company-list"></div>
+      <button class="btn btn-primary btn-lg" style="width:100%" onclick="goToStep3()" id="btn-step2" disabled>
+        Continuar →
+      </button>
+    </div>
+
+    <!-- Step 3: Área -->
+    <div id="step-area" class="glass card slide-up" style="display:none;margin-bottom:20px">
+      <div class="card-title">Paso 3 — Elige tu departamento</div>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px">
+        Cada departamento toma decisiones estratégicas basadas en datos.
+        <strong>Máximo 2 personas por departamento.</strong>
+      </p>
+      <div class="grid-3" id="area-list" style="margin-bottom:16px"></div>
+      <div id="area-warnings" style="margin-bottom:12px"></div>
+      <button class="btn btn-success btn-lg" style="width:100%" onclick="joinGame()" id="btn-join" disabled>
+        🚀 Unirme a la junta directiva
+      </button>
+    </div>
+
+    <!-- Lobby (post-join) -->
+    <div id="step-lobby" class="glass card" style="display:none;text-align:center;padding:40px">
+      <div style="font-size:4rem;margin-bottom:16px">✅</div>
+      <h2 style="margin-bottom:8px" id="lobby-title">¡Estás en la junta!</h2>
+      <p style="color:var(--text-secondary);margin-bottom:24px" id="lobby-desc"></p>
+
+      <div class="glass card" style="margin-bottom:20px">
+        <div class="card-title">Junta Directiva</div>
+        <div id="lobby-players" style="font-size:0.85rem"></div>
+      </div>
+
+      <div class="rules-box">
+        <h3>🎯 ¿Cómo funciona PlataniWars?</h3>
+        <ul>
+          <li>Tu empresa arranca con <strong>$500 millones</strong> y compite contra otra empresa de platanitos.</li>
+          <li>Cada departamento toma <strong>decisiones estratégicas</strong> basadas en datos reales.</li>
+          <li>Los datos contienen pistas estadísticas — <strong>analizarlos bien te da ventaja</strong>.</li>
+          <li>Las decisiones afectan <strong>tu área y toda la empresa</strong> (BSC: Financiera, Cliente, Procesos, Aprendizaje).</li>
+          <li>Hay <strong>comodines de competencia desleal</strong> 🍌🎯💣 que puedes usar contra la otra empresa.</li>
+          <li>Gana la empresa con <strong>mayor puntaje final</strong> (caja + BSC + salud de áreas).</li>
+        </ul>
+      </div>
+
+      <div class="waiting-state" id="lobby-waiting" style="margin-top:24px">
+        <div class="waiting-icon">⏳</div>
+        <div class="waiting-text">Esperando que el docente inicie PlataniWars...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    let selectedCompany = null;
+    let selectedArea = null;
+    let playerName = '';
+    let playerId = null;
+    let pollTimer = null;
+
+    // --- Render empresas ---
+    function renderCompanies() {
+      const el = document.getElementById('company-list');
+      el.innerHTML = CONFIG.COMPANIES.map(c => `
+        <div class="glass company-option" onclick="selectCompany(${c.id})" id="company-${c.id}"
+             style="--accent:${c.color}">
+          <div class="company-emoji">${c.emoji}</div>
+          <div class="company-name" style="color:${c.color}">${c.name}</div>
+          <div class="company-slogan">${c.slogan}</div>
+          <div id="company-count-${c.id}" style="margin-top:8px;font-size:0.78rem;color:var(--text-tertiary)"></div>
+        </div>
+      `).join('');
+    }
+
+    // --- Render áreas ---
+    async function renderAreas() {
+      const el = document.getElementById('area-list');
+      let students = [];
+      try { students = await API.getStudents(); } catch (e) { console.warn('Error loading students', e); }
+      const myCompanyStudents = students.filter(s => s.company_id === selectedCompany);
+
+      el.innerHTML = CONFIG.AREAS.map(a => {
+        const count = myCompanyStudents.filter(s => s.area_code === a.code).length;
+        const isFull = count >= CONFIG.MAX_PER_AREA;
+        return `
+          <div class="glass area-card ${isFull ? 'disabled' : ''}"
+               onclick="${isFull ? '' : `selectArea('${a.code}')`}"
+               id="area-${a.code}"
+               style="${isFull ? 'opacity:0.4;cursor:not-allowed' : ''}">
+            <div class="area-icon">${a.icon}</div>
+            <div class="area-name">${a.name}</div>
+            <div class="area-members">${count}/${CONFIG.MAX_PER_AREA} personas</div>
+            <span class="area-badge ${isFull ? 'full' : 'open'}">${isFull ? 'LLENO' : 'ABIERTO'}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- Selecciones ---
+    function selectCompany(id) {
+      selectedCompany = id;
+      document.querySelectorAll('.company-option').forEach(el => el.classList.remove('selected'));
+      document.getElementById(`company-${id}`).classList.add('selected');
+      document.getElementById('btn-step2').disabled = false;
+    }
+
+    function selectArea(code) {
+      selectedArea = code;
+      document.querySelectorAll('.area-card').forEach(el => el.classList.remove('selected'));
+      document.getElementById(`area-${code}`).classList.add('selected');
+      document.getElementById('btn-join').disabled = false;
+    }
+
+    // --- Steps ---
+    function goToStep2() {
+      playerName = document.getElementById('player-name').value.trim();
+      if (!playerName || playerName.length < 2) { UI.toast('Escribe tu nombre completo', 'warning'); return; }
+      document.getElementById('step-name').style.display = 'none';
+      document.getElementById('step-company').style.display = 'block';
+      renderCompanies();
+      loadCounts();
+    }
+
+    async function loadCounts() {
+      try {
+        const students = await API.getStudents();
+        CONFIG.COMPANIES.forEach(c => {
+          const count = students.filter(s => s.company_id === c.id).length;
+          const el = document.getElementById(`company-count-${c.id}`);
+          if (el) el.textContent = `${count} integrante${count !== 1 ? 's' : ''}`;
+        });
+      } catch (e) { console.warn('Error loading counts', e); }
+    }
+
+    function goToStep3() {
+      if (!selectedCompany) return;
+      document.getElementById('step-company').style.display = 'none';
+      document.getElementById('step-area').style.display = 'block';
+      renderAreas();
+    }
+
+    async function joinGame() {
+      if (!selectedArea) return;
+      const btn = document.getElementById('btn-join');
+      btn.disabled = true;
+      btn.textContent = '⏳ Uniéndose...';
+
+      playerId = UI.uid();
+      try {
+        await API.joinGame(playerId, playerName, selectedCompany, selectedArea);
+        Storage.save({ id: playerId, name: playerName, company: selectedCompany, area: selectedArea });
+
+        const company = CONFIG.COMPANIES.find(c => c.id === selectedCompany);
+        const area = CONFIG.AREAS.find(a => a.code === selectedArea);
+
+        document.getElementById('step-area').style.display = 'none';
+        document.getElementById('step-lobby').style.display = 'block';
+        document.getElementById('lobby-title').textContent = `¡Bienvenido/a a ${company.name}!`;
+        document.getElementById('lobby-desc').textContent = `Departamento: ${area.icon} ${area.name}`;
+
+        UI.toast(`¡Te uniste a ${company.emoji} ${company.name}!`, 'success');
+        startLobbyPolling();
+      } catch (err) {
+        UI.toast('Error al unirse: ' + err.message, 'error');
+        btn.disabled = false;
+        btn.textContent = '🚀 Unirme a la junta directiva';
+      }
+    }
+
+    // --- Lobby polling ---
+    function startLobbyPolling() {
+      pollLobby();
+      pollTimer = setInterval(pollLobby, CONFIG.POLL_INTERVAL);
+    }
+
+    async function pollLobby() {
+      try {
+        const [state, students] = await Promise.all([API.getState(), API.getStudents()]);
+        renderLobbyPlayers(students);
+
+        if (state.status === 'playing') {
+          clearInterval(pollTimer);
+          window.location.href = 'game.html';
+        }
+      } catch (e) { console.warn('Poll error', e); }
+    }
+
+    function renderLobbyPlayers(students) {
+      const el = document.getElementById('lobby-players');
+      const myCompany = students.filter(s => s.company_id === selectedCompany);
+      const rivalCompany = students.filter(s => s.company_id !== selectedCompany);
+
+      el.innerHTML = `
+        <div style="margin-bottom:16px">
+          <div style="font-weight:700;margin-bottom:8px">
+            ${CONFIG.COMPANIES.find(c => c.id === selectedCompany)?.emoji || ''} Tu equipo (${myCompany.length})
+          </div>
+          ${myCompany.map(s => {
+            const area = CONFIG.AREAS.find(a => a.code === s.area_code);
+            return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.04)">
+              <span>${area?.icon || '❓'}</span>
+              <span style="flex:1">${escapeHtml(s.name)}</span>
+              <span style="font-size:0.75rem;color:var(--text-tertiary)">${area?.name || s.area_code}</span>
+              ${s.id === playerId ? '<span class="pill" style="background:rgba(52,199,89,0.15);color:var(--color-success)">tú</span>' : ''}
+            </div>`;
+          }).join('')}
+        </div>
+        <div>
+          <div style="font-weight:700;margin-bottom:8px;opacity:0.6">
+            ${CONFIG.COMPANIES.find(c => c.id !== selectedCompany)?.emoji || ''} Rival (${rivalCompany.length})
+          </div>
+          ${rivalCompany.map(s => {
+            const area = CONFIG.AREAS.find(a => a.code === s.area_code);
+            return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.04);opacity:0.6">
+              <span>${area?.icon || '❓'}</span>
+              <span style="flex:1">${escapeHtml(s.name)}</span>
+              <span style="font-size:0.75rem;color:var(--text-tertiary)">${area?.name || s.area_code}</span>
+            </div>`;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function escapeHtml(text) {
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    // --- Check for existing session ---
+    (function init() {
+      const session = Storage.load();
+      if (session && session.id) {
+        playerId = session.id;
+        playerName = session.name;
+        selectedCompany = session.company;
+        selectedArea = session.area;
+        // Check if game is already playing
+        API.getState().then(state => {
+          if (state.status === 'playing') {
+            window.location.href = 'game.html';
+          } else {
+            document.getElementById('step-name').style.display = 'none';
+            document.getElementById('step-lobby').style.display = 'block';
+            const company = CONFIG.COMPANIES.find(c => c.id === selectedCompany);
+            const area = CONFIG.AREAS.find(a => a.code === selectedArea);
+            document.getElementById('lobby-title').textContent = `¡Bienvenido/a a ${company?.name || ''}!`;
+            document.getElementById('lobby-desc').textContent = `Departamento: ${area?.icon || ''} ${area?.name || ''}`;
+            startLobbyPolling();
+          }
+        }).catch(() => {
+          // No connection, show join form
+          Storage.clear();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
