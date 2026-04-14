@@ -691,8 +691,11 @@
       if (!window.MISSIONS) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">Esperando el siguiente día...</div>';
       const deptMissions = window.MISSIONS[session.area] || [];
       const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
-      const available = deptMissions.filter(m => !completed.includes(m.id));
-      if (available.length === 0) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">✅ Misiones del día completadas. Esperando siguiente día...</div>';
+      // Solo 1 misión por día: si ya completó alguna HOY, no mostrar más
+      const doneToday = completed.some(c => c.endsWith('_d' + day));
+      if (doneToday) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">✅ Misión del día completada. Esperando siguiente día...</div>';
+      const available = deptMissions.filter(m => !completed.some(c => c.startsWith(m.id)));
+      if (available.length === 0) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">✅ Todas las misiones completadas. ¡Buen trabajo!</div>';
       const m = available[0];
       return `
         <div class="glass card" style="margin-top:20px;text-align:left;border:2px solid var(--color-warning)">
@@ -754,7 +757,7 @@
 
       // Marcar como completada
       const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
-      completed.push(missionId);
+      completed.push(missionId + '_d' + day);
       localStorage.setItem('plataniwars_missions', JSON.stringify(completed));
 
       // Aplicar recompensa via API
