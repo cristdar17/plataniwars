@@ -112,14 +112,9 @@ const Engine = (() => {
   /* ----------------------------------------------------------
      Roll con rango de riesgo (bonus/penalty aleatorio)
   ---------------------------------------------------------- */
+  // Azar eliminado: las decisiones son 100% deterministas
   function rollRisk(option, kpiModifier = 1.0) {
-    const baseCash = (option.revenue || 0) - (option.cost || 0);
-    // Agregar variabilidad basada en tags
-    const isRisky = (option.tags || []).includes('risky');
-    const variance = isRisky ? 0.3 : 0.15;
-    const roll = (Math.random() - 0.5) * 2 * variance; // -variance to +variance
-    const bonus = Math.round(Math.abs(baseCash || 10000000) * roll * kpiModifier);
-    return bonus;
+    return 0;
   }
 
   /* ----------------------------------------------------------

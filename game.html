@@ -478,14 +478,14 @@
       if (isJuntaDay && window.TREE_JUNTA) {
         const juntaNode = Object.values(window.TREE_JUNTA.nodes).find(n => n.day === day);
         if (juntaNode) {
-          // Check if THIS player already voted in the junta (uses area_code to avoid UNIQUE conflict)
-          const myJuntaVote = decisions.find(d =>
-            d.company_id === session.company && d.decided_by === session.id &&
-            d.node_id === juntaNode.id
+          // Check if THIS player already voted in the junta (uses events table)
+          const myJuntaVote = events.find(e =>
+            e.target_company === session.company && e.target_area === session.area &&
+            e.day === day && e.event_type === 'junta_vote'
           );
           // All junta votes from my company
-          const allJuntaVotes = decisions.filter(d =>
-            d.company_id === session.company && d.node_id === juntaNode.id
+          const allJuntaVotes = events.filter(e =>
+            e.target_company === session.company && e.day === day && e.event_type === 'junta_vote'
           );
 
           if (myJuntaVote) {
@@ -688,10 +688,10 @@
 
     // Genera HTML de misión para cualquier pantalla de espera
     function getMissionHtml(day) {
-      if (day < 15 || !window.MISSIONS) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">Esperando el siguiente día...</div>';
+      if (!window.MISSIONS) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">Esperando el siguiente día...</div>';
       const deptMissions = window.MISSIONS[session.area] || [];
       const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
-      const available = deptMissions.filter(m => !completed.includes(m.id + '_' + day));
+      const available = deptMissions.filter(m => !completed.includes(m.id));
       if (available.length === 0) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">✅ Misiones del día completadas. Esperando siguiente día...</div>';
       const m = available[0];
       return `
@@ -741,7 +741,7 @@
 
     function getMissionKey(day) {
       const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
-      return completed.filter(c => c.includes('_' + day)).length;
+      return completed.length;
     }
 
     async function completeMission(missionId, day, choice) {
@@ -754,7 +754,7 @@
 
       // Marcar como completada
       const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
-      completed.push(missionId + '_' + day);
+      completed.push(missionId);
       localStorage.setItem('plataniwars_missions', JSON.stringify(completed));
 
       // Aplicar recompensa via API
@@ -812,9 +812,10 @@
       const myTeam = students.filter(s => s.company_id === session.company);
       const voteSummary = {};
       existingVotes.forEach(v => {
-        const voter = myTeam.find(s => s.id === v.decided_by);
-        if (!voteSummary[v.choice]) voteSummary[v.choice] = [];
-        voteSummary[v.choice].push(voter?.name || 'Anónimo');
+        const choice = ((v.title||'').match(/\[([ABCD])\]/)||[])[1] || '?';
+        if (!voteSummary[choice]) voteSummary[choice] = [];
+        const area = CONFIG.AREAS.find(a => a.code === v.target_area);
+        voteSummary[choice].push(area?.name || 'Anónimo');
       });
 
       document.getElementById('mainArea').innerHTML = `
@@ -825,9 +826,9 @@
           ${existingVotes.length > 0 ? `
             <div class="junta-votes">
               ${existingVotes.map(v => {
-                const voter = myTeam.find(s => s.id === v.decided_by);
-                const area = CONFIG.AREAS.find(a => a.code === v.area_code);
-                return `<span class="junta-vote-chip">${area?.icon || '❓'} ${voter?.name?.split(' ')[0] || '?'} → ${v.choice}</span>`;
+                const area = CONFIG.AREAS.find(a => a.code === v.target_area);
+                const choice = ((v.title||'').match(/\[([ABCD])\]/)||[])[1] || '?';
+                return `<span class="junta-vote-chip">${area?.icon || '❓'} ${choice}</span>`;
               }).join('')}
             </div>
             <div style="margin-top:8px;font-size:0.82rem;opacity:0.8">${existingVotes.length}/${myTeam.length} han votado</div>
@@ -875,26 +876,21 @@
       const option = node.options.find(o => o.id === selectedChoice);
       if (!option) return;
 
-      const effects = Engine.calculateEffects(option);
-      const riskBonus = Engine.rollRisk(option, 1.1); // Junta gets a small boost
-      const finalRevenue = Math.max(0, (effects.revenue || 0) + (riskBonus > 0 ? riskBonus : 0));
-      const finalCost = Math.max(0, (effects.cost || 0) + (riskBonus < 0 ? Math.abs(riskBonus) : 0));
+      const cashDelta = (option.revenue || 0) - (option.cost || 0);
 
       try {
-        await API.makeDecision(
-          session.company, session.area, day, nodeId, selectedChoice, session.id,
-          finalCost, finalRevenue, effects.bsc, effects.crossEffects,
-          ['junta', ...(effects.tags || [])], option.feedback || '', null
-        );
+        // Juntas usan applyEvent para NO colisionar con decisiones de area
+        await API.applyEvent(day, 'junta_vote', `🏛️ ${node.title} [${selectedChoice}]`,
+          option.feedback || '', session.company, session.area,
+          cashDelta, option.bsc || {});
 
-        for (const ce of effects.crossEffects) {
-          try { await API.applyCrossEffect(session.company, ce.area, ce.bsc || {}, ce.cost || 0); } catch (e) {}
+        for (const ce of (option.crossEffects || [])) {
+          try { await API.applyCrossEffect(session.company, ce.area, ce.bsc || {}, 0); } catch (e) {}
         }
 
         try { await API.recalcBSC(session.company); } catch(e) {}
 
-        const net = finalRevenue - finalCost;
-        showMoneyFloat(net);
+        showMoneyFloat(cashDelta);
         selectedChoice = null;
         lastRenderKey = '';
         UI.toast('🗳️ ¡Voto registrado!', 'success');
@@ -913,7 +909,11 @@
 
       const myTeam = students.filter(s => s.company_id === session.company);
       const tally = { A: 0, B: 0, C: 0, D: 0 };
-      allVotes.forEach(v => { if (tally.hasOwnProperty(v.choice)) tally[v.choice]++; });
+      // Extract choice letter from event title: "🏛️ Title [X]"
+      allVotes.forEach(v => {
+        const match = (v.title || '').match(/\[([ABCD])\]/);
+        if (match && tally.hasOwnProperty(match[1])) tally[match[1]]++;
+      });
       const winner = Object.entries(tally).sort((a, b) => b[1] - a[1])[0];
       const winnerOption = node.options.find(o => o.id === winner[0]);
       const totalNet = allVotes.reduce((s, v) => s + (v.revenue_amount || 0) - (v.cost_amount || 0), 0);
@@ -937,7 +937,7 @@
               ${totalNet >= 0 ? '+' : ''}${UI.formatCOP(totalNet)}
             </div>
             <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:4px">
-              Tu voto: ${myVote.choice} ${myVote.choice === winner[0] ? '✅ Ganó tu opción' : '🔄 Ganó otra'}
+              Tu voto: ${((myVote.title||'').match(/\[([ABCD])\]/)||[])[1] || '?'} ${((myVote.title||'').match(/\[([ABCD])\]/)||[])[1] === winner[0] ? '✅ Ganó tu opción' : '🔄 Ganó otra'}
             </div>
           </div>
 
