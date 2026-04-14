@@ -805,44 +805,55 @@
     }
 
     // =====================================================
-    // JUNTA DIRECTIVA - Votación grupal
+    // JUNTA DIRECTIVA - Votación grupal (1 voto por persona)
     // =====================================================
+    function juntaKey(day) { return 'pw_junta_' + day; }
+    function getMyJuntaVote(day) { return localStorage.getItem(juntaKey(day)); }
+
     function renderJuntaVote(day, node, existingVotes, students, areas) {
-      const key = `junta|${day}|${node.id}`;
+      // Si ya voté, mostrar resultado
+      const myLocalVote = getMyJuntaVote(day);
+      if (myLocalVote) {
+        renderJuntaResult(node, existingVotes, { choice: myLocalVote }, students);
+        return;
+      }
+
+      const key = `junta|${day}|${node.id}|${existingVotes.length}`;
       if (key === lastRenderKey) return;
       lastRenderKey = key;
 
       const myTeam = students.filter(s => s.company_id === session.company);
       const voteSummary = {};
       existingVotes.forEach(v => {
-        const choice = ((v.title||'').match(/\[([ABCD])\]/)||[])[1] || '?';
+        const choice = ((v.title||'').match(/\[([ABCD])\]/)||[])[1];
+        if (!choice) return;
         if (!voteSummary[choice]) voteSummary[choice] = [];
         const area = CONFIG.AREAS.find(a => a.code === v.target_area);
-        voteSummary[choice].push(area?.name || 'Anónimo');
+        voteSummary[choice].push(area?.icon || '❓');
       });
 
       document.getElementById('mainArea').innerHTML = `
         <div class="junta-banner">
           <div style="font-size:2.5rem">🏛️</div>
           <h3>JUNTA DIRECTIVA</h3>
-          <p style="opacity:0.9;font-size:0.88rem">Decisión de TODA la empresa — Cada departamento vota</p>
+          <p style="opacity:0.9;font-size:0.88rem">Decisión de TODA la empresa — Cada persona vota UNA vez</p>
           ${existingVotes.length > 0 ? `
             <div class="junta-votes">
               ${existingVotes.map(v => {
                 const area = CONFIG.AREAS.find(a => a.code === v.target_area);
                 const choice = ((v.title||'').match(/\[([ABCD])\]/)||[])[1] || '?';
-                return `<span class="junta-vote-chip">${area?.icon || '❓'} ${choice}</span>`;
+                return `<span class="junta-vote-chip">${area?.icon || '❓'} → ${choice}</span>`;
               }).join('')}
             </div>
-            <div style="margin-top:8px;font-size:0.82rem;opacity:0.8">${existingVotes.length}/${myTeam.length} han votado</div>
-          ` : ''}
+            <div style="margin-top:8px;font-size:0.82rem;opacity:0.8">${existingVotes.length} voto${existingVotes.length>1?'s':''}</div>
+          ` : '<div style="margin-top:8px;font-size:0.82rem;opacity:0.7">Nadie ha votado aún</div>'}
         </div>
 
         <div class="glass decision-panel slide-up">
           <h2 class="decision-title">${escapeHtml(node.title)}</h2>
           <div class="decision-context">${formatContext(node.context)}</div>
 
-          <h3 style="font-size:1rem;margin:20px 0 12px">🗳️ Tu voto:</h3>
+          <h3 style="font-size:1rem;margin:20px 0 12px">🗳️ Tu voto (solo puedes votar UNA vez):</h3>
           <div class="options-grid cols-2" id="optionsGrid">
             ${node.options.map(opt => {
               const net = (opt.revenue || 0) - (opt.cost || 0);
@@ -856,14 +867,14 @@
                   <div class="option-cost ${costClass}">
                     ${net !== 0 ? (net > 0 ? '📈 +' : '📉 ') + UI.formatCOP(net) : '💰 Neutro'}
                   </div>
-                  ${voters.length > 0 ? `<div style="margin-top:6px;font-size:0.72rem;color:var(--color-purple)">🗳️ ${voters.join(', ')}</div>` : ''}
+                  ${voters.length > 0 ? `<div style="margin-top:6px;font-size:0.72rem;color:var(--color-purple)">🗳️ ${voters.join(' ')}</div>` : ''}
                 </div>
               `;
             }).join('')}
           </div>
 
           <button class="btn btn-primary btn-lg" style="width:100%;margin-top:20px;background:linear-gradient(135deg,#8b5cf6,#ec4899)" id="btnConfirm" disabled onclick="confirmJuntaVote('${node.id}', ${day})">
-            🗳️ Enviar mi voto
+            🗳️ Enviar mi voto (irreversible)
           </button>
         </div>
       `;
@@ -871,9 +882,15 @@
 
     async function confirmJuntaVote(nodeId, day) {
       if (!selectedChoice) return;
+      // Bloqueo anti-duplicado
+      if (getMyJuntaVote(day)) { UI.toast('Ya votaste en esta junta', 'warning'); return; }
+
       const btn = document.getElementById('btnConfirm');
       btn.disabled = true;
       btn.textContent = '⏳ Votando...';
+
+      // Bloquear INMEDIATAMENTE en localStorage antes del API call
+      localStorage.setItem(juntaKey(day), selectedChoice);
 
       const node = window.TREE_JUNTA.nodes[nodeId];
       const option = node.options.find(o => o.id === selectedChoice);
@@ -882,7 +899,6 @@
       const cashDelta = (option.revenue || 0) - (option.cost || 0);
 
       try {
-        // Juntas usan applyEvent para NO colisionar con decisiones de area
         await API.applyEvent(day, 'junta_vote', `🏛️ ${node.title} [${selectedChoice}]`,
           option.feedback || '', session.company, session.area,
           cashDelta, option.bsc || {});
@@ -896,12 +912,11 @@
         showMoneyFloat(cashDelta);
         selectedChoice = null;
         lastRenderKey = '';
-        UI.toast('🗳️ ¡Voto registrado!', 'success');
+        UI.toast('🗳️ ¡Voto registrado! No puedes cambiar tu voto.', 'success');
         poll();
       } catch (err) {
-        UI.toast('Error: ' + err.message, 'error');
-        btn.disabled = false;
-        btn.textContent = '🗳️ Enviar mi voto';
+        UI.toast('Error al enviar voto: ' + err.message, 'error');
+        // NO desbloquear localStorage — el voto ya se guardó localmente
       }
     }
 
@@ -910,16 +925,14 @@
       if (key === lastRenderKey) return;
       lastRenderKey = key;
 
-      const myTeam = students.filter(s => s.company_id === session.company);
       const tally = { A: 0, B: 0, C: 0, D: 0 };
-      // Extract choice letter from event title: "🏛️ Title [X]"
       allVotes.forEach(v => {
         const match = (v.title || '').match(/\[([ABCD])\]/);
         if (match && tally.hasOwnProperty(match[1])) tally[match[1]]++;
       });
-      const winner = Object.entries(tally).sort((a, b) => b[1] - a[1])[0];
+      const winner = Object.entries(tally).sort((a, b) => b[1] - a[1])[0] || ['?', 0];
       const winnerOption = node.options.find(o => o.id === winner[0]);
-      const totalNet = allVotes.reduce((s, v) => s + (v.revenue_amount || 0) - (v.cost_amount || 0), 0);
+      const myChoice = myVote.choice || '?';
 
       document.getElementById('mainArea').innerHTML = `
         <div class="junta-banner">
@@ -933,14 +946,11 @@
         </div>
 
         <div class="glass card slide-up">
-          <div class="result-banner ${totalNet >= 0 ? 'positive' : 'negative'}">
-            <div style="font-size:2rem">${totalNet >= 0 ? '🎉' : '😬'}</div>
-            <div style="font-size:1rem;font-weight:700;margin:8px 0">La junta eligió: ${winner[0]} — ${escapeHtml(winnerOption?.label || '')}</div>
-            <div class="result-delta ${totalNet >= 0 ? 'positive' : 'negative'}">
-              ${totalNet >= 0 ? '+' : ''}${UI.formatCOP(totalNet)}
-            </div>
+          <div class="result-banner positive">
+            <div style="font-size:2rem">🗳️</div>
+            <div style="font-size:1rem;font-weight:700;margin:8px 0">La junta eligió: ${winner[0]} — ${escapeHtml(winnerOption?.label || 'Pendiente de más votos')}</div>
             <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:4px">
-              Tu voto: ${((myVote.title||'').match(/\[([ABCD])\]/)||[])[1] || '?'} ${((myVote.title||'').match(/\[([ABCD])\]/)||[])[1] === winner[0] ? '✅ Ganó tu opción' : '🔄 Ganó otra'}
+              Tu voto: <strong>${myChoice}</strong> ${myChoice === winner[0] ? '✅ Ganó tu opción' : '🔄 Ganó otra'}
             </div>
           </div>
 
