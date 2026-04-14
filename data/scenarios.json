@@ -1,0 +1,2261 @@
+{
+  "roles": {
+    "COO": { "emoji": "🏭", "name": "Dir. Operaciones", "color": "#f97316" },
+    "CFO": { "emoji": "💰", "name": "Dir. Financiero", "color": "#10b981" },
+    "CMO": { "emoji": "📢", "name": "Dir. Marketing", "color": "#ec4899" },
+    "CHRO": { "emoji": "👥", "name": "Dir. Talento Humano", "color": "#8b5cf6" },
+    "ANALYST": { "emoji": "📊", "name": "Analista de Datos", "color": "#06b6d4" }
+  },
+  "scenarios": {
+    "COO": [
+      {
+        "id": "coo-01",
+        "month": 1,
+        "title": "Los paquetes andan flacos",
+        "situation": "El supervisor de turno noche reporta que los paquetes de platanitos se sienten 'livianos'. Tres clientes de Pereira ya llamaron a quejarse y uno amenaza con pasarse a la competencia. Necesitas decidir si paras la linea para recalibrar o sigues produciendo mientras investigas.",
+        "data_panel": "Control de calidad tomo una muestra aleatoria de 50 paquetes del turno noche: peso promedio 97g, desviacion estandar 8g. El estandar de la empresa es 100g por paquete con tolerancia de +/- 5g.",
+        "concept": "Distribucion muestral de medias y Z-score",
+        "options": {
+          "A": {
+            "label": "Parar linea y recalibrar de inmediato",
+            "detail": "Se detiene produccion por 4 horas, se recalibran las 3 empacadoras y se reprocesa el lote sospechoso.",
+            "effects": {
+              "cash": -18000000,
+              "market_share": 0,
+              "quality": 15,
+              "climate": -3,
+              "efficiency": -8,
+              "reputation": 5
+            },
+            "risk": [-5000000, 3000000],
+            "narrative": "Paraste la linea a las 2am y el supervisor del turno dia llego a encontrar todo recalibrado. Se reprocesaron 1.200 paquetes. Los operarios del turno noche quedaron con horas extra pero la calidad volvio a punto. Los clientes de Pereira recibieron paquetes de reemplazo con una nota de disculpa.",
+            "stats_insight": "El analisis estadistico respalda esta decision. Con X̄=97, μ=100, σ=8 y n=50, el Z-score es: Z = (97 - 100) / (8/√50) = -3 / 1.131 = -2.65. La probabilidad de obtener un promedio tan bajo por azar es P(Z < -2.65) = 0.004, es decir 0.4%. Esto significa que hay evidencia MUY fuerte de que la maquina esta desajustada — no es variacion normal. Parar fue la decision correcta basada en datos."
+          },
+          "B": {
+            "label": "Aumentar muestra antes de decidir",
+            "detail": "Tomar 100 paquetes mas para confirmar el problema antes de parar. La linea sigue produciendo mientras tanto.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": -2,
+              "quality": 5,
+              "climate": 0,
+              "efficiency": -2,
+              "reputation": -3
+            },
+            "risk": [-12000000, 2000000],
+            "narrative": "Mientras esperabas la segunda muestra, la linea produjo 800 paquetes mas con bajo peso. La segunda muestra confirmo el problema: promedio 96.5g. Ahora tienes el doble de producto para reprocesar y dos clientes mas llamaron a quejarse. Al final tocó parar igual, pero mas tarde.",
+            "stats_insight": "Con la muestra original de n=50, el error estandar era SE = 8/√50 = 1.131g y el Z ya era -2.65 (p=0.004). No se necesitaba mas evidencia — el nivel de significancia era suficiente para actuar. La segunda muestra con n=100 dio SE = 8/√100 = 0.8g y Z = (96.5-100)/0.8 = -4.375, confirmando lo obvio. A veces mas datos no es mejor decision, es solo decision mas lenta."
+          },
+          "C": {
+            "label": "Ajuste rapido sin parar produccion",
+            "detail": "El tecnico ajusta las empacadoras en caliente, sin detener la linea. Mas rapido pero menos preciso.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": -1,
+              "quality": 3,
+              "climate": 2,
+              "efficiency": 3,
+              "reputation": -2
+            },
+            "risk": [-15000000, 5000000],
+            "narrative": "El tecnico le metio mano a las empacadoras sin parar la linea. Dos quedaron bien calibradas pero la tercera siguio sacando paquetes de 96g promedio hasta que alguien noto al dia siguiente. Ese lote llego a D1 en Dosquebradas y hubo devolucion parcial.",
+            "stats_insight": "El ajuste en caliente es como cambiar una llanta con el carro andando. Estadisticamente, si la maquina 3 seguia con μ=96, cada paquete tenia P(X < 95) = P(Z < (95-96)/8) = P(Z < -0.125) = 0.45, es decir 45% de paquetes fuera de tolerancia inferior. El riesgo era altisimo y los datos lo mostraban: un proceso con media desplazada 4g produce defectos sistematicos, no aleatorios."
+          },
+          "D": {
+            "label": "Ignorar y revisar en el turno dia",
+            "detail": "Son las 2am y la diferencia es solo 3g. Que el turno dia lo revise con calma manana.",
+            "effects": {
+              "cash": 0,
+              "market_share": -4,
+              "quality": -10,
+              "climate": -5,
+              "efficiency": 5,
+              "reputation": -8
+            },
+            "risk": [-25000000, 0],
+            "narrative": "El turno noche produjo 2.400 paquetes flacos. El turno dia encontro el desastre a las 6am. INVIMA justo tenia inspeccion programada esa semana y encontro inconsistencias en el peso declarado vs real. Multa administrativa y un susto grande.",
+            "stats_insight": "Ignorar un Z-score de -2.65 es ignorar que solo hay 0.4% de probabilidad de que esto sea normal. En control de calidad, cualquier Z fuera de [-2, +2] activa alarma (corresponde a 95.4% de confianza). Aqui estabamos en Z=-2.65, zona de alerta roja. Ademas, con 2,400 paquetes producidos a μ=97g, el peso total faltante es 2,400 x 3g = 7.2kg de producto — plata perdida y clientes enganados."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "coo-02",
+        "month": 2,
+        "title": "El proveedor de Cartago promete maravillas",
+        "situation": "Un proveedor nuevo de platano verde en Cartago (Valle) ofrece 15% de descuento sobre tu proveedor actual de la galeria de Pereira. Dice que su platano es igual o mejor. Pero cambiar proveedor es riesgoso: si el platano no sirve, pierdes produccion de una semana entera.",
+        "data_panel": "Tu equipo evaluo 40 racimos del proveedor nuevo. Indice de madurez promedio: 3.2 (escala 1-5 donde 3 es ideal). Desviacion estandar: 0.6. Tu proveedor actual tiene historico de μ=3.0 con σ=0.4 basado en anos de datos.",
+        "concept": "Intervalo de confianza para la media",
+        "options": {
+          "A": {
+            "label": "Cambiar 100% al proveedor nuevo",
+            "detail": "Cortas con el proveedor viejo y te vas full con Cartago por el ahorro del 15%.",
+            "effects": {
+              "cash": 25000000,
+              "market_share": 0,
+              "quality": -5,
+              "climate": -2,
+              "efficiency": -3,
+              "reputation": 0
+            },
+            "risk": [-30000000, 10000000],
+            "narrative": "El primer mes fue espectacular: platano barato y bueno. El segundo mes llego un cargamento con madurez 4.1 — demasiado maduro. Los platanitos quedaron blandos y el 20% del lote fue rechazado por control de calidad. El proveedor de Pereira ya le estaba vendiendo a tu competencia.",
+            "stats_insight": "Con n=40, X̄=3.2 y s=0.6, el IC al 95% para la media del proveedor nuevo es: 3.2 +/- 1.96*(0.6/√40) = 3.2 +/- 0.186 = [3.014, 3.386]. Este intervalo CONTIENE el valor 3.0 del proveedor actual, lo que significa que NO podemos afirmar que sea mejor. Ademas, la desviacion del nuevo (0.6) es 50% mayor que la del actual (0.4), indicando MAS variabilidad. Cambiar el 100% basandose en una muestra de 40 que no muestra diferencia significativa fue imprudente."
+          },
+          "B": {
+            "label": "Dividir compras 50/50 por 3 meses",
+            "detail": "Mantienes al proveedor actual y pruebas al nuevo con la mitad del volumen. Evaluas con datos en 3 meses.",
+            "effects": {
+              "cash": 12000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": 0,
+              "efficiency": -2,
+              "reputation": 1
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Dividiste la compra y en 3 meses juntaste datos de 120 racimos del proveedor nuevo. El promedio se estabilizo en 3.15 con desviacion 0.55. Ahora si tienes datos solidos para decidir, y tu proveedor de Pereira bajo precios 5% para no perderte.",
+            "stats_insight": "Esta es la decision optima basada en estadistica. Con n=40, el margen de error era +/-0.186. Al juntar n=120 en 3 meses, el margen baja a 1.96*(0.55/√120) = +/-0.098, casi la mitad. Ahora el IC es [3.052, 3.248], que sigue conteniendo 3.0 pero con mucha mas precision. Ademas, diversificar proveedores reduce riesgo operacional — es como no poner todos los huevos en la misma canasta."
+          },
+          "C": {
+            "label": "Rechazar al proveedor nuevo",
+            "detail": "Los datos no muestran mejora clara. Te quedas con el proveedor de siempre que es confiable.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": 0
+            },
+            "risk": [-3000000, 3000000],
+            "narrative": "Te quedaste con el proveedor de Pereira. Relacion estable, entregas puntuales, calidad consistente. Pero tu competencia si probo al de Cartago y logro bajar costos 12% despues de negociar volumen. Te quedaste con la duda de que habria pasado.",
+            "stats_insight": "Estadisticamente es defensible: el IC [3.014, 3.386] incluye μ=3.0, asi que no hay evidencia de que sea mejor. Pero la estadistica no dice 'rechaza', dice 'no hay suficiente evidencia para afirmar que es diferente'. Es un error comun confundir 'no significativo' con 'son iguales'. El ahorro del 15% es un factor economico que los datos no capturan. La opcion B es mejor porque obtiene mas informacion antes de decidir."
+          },
+          "D": {
+            "label": "Exigir prueba gratis de un mes completo",
+            "detail": "Le pides al proveedor nuevo que te surta gratis un mes para evaluar. Si funciona, firmas contrato.",
+            "effects": {
+              "cash": 35000000,
+              "market_share": 0,
+              "quality": -2,
+              "climate": 0,
+              "efficiency": 0,
+              "reputation": -4
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "El proveedor de Cartago acepto con tal de entrar al negocio. Te ahorraste un platal en materia prima ese mes. Pero corrio la voz en la central de abastos de que tu empresa pide 'muestras gratis' de un mes y otros proveedores ya no quieren negociar contigo. Mala fama en la cadena de suministro.",
+            "stats_insight": "Desde el punto de vista de datos, un mes de prueba full te da una muestra grande (n>200 racimos) que reduce el error estandar drasticamente: SE = 0.6/√200 = 0.042, IC = +/-0.084. Estadisticamente es la mejor muestra posible. Pero los datos no capturan el costo reputacional. Esta es una leccion clave: la estadistica informa la decision, no la toma por ti. Hay variables cualitativas que ningun IC puede medir."
+          }
+        },
+        "recommended": "B",
+        "common_sense": ["B", "C"]
+      },
+      {
+        "id": "coo-03",
+        "month": 3,
+        "title": "Crisis: platanitos con manchas oscuras",
+        "situation": "Un video en TikTok muestra platanitos de tu marca con manchas oscuras. Tiene 45,000 vistas en Pereira. El Community Manager esta en panico. Necesitas saber si es un problema real del lote o un caso aislado que se viralizo. Tienes 24 horas antes de que los medios locales lo recojan.",
+        "data_panel": "Inspeccion de emergencia: de 200 paquetes del lote sospechoso, 18 tienen manchas visibles. Historicamente, la tasa de defectos cosmeticos es del 4% (8 de cada 200).",
+        "concept": "Proporcion muestral e inferencia para proporciones",
+        "options": {
+          "A": {
+            "label": "Recall total del lote sospechoso",
+            "detail": "Retiras los 15,000 paquetes del lote de todos los puntos de venta en el Eje Cafetero.",
+            "effects": {
+              "cash": -45000000,
+              "market_share": -2,
+              "quality": 10,
+              "climate": -5,
+              "efficiency": -10,
+              "reputation": 12
+            },
+            "risk": [-10000000, 15000000],
+            "narrative": "Retiraste 15,000 paquetes de Exito, D1 y tiendas de barrio en Pereira, Dosquebradas y Armenia. Salio en Caracol Radio Eje Cafetero: 'Empresa responsable retira producto preventivamente'. El Community Manager publico video del recall y se viralizo positivamente. Costo un platal pero la marca quedo como ejemplo de responsabilidad.",
+            "stats_insight": "La proporcion muestral es p̂ = 18/200 = 0.09 (9%). La proporcion historica es p₀ = 0.04 (4%). Para testear si aumento: Z = (0.09 - 0.04) / √(0.04*0.96/200) = 0.05 / 0.01386 = 3.61. Con Z=3.61, P < 0.001. La tasa de defectos se MAS QUE DUPLICO y la evidencia es contundente. El recall estaba justificado estadisticamente: no era un caso aislado, era un problema sistematico del lote."
+          },
+          "B": {
+            "label": "Recall parcial solo en Pereira",
+            "detail": "Retiras solo los paquetes en la zona donde se viralizo el video. El resto se queda.",
+            "effects": {
+              "cash": -20000000,
+              "market_share": -1,
+              "quality": 5,
+              "climate": -2,
+              "efficiency": -5,
+              "reputation": 3
+            },
+            "risk": [-15000000, 5000000],
+            "narrative": "Retiraste en Pereira y Dosquebradas. Pero un paquete con manchas aparecio en un Ara de Armenia y otro tiktoker hizo video: 'Solo retiraron en Pereira porque alla los pillaron'. Toco ampliar el recall dos dias despues, con mas costo logistico y menos credibilidad.",
+            "stats_insight": "El error aqui no es estadistico sino logico. Si el lote tiene p̂=9% de defectos, TODOS los paquetes del mismo lote tienen la misma probabilidad sin importar donde se vendieron. Pereira, Armenia o Manizales — el lote es el mismo. Retirar solo donde 'se vio' el problema es como tratar los sintomas ignorando la enfermedad. La unidad de analisis es el LOTE, no la CIUDAD."
+          },
+          "C": {
+            "label": "Respuesta en redes sin recall",
+            "detail": "El CM responde que son manchas naturales del platano y que no afectan la calidad ni la salud.",
+            "effects": {
+              "cash": -2000000,
+              "market_share": -3,
+              "quality": -5,
+              "climate": 3,
+              "efficiency": 5,
+              "reputation": -8
+            },
+            "risk": [-20000000, 0],
+            "narrative": "El CM publico un comunicado bonito sobre 'la belleza natural del platano'. Pero la gente no compro el cuento. Un ingeniero de alimentos comento que las manchas indicaban oxidacion por mal almacenamiento. El video original llego a 120,000 vistas. Teleantioquia hizo nota de 2 minutos y las ventas en Pereira cayeron 15% esa semana.",
+            "stats_insight": "Con p̂=9% vs p₀=4%, la evidencia dice que el problema es REAL (Z=3.61, p<0.001). Negar un problema que los datos confirman es la peor estrategia posible. Si la tasa normal es 4% y encontraste 9%, algo cambio en el proceso. Comunicar sin investigar ni corregir es como un medico que te dice 'tranquilo' sin mirarte los examenes."
+          },
+          "D": {
+            "label": "Investigar causa raiz antes de actuar",
+            "detail": "Mandas a calidad a revisar el proceso completo: almacenamiento, fritura, empaque. Decides en 48 horas.",
+            "effects": {
+              "cash": -10000000,
+              "market_share": -4,
+              "quality": 8,
+              "climate": 0,
+              "efficiency": 0,
+              "reputation": -5
+            },
+            "risk": [-15000000, 5000000],
+            "narrative": "Encontraste que la bodega tuvo un pico de humedad por una gotera no reportada. Causa raiz clara. Pero mientras investigabas, pasaron 48 horas y el video llego a 90,000 vistas. Un periodista de La Tarde llamo a preguntar. La respuesta llego, pero tarde. El dano reputacional ya estaba hecho.",
+            "stats_insight": "El enfoque es cientificamente correcto pero operativamente lento. En crisis, el IC para la proporcion al 95% es: 0.09 +/- 1.96*√(0.09*0.91/200) = 0.09 +/- 0.04 = [0.05, 0.13]. Incluso el limite inferior (5%) supera el historico (4%). Los datos eran SUFICIENTES para actuar desde el dia 1 mientras se investigaba en paralelo. No era 'recall O investigar', era 'recall Y investigar'."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "coo-04",
+        "month": 4,
+        "title": "Diciembre se viene con todo",
+        "situation": "Faltan 6 semanas para diciembre y los pedidos estan subiendo fuerte. Exito y D1 quieren 40,000 paquetes semanales pero tu planta solo produce 35,000 en condiciones normales. Necesitas decidir si inviertes en capacidad adicional o corres el riesgo de no cumplir.",
+        "data_panel": "Demanda semanal historica de los ultimos 3 diciembres: promedio 38,500 paquetes, desviacion estandar 4,200. Tu capacidad actual maxima es 35,000 paquetes/semana con turnos normales.",
+        "concept": "Probabilidad normal y area bajo la curva",
+        "options": {
+          "A": {
+            "label": "Abrir tercer turno nocturno temporal",
+            "detail": "Contratas 12 operarios temporales y abres turno de 10pm a 6am. Capacidad sube a 48,000/semana.",
+            "effects": {
+              "cash": -28000000,
+              "market_share": 5,
+              "quality": -4,
+              "climate": -6,
+              "efficiency": 3,
+              "reputation": 3
+            },
+            "risk": [-8000000, 20000000],
+            "narrative": "Abriste el tercer turno y la planta de Dosquebradas quedo prendida 24/7 como arbol de navidad. Los primeros dias fueron caoticos — operarios nuevos, errores de empaque — pero para la segunda semana ya rodaba. Cumpliste todos los pedidos de diciembre y hasta te sobraron paquetes para el Quindio.",
+            "stats_insight": "La probabilidad de que la demanda supere tu capacidad actual (35,000) es: Z = (35,000 - 38,500) / 4,200 = -0.833. P(X > 35,000) = P(Z > -0.833) = 0.7975. Es decir, hay 79.7% de probabilidad de que NO puedas cumplir la demanda sin ampliar capacidad. Eso es como lanzar una moneda cargada: 4 de cada 5 semanas te quedas corto. Ampliar a 48,000 cubre hasta Z = (48,000-38,500)/4,200 = +2.26, cubriendo 98.8% de los escenarios."
+          },
+          "B": {
+            "label": "Horas extra con personal actual",
+            "detail": "Extiendes turnos 2 horas diarias. Capacidad sube a 40,000/semana pero pagas recargos del 75%.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 2,
+              "quality": -2,
+              "climate": -8,
+              "efficiency": -3,
+              "reputation": 1
+            },
+            "risk": [-10000000, 10000000],
+            "narrative": "Las horas extra sirvieron las primeras 3 semanas. Pero para la cuarta, los operarios estaban agotados. Dos pidieron incapacidad por dolor lumbar, la productividad cayo 15% y la ultima semana antes de Navidad solo sacaste 36,000 paquetes. Exito te mando nota de incumplimiento.",
+            "stats_insight": "Con capacidad de 40,000, la probabilidad de no cubrir la demanda es: Z = (40,000 - 38,500) / 4,200 = 0.357. P(X > 40,000) = P(Z > 0.357) = 0.3606. Todavia hay 36% de probabilidad de quedarte corto alguna semana. Es mejor que el 79.7% original, pero sigue siendo como jugar ruleta rusa con 2 balas en 6 camaras. Ademas, este calculo asume que produces 40,000 consistentemente, lo cual no pasa con personal agotado."
+          },
+          "C": {
+            "label": "Maquilar con planta en Armenia",
+            "detail": "Una planta amiga en Armenia puede producir 10,000 paquetes/semana con tu receta. Tu pones el platano, ellos ponen la planta.",
+            "effects": {
+              "cash": -22000000,
+              "market_share": 3,
+              "quality": -6,
+              "climate": 2,
+              "efficiency": 0,
+              "reputation": -2
+            },
+            "risk": [-12000000, 8000000],
+            "narrative": "La maquila arranco bien pero los platanitos de Armenia salieron con un toque diferente — mas gruesos y menos crujientes. Los tenderos de Pereira notaron la diferencia. No hubo quejas formales pero el NPS bajo 8 puntos en enero. La marca se sintio 'inconsistente'.",
+            "stats_insight": "Con maquila tu capacidad efectiva es 45,000. P(X > 45,000) = P(Z > (45,000-38,500)/4,200) = P(Z > 1.548) = 0.061, solo 6.1% de riesgo de desabasto. Excelente cobertura numerica. Pero este modelo tiene un problema que la estadistica no captura: la VARIANZA de calidad aumenta al tener dos plantas con procesos distintos. Es como si tu producto ahora tuviera dos distribuciones de calidad mezcladas, una bimodal — y el consumidor lo nota."
+          },
+          "D": {
+            "label": "Negociar cuotas reducidas con cadenas",
+            "detail": "Le dices a Exito y D1 que solo puedes entregar 35,000/semana. Te arriesgas a que busquen otro proveedor.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": -6,
+              "quality": 5,
+              "climate": 5,
+              "efficiency": 5,
+              "reputation": -4
+            },
+            "risk": [-8000000, 0],
+            "narrative": "Exito acepto a reganadientes pero D1 trajo una marca de Bogota para llenar el hueco. Esa marca se quedo en las gondolas en enero, febrero, marzo... Tu competencia directa en el Eje Cafetero ya no eres solo una — ahora son dos. Perdiste espacio en gondola que va a costar meses recuperar.",
+            "stats_insight": "Producir solo 35,000 cuando la demanda promedio es 38,500 significa incumplir el 79.7% de las semanas (Z=-0.833). En retail, cada semana de desabasto es espacio de gondola que ocupa un competidor. El costo no es solo la venta perdida de diciembre (3,500 paquetes x 4 semanas x $2,500 = $35M) sino el costo estrategico de perder posicion. Los datos decian claramente: la demanda VA a superar tu capacidad."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "coo-05",
+        "month": 5,
+        "title": "Guerra de turnos: dia vs noche",
+        "situation": "El supervisor del turno dia jura que su equipo produce mejor. El del turno noche dice lo mismo. La pelea ya llego a recursos humanos y esta afectando el clima laboral. Necesitas datos para resolver esto antes de que se vuelva personal.",
+        "data_panel": "Muestra de 60 paquetes del turno dia: peso promedio 100.5g, desviacion 3.2g. Muestra de 60 paquetes del turno noche: peso promedio 99.1g, desviacion 4.8g.",
+        "concept": "Diferencia de medias de dos poblaciones independientes",
+        "options": {
+          "A": {
+            "label": "Estandarizar proceso y rotar supervisores",
+            "detail": "Creas un protocolo unico escrito y rotas a los supervisores entre turnos cada mes para eliminar el efecto 'lider'.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": 0,
+              "quality": 10,
+              "climate": 8,
+              "efficiency": 5,
+              "reputation": 2
+            },
+            "risk": [-3000000, 5000000],
+            "narrative": "Sentaste a los dos supervisores, les mostraste los datos y les explicaste que la diferencia no era significativa pero la variabilidad del turno noche si era preocupante. Crearon juntos el protocolo estandarizado. La rotacion mensual elimino los egos y ambos turnos mejoraron. Produccion de Dosquebradas quedo como relojito.",
+            "stats_insight": "La diferencia de medias es X̄₁ - X̄₂ = 100.5 - 99.1 = 1.4g. El error estandar de la diferencia es: SE = √(3.2²/60 + 4.8²/60) = √(0.1707 + 0.384) = √0.5547 = 0.745g. El Z = 1.4/0.745 = 1.879. Con Z=1.879, p = 0.060 (bilateral). Al 5% de significancia, NO hay diferencia estadisticamente significativa en el promedio. PERO — la desviacion del turno noche (4.8) es 50% mayor que la del dia (3.2). El problema no es el promedio sino la CONSISTENCIA. Estandarizar era la respuesta correcta."
+          },
+          "B": {
+            "label": "Premiar al turno dia como mejor",
+            "detail": "Declaras al turno dia como ganador y le das un bono. El turno noche recibe un plan de mejora.",
+            "effects": {
+              "cash": -12000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": -10,
+              "efficiency": -2,
+              "reputation": 0
+            },
+            "risk": [-5000000, 2000000],
+            "narrative": "El turno dia celebro y el turno noche se ofendio. Tres operarios del nocturno pidieron traslado. El supervisor nocturno bajo la moral de su equipo y la productividad cayo 8% el mes siguiente. Lo que era una diferencia de 1.4g se convirtio en un problema de clima laboral de verdad.",
+            "stats_insight": "Premiar basado en una diferencia de 1.4g con p=0.060 es un ERROR tipo I en la practica: actuar como si hubiera diferencia cuando los datos NO la confirman al nivel convencional de 5%. Es como sancionar a un jugador por falta cuando el VAR muestra que no hubo contacto. La estadistica te decia 'no hay evidencia suficiente' y tu tomaste partido. Resultado: conflicto innecesario basado en ruido, no en senal."
+          },
+          "C": {
+            "label": "Poner camaras para monitorear procesos",
+            "detail": "Instalas camaras en la linea de produccion de ambos turnos para identificar diferencias operativas.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": -12,
+              "efficiency": 0,
+              "reputation": -1
+            },
+            "risk": [-5000000, 3000000],
+            "narrative": "Las camaras generaron desconfianza inmediata. El sindicato de alimentos amenazo con queja ante el Ministerio de Trabajo. Los operarios se sentian vigilados y la productividad bajo en AMBOS turnos. Encontraste que la diferencia era que el turno noche no precalentaba las freidoras — un hallazgo que habrias conseguido preguntando.",
+            "stats_insight": "El analisis de varianza ya te decia donde estaba el problema: la desviacion del turno noche (4.8) vs dia (3.2). Un test F para igualdad de varianzas: F = 4.8²/3.2² = 23.04/10.24 = 2.25. Con df1=59 y df2=59, el F critico al 5% es ~1.54. Como F=2.25 > 1.54, las varianzas SON significativamente diferentes. El turno noche es mas ERRÁTICO. Para identificar por que, bastaba observar el proceso, no instalar un Big Brother."
+          },
+          "D": {
+            "label": "Ignorar y decir que ambos estan bien",
+            "detail": "Les dices a los supervisores que no hay diferencia significativa y que dejen de pelear.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": -3,
+              "climate": -4,
+              "efficiency": 0,
+              "reputation": 0
+            },
+            "risk": [-5000000, 0],
+            "narrative": "Mandaste un correo diciendo 'ambos turnos estan bien, concentrense en trabajar'. Los supervisores siguieron peleando en los pasillos. La variabilidad del turno noche nunca se investigo y un mes despues salio un lote con paquetes desde 88g hasta 112g. El problema que ignoraste se convirtio en crisis.",
+            "stats_insight": "Aunque la diferencia de medias no era significativa (p=0.060), la diferencia de varianzas SI lo era (F=2.25, p<0.05). Decir 'ambos estan bien' ignora la mitad del analisis. Es como decir que dos carros van a la misma velocidad promedio pero uno va zigzagueando — tecnicamente la media es igual, pero uno es un peligro. La variabilidad importa tanto como el promedio."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "coo-06",
+        "month": 6,
+        "title": "Robot o humano: la decision del millon",
+        "situation": "Una empresa de Manizales ofrece una empacadora automatica que promete reducir la variabilidad del peso y aumentar la velocidad 40%. Cuesta $280 millones. Es la inversion mas grande en la historia de la empresa. El gerente general quiere datos, no corazonadas.",
+        "data_panel": "Prueba piloto con la maquina automatica: 80 paquetes, promedio 100.1g, desviacion 1.8g. Tu proceso manual actual: promedio 99.8g, desviacion 4.5g (basado en muestra de 80 paquetes del mes).",
+        "concept": "Estimacion con error estandar y comparacion de procesos",
+        "options": {
+          "A": {
+            "label": "Comprar la empacadora automatica",
+            "detail": "Inviertes los $280M, capacitas al personal 2 semanas y automatizas la linea principal.",
+            "effects": {
+              "cash": -280000000,
+              "market_share": 3,
+              "quality": 15,
+              "climate": -5,
+              "efficiency": 12,
+              "reputation": 5
+            },
+            "risk": [-20000000, 40000000],
+            "narrative": "La empacadora llego de Manizales en un camion enorme. Las primeras dos semanas fueron de aprendizaje — tres paradas por atascos. Pero al mes, la linea volaba: paquetes perfectos, peso consistente, cero quejas. Los operarios de empaque se reconvirtieron en tecnicos de maquina con mejor salario. INVIMA quedo impresionado en la siguiente visita.",
+            "stats_insight": "El error estandar del proceso actual es SE_manual = 4.5/√80 = 0.503g. El de la maquina: SE_auto = 1.8/√80 = 0.201g. La precision de la maquina es 2.5 veces mejor. El IC 95% para la media de la maquina es [99.71, 100.49] — casi centrado en 100g. El del manual es [98.81, 100.79] — mucho mas ancho. Ademas, la desviacion 1.8 vs 4.5 significa que P(paquete fuera de 95-105g) baja de 26.8% a practicamente 0.3%. La inversion se justifica por reduccion de desperdicio, menos reprocesos y cero riesgo INVIMA."
+          },
+          "B": {
+            "label": "Leasing por 12 meses para evaluar",
+            "detail": "Alquilas la maquina por $18M/mes durante un ano. Si funciona, la compras con descuento del 10%.",
+            "effects": {
+              "cash": -18000000,
+              "market_share": 1,
+              "quality": 10,
+              "climate": -2,
+              "efficiency": 8,
+              "reputation": 3
+            },
+            "risk": [-5000000, 15000000],
+            "narrative": "El leasing te permitio probar sin comprometer todo el capital. A los 6 meses, los datos eran contundentes: la maquina era superior en todo. Negociaste la compra con descuento del 10% ($252M) y pagaste parte con los ahorros de 6 meses de menos desperdicio. El CFO quedo feliz.",
+            "stats_insight": "El leasing es estadisticamente optimo porque te da 12 meses de datos (n > 2,000 paquetes al mes) en vez de decidir con n=80. Con 12 meses, puedes estimar con precision la reduccion real de costos por desperdicio. Si el proceso manual tiene 26.8% fuera de tolerancia y el automatico 0.3%, el ahorro mensual en reproceso es aproximadamente: 35,000 paq/semana x 4 semanas x 26.5% reduccion x $500/paquete = $18.6M/mes. El leasing basicamente se paga solo mientras juntas datos para la decision final."
+          },
+          "C": {
+            "label": "Mejorar el proceso manual con capacitacion",
+            "detail": "Inviertes $40M en capacitacion intensiva para reducir la variabilidad humana. Sin maquina nueva.",
+            "effects": {
+              "cash": -40000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": 8,
+              "efficiency": 3,
+              "reputation": 1
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "La capacitacion mejoro las cosas: la desviacion bajo de 4.5 a 3.8. Pero nunca llego a 1.8 como la maquina. Los operarios mejoraron pero el factor humano tiene un piso de variabilidad que no se elimina con training. En 6 meses, la competencia compro una empacadora similar y te empezo a ganar en consistencia.",
+            "stats_insight": "Si la capacitacion baja σ de 4.5 a 3.8, el SE pasa de 0.503 a 0.425. P(fuera de tolerancia) baja de 26.8% a ~19.1%. Mejora, pero no se compara con el 0.3% de la maquina. La variabilidad humana tiene un limite inferior fisico — los dedos humanos no son instrumentos de precision. Es la diferencia entre mejorar DENTRO de una tecnologia vs SALTAR a otra. Los datos de la prueba piloto (σ=1.8 vs σ=4.5) ya mostraban que la brecha es estructural, no de habilidad."
+          },
+          "D": {
+            "label": "Esperar a que baje de precio el proximo ano",
+            "detail": "La tecnologia siempre baja de precio. Esperas 12 meses y compras la version 2.0 mas barata.",
+            "effects": {
+              "cash": 0,
+              "market_share": -3,
+              "quality": -2,
+              "climate": 0,
+              "efficiency": -2,
+              "reputation": -2
+            },
+            "risk": [-15000000, 5000000],
+            "narrative": "Esperaste un ano. La maquina no bajo de precio — al contrario, subio 8% por la inflacion del dolar. Mientras tanto, tu competencia compro una igual y empezo a producir paquetes perfectos. Cuando finalmente decidiste comprar, la ventaja competitiva ya no era ventaja — era tabla rasa.",
+            "stats_insight": "El costo de esperar no es $0 — es el costo de oportunidad. Con σ_actual=4.5, cada mes produces ~26.8% de paquetes fuera de tolerancia. Si produces 140,000 paquetes/mes, son 37,520 paquetes que necesitan reproceso o se desperdician. A $500 de costo por reproceso: $18.76M/mes. En 12 meses de espera: ~$225M en desperdicio evitable. Casi el precio de la maquina. Los datos te decian que cada mes sin la maquina COSTABA dinero."
+          }
+        },
+        "recommended": "B",
+        "common_sense": ["A", "B"]
+      }
+    ],
+    "CFO": [
+      {
+        "id": "cfo-01",
+        "month": 1,
+        "title": "Las proyecciones no cuadran",
+        "situation": "El gerente general quiere saber cuanto va a facturar la empresa este semestre. Tienes 3 analistas y cada uno uso un metodo diferente para proyectar. Necesitas elegir la proyeccion que presentaras a la junta directiva. Si le atinas, te ganas la confianza del gerente. Si no, van a cuestionar tus numeros todo el ano.",
+        "data_panel": "Analista 1 (promedio simple de ultimos 6 meses): $520M/mes. Analista 2 (promedio ponderado ultimos 12 meses): $495M/mes. Analista 3 (mediana de ultimos 12 meses): $505M/mes. Dato real del sector segun DANE para empresas similares: $510M/mes promedio.",
+        "concept": "Propiedades de estimadores: sesgo, eficiencia, consistencia",
+        "options": {
+          "A": {
+            "label": "Usar promedio ponderado del Analista 2",
+            "detail": "El promedio ponderado da mas peso a meses recientes y menos a los antiguos. Es el metodo mas sofisticado.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 3,
+              "efficiency": 5,
+              "reputation": 5
+            },
+            "risk": [-8000000, 10000000],
+            "narrative": "Presentaste la proyeccion de $495M/mes. El gerente pregunto por que era la mas conservadora. Explicaste que el promedio ponderado captura la tendencia reciente y que los ultimos meses habian sido mas flojos. Al cierre del trimestre, la facturacion real fue $498M. Le pegaste casi exacto y el gerente empezo a confiar en tus numeros.",
+            "stats_insight": "El promedio ponderado es un estimador que reduce el sesgo temporal: da mas importancia a datos recientes que reflejan mejor la situacion actual. Comparado con el promedio simple (que puede estar inflado por un mes atipico), el ponderado tiene menor Error Cuadratico Medio (ECM = Sesgo² + Varianza). Un buen estimador es: (1) Insesgado o con sesgo minimo, (2) Eficiente (menor varianza posible), (3) Consistente (mejora con mas datos). El ponderado cumple mejor las 3 propiedades cuando hay tendencia temporal."
+          },
+          "B": {
+            "label": "Usar promedio simple del Analista 1",
+            "detail": "El promedio simple es facil de explicar y de calcular. Todo el mundo lo entiende en la junta.",
+            "effects": {
+              "cash": 2000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": -2
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Presentaste $520M/mes. Sono optimista y la junta quedo contenta... hasta que el primer mes cerro en $490M. El gerente pregunto: 'No que ibamos en $520M?'. Toco explicar que el promedio simple incluia un mes de diciembre atipico que inflaba el numero. Credibilidad afectada.",
+            "stats_insight": "El promedio simple de 6 meses es un estimador insesgado de la media poblacional, pero solo si los datos son estacionarios (sin tendencia). Si los ultimos 6 meses incluyen un diciembre atipico ($600M), el promedio se infla. Ese mes atipico introduce SESGO hacia arriba. La media aritmetica es el BLUE (Best Linear Unbiased Estimator) solo cuando los datos son i.i.d., que no es el caso con estacionalidad. Aqui, su sesgo positivo lo hizo sobreestimar."
+          },
+          "C": {
+            "label": "Usar la mediana del Analista 3",
+            "detail": "La mediana es robusta a datos atipicos. No la afecta un mes excepcionalmente bueno o malo.",
+            "effects": {
+              "cash": 3000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 3,
+              "reputation": 2
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Presentaste $505M/mes con la mediana. La junta pregunto por que no usaste el promedio. Explicaste que la mediana es mas robusta cuando hay meses atipicos. La facturacion real fue $498M — estuviste un poco arriba pero razonable. El gerente dijo: 'Esta bien, pero para la proxima quiero ver los 3 metodos comparados'.",
+            "stats_insight": "La mediana es un estimador robusto: no se ve afectado por outliers (un diciembre de $600M no la mueve). Sin embargo, para distribuciones simetricas, la mediana es MENOS eficiente que la media — su varianza es ~57% mayor (factor π/2). Eso significa que necesitas mas datos para lograr la misma precision. Es como un carro mas seguro pero mas lento. La mejor practica es presentar VARIOS estimadores y explicar los supuestos de cada uno."
+          },
+          "D": {
+            "label": "Promediar los 3 metodos como compromiso",
+            "detail": "Tomas el promedio de las 3 proyecciones: ($520M + $495M + $505M) / 3 = $507M.",
+            "effects": {
+              "cash": 4000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 5,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-5000000, 7000000],
+            "narrative": "Presentaste $507M como 'consenso de metodos'. La junta quedo tranquila, nadie peleo. La facturacion real fue $498M, diferencia de solo $9M (1.8%). No fue el mejor estimador individual pero fue buena decision politica y razonablemente preciso.",
+            "stats_insight": "Promediar estimadores es una tecnica real llamada 'ensemble' o 'combinacion de pronosticos'. La teoria dice que el promedio de k estimadores independientes tiene varianza menor que cualquier estimador individual: Var(promedio) = Var_individual / k (si son independientes). En la practica, los 3 metodos no son totalmente independientes (usan los mismos datos), pero la combinacion aun reduce varianza. Es lo que hacen los modelos de machine learning modernos — promedian muchos modelos simples."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "cfo-02",
+        "month": 2,
+        "title": "La DIAN nos tiene en la mira",
+        "situation": "Llego un requerimiento de la DIAN para revision de facturas del ultimo ano. Tu contador dice que puede haber algunas facturas con errores de IVA. Necesitas hacer una auditoria interna ANTES de que llegue la DIAN, pero revisar las 4,800 facturas del ano toma 3 semanas. La DIAN viene en 10 dias.",
+        "data_panel": "Revision rapida de una muestra piloto de 60 facturas: 7 tenian errores de IVA (proporcion 11.7%). Penalidad de la DIAN por error: $500,000 por factura incorrecta. Costo de corregir antes de la visita: $50,000 por factura.",
+        "concept": "Tamano de muestra para estimar una proporcion",
+        "options": {
+          "A": {
+            "label": "Revisar muestra de 400 facturas y corregir",
+            "detail": "Muestreo aleatorio de 400 facturas, correccion de las que tengan error, y presentar a la DIAN con confianza.",
+            "effects": {
+              "cash": -25000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": -3,
+              "efficiency": -5,
+              "reputation": 5
+            },
+            "risk": [-10000000, 8000000],
+            "narrative": "Tu equipo reviso 400 facturas en 5 dias. Encontraron 52 con errores (13%). Corrigieron todo y prepararon un informe para la DIAN mostrando el proceso de auditoria interna. El inspector quedo impresionado con la metodologia y solo pidio revisar 30 facturas adicionales — todas limpias. Cero sancion.",
+            "stats_insight": "Para estimar la proporcion de errores con margen de error de 3% y 95% de confianza: n = (1.96² * 0.117 * 0.883) / 0.03² = (3.8416 * 0.1033) / 0.0009 = 441. Idealmente necesitabas ~441, pero con 400 el margen queda en: E = 1.96 * √(0.117*0.883/400) = 1.96 * 0.01608 = 0.0315, o sea +/-3.15%. El IC para la proporcion de errores es [0.085, 0.149]. Con esto puedes estimar el total de facturas con error: entre 408 y 715 de las 4,800. Suficiente para dimensionar el problema y actuar."
+          },
+          "B": {
+            "label": "Revisar todas las 4,800 facturas",
+            "detail": "Contratas 5 auditores externos temporales para revisar todo en 8 dias. Cuesta $80M pero tienes 100% de certeza.",
+            "effects": {
+              "cash": -80000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": -8,
+              "efficiency": -10,
+              "reputation": 8
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Cinco auditores revisando facturas dia y noche como en pelicula de Hollywood. Encontraron 612 errores (12.75%). Todo corregido. Pero el costo fue brutal: $80M en auditores mas $30.6M en correcciones. El gerente pregunto: 'No habia una forma mas inteligente de hacer esto?'.",
+            "stats_insight": "Revisar las 4,800 facturas te da el PARAMETRO real, no un estimador. La proporcion verdadera fue p = 612/4800 = 0.1275. Pero el costo fue desproporcionado: pagaste $80M para ganar precision de +/-0% cuando con $25M habrias tenido precision de +/-3%. El error estandar de la muestra de 400 era 1.6%, suficiente para tomar decisiones. La estadistica existe precisamente para NO tener que medir todo. El muestreo bien hecho te da 97% de la informacion por 30% del costo."
+          },
+          "C": {
+            "label": "Solo corregir las 60 de la muestra piloto",
+            "detail": "Corriges las 7 facturas malas que ya encontraste y rezas para que la DIAN no encuentre mas.",
+            "effects": {
+              "cash": -3500000,
+              "market_share": 0,
+              "quality": -5,
+              "climate": 2,
+              "efficiency": 3,
+              "reputation": -10
+            },
+            "risk": [-80000000, 0],
+            "narrative": "La DIAN llego y reviso 150 facturas al azar. Encontro 19 con errores (12.7%). Multa de $500,000 por cada una: $9.5M en sancion inmediata, mas un 'plan de mejoramiento' obligatorio que cuesta otros $15M. Y ahora la DIAN va a volver en 6 meses para seguimiento. Salio mas caro el remedio.",
+            "stats_insight": "La muestra piloto de n=60 ya te habia dado informacion valiosa: p̂=0.117 con IC 95% = [0.035, 0.199]. El limite superior sugeria hasta 19.9% de errores. Corregir solo 7 facturas cuando los datos te decian que habia entre 168 y 955 facturas malas en el total fue como tapar un hueco en un colador. El error fue no escalar la solucion proporcionalmente a lo que los datos decian."
+          },
+          "D": {
+            "label": "Contratar abogado tributarista y negociar",
+            "detail": "En vez de corregir, contratas al mejor tributarista de Pereira para que maneje la visita y negocie cualquier hallazgo.",
+            "effects": {
+              "cash": -35000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 0,
+              "reputation": -3
+            },
+            "risk": [-30000000, 15000000],
+            "narrative": "El tributarista cobro $35M y logro que la DIAN aceptara un plan de correccion voluntaria con descuento del 60% en sanciones. Pagaste menos multa pero igual tocó corregir las facturas despues. Total: $35M abogado + $15M correccion + $8M multa reducida = $58M. Mas que la opcion A pero menos que la B.",
+            "stats_insight": "Esta opcion ignora completamente la estadistica — es pura estrategia legal. El tributarista no cambia la proporcion de errores (p ≈ 12.75%), solo negocia la consecuencia. Es como ir al medico con fiebre y en vez de tomar acetaminofen, contratar un abogado para demandrar al termometro. Los datos estaban ahi: con n=60 ya sabias que tenias ~12% de errores. La solucion INFORMADA era auditar y corregir (opcion A), no esquivar."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "cfo-03",
+        "month": 3,
+        "title": "Bancolombia nos ofrece credito... con condiciones",
+        "situation": "Necesitas $200M para ampliar la planta. Bancolombia ofrece credito al 18% EA si demuestras que tu margen operativo promedio es superior al 15%. Tu equipo presento los numeros pero el analista del banco no esta convencido. Tienes una reunion manana.",
+        "data_panel": "Ultimos 36 meses de margen operativo: promedio 17.2%, desviacion estandar 4.8%. Bancolombia pide un intervalo de confianza al 95% para tomar la decision.",
+        "concept": "Interpretacion y uso de intervalos de confianza",
+        "options": {
+          "A": {
+            "label": "Presentar IC completo con transparencia",
+            "detail": "Llevas el IC al 95% calculado correctamente con todos los datos. Muestras fortalezas y riesgos.",
+            "effects": {
+              "cash": 200000000,
+              "market_share": 2,
+              "quality": 3,
+              "climate": 5,
+              "efficiency": 5,
+              "reputation": 8
+            },
+            "risk": [-5000000, 10000000],
+            "narrative": "Llegaste a Bancolombia con una presentacion impecable: IC, datos crudos, explicacion de variabilidad estacional. El analista quedo impresionado con la transparencia. Aprobaron el credito al 18% EA pero ademas te ofrecieron una linea de credito rotativa para capital de trabajo. Relacion bancaria fortalecida.",
+            "stats_insight": "IC 95% para el margen: X̄ +/- t₃₅,0.025 * (s/√n) = 17.2% +/- 2.030 * (4.8%/√36) = 17.2% +/- 1.624% = [15.576%, 18.824%]. El limite inferior (15.576%) SUPERA el umbral del banco (15%). Esto significa que con 95% de confianza, el margen verdadero esta por encima de 15%. Presentar el IC completo muestra que incluso en el peor escenario razonable, la empresa cumple. Esa es la forma correcta de interpretar un IC: no como un numero magico sino como un rango que cuantifica la incertidumbre."
+          },
+          "B": {
+            "label": "Mostrar solo el promedio de 17.2%",
+            "detail": "Presentas el promedio sin intervalo de confianza ni desviacion. Numero bonito, sin complicaciones.",
+            "effects": {
+              "cash": 150000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": -3
+            },
+            "risk": [-20000000, 5000000],
+            "narrative": "El analista de Bancolombia pregunto: 'Y la desviacion? Y el intervalo de confianza?'. No tenias respuesta preparada. Aprobo el credito pero solo por $150M en vez de $200M porque 'sin medida de incertidumbre, aplicamos margen de seguridad del banco'. Perdiste $50M de credito por no llevar la tarea completa.",
+            "stats_insight": "Presentar solo X̄=17.2% sin el IC es como decir 'mi carro anda a 120km/h' sin decir si el velocimetro tiene precision de +/-5 o +/-50. El banco necesita saber el rango de incertidumbre para evaluar riesgo. Sin la desviacion (4.8%) y el tamano de muestra (36), el analista no puede calcular la probabilidad de que el margen real este debajo de 15%. Un estimador puntual sin medida de precision es estadisticamente incompleto."
+          },
+          "C": {
+            "label": "Usar IC al 99% para impresionar mas",
+            "detail": "Si 95% de confianza esta bien, 99% esta mejor. Llevas un IC mas conservador para dar mas seguridad.",
+            "effects": {
+              "cash": 120000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 2
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "Presentaste el IC al 99%. El analista calculo el limite inferior y resulto 14.97% — por debajo del 15% por 0.03 puntos. Tecnicamente no cumpliste el requisito. Aprobaron un credito reducido de $120M con tasa mas alta (19.5% EA). Tu propia exigencia de precision te jugo en contra.",
+            "stats_insight": "IC al 99%: 17.2% +/- 2.724 * (4.8%/√36) = 17.2% +/- 2.179% = [15.021%, 19.379%]. El limite inferior de 15.02% esta JUSTO en el borde. Pero al 99%, hay que ir mas lejos: 17.2% +/- 2.724*(0.8) = 17.2% +/- 2.179 = [15.02, 19.38]. Hmm, con calculos mas precisos usando t₃₅,0.005 = 2.724: IC = [14.97%, 19.43%]. El limite inferior CAE debajo de 15%. Moraleja: un IC mas amplio (mayor confianza) NO siempre te favorece. El nivel de confianza apropiado depende del contexto — no es 'mientras mas, mejor'."
+          },
+          "D": {
+            "label": "Excluir los 6 peores meses del calculo",
+            "detail": "Quitas los meses con margen mas bajo (pandemia, paros) para mostrar un promedio mas representativo de 19.1%.",
+            "effects": {
+              "cash": 200000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": 0,
+              "reputation": -8
+            },
+            "risk": [-50000000, 5000000],
+            "narrative": "Presentaste 19.1% excluyendo 'meses atipicos'. El analista aprobo los $200M. Pero 6 meses despues, en la revision semestral del banco, otro analista recalculo con todos los datos y encontro la discrepancia. Bancolombia reclasificó tu credito a 'riesgo medio', te subio la tasa a 21% y marco tu empresa en la central de riesgo. Confianza destruida.",
+            "stats_insight": "Excluir datos para mejorar el estimador es MANIPULACION estadistica, no analisis. Si los 6 meses bajos son parte de la realidad del negocio (pandemia, paros), deben estar en el calculo porque pueden repetirse. Con n=30 (excluyendo 6): X̄=19.1% parece mejor, pero el IC es mas ancho (menos datos = mas incertidumbre) y SESGADO (solo incluye meses buenos). Esto viola la propiedad de insesgamiento. Es como mostrar solo tus fotos con filtro en la app de citas — eventualmente te ven en persona."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "cfo-04",
+        "month": 4,
+        "title": "Guerra de precios en la tienda de barrio",
+        "situation": "Tu competencia bajo el precio del paquete de platanitos de $3,500 a $2,900 en tiendas de barrio del Eje Cafetero. Los tenderos te estan presionando para que bajes tambien. Necesitas decidir rapido pero quieres datos, no panico.",
+        "data_panel": "Encuesta a 120 tenderos del Eje Cafetero: dispuestos a pagar por tu marca promedio $3,200, desviacion $380. Encuesta a 200 consumidores finales: precio maximo que pagarian promedio $3,800, desviacion $520.",
+        "concept": "Error estandar y precision de estimaciones",
+        "options": {
+          "A": {
+            "label": "Bajar a $3,100 con valor agregado",
+            "detail": "Bajas precio a $3,100 pero agregas 10g mas por paquete y un sticker coleccionable para generar diferenciacion.",
+            "effects": {
+              "cash": -20000000,
+              "market_share": 5,
+              "quality": 2,
+              "climate": 0,
+              "efficiency": -2,
+              "reputation": 5
+            },
+            "risk": [-8000000, 15000000],
+            "narrative": "Bajaste a $3,100 con paquetes de 110g y stickers de equipos de futbol colombiano (Once Caldas, Deportivo Pereira). Los tenderos quedaron felices porque el producto se movia mas rapido. El sticker coleccionable fue un hit con los ninos y los papas compraban de a 3. Tu competencia tuvo que bajar a $2,700 para competir y se les apretó el margen.",
+            "stats_insight": "El precio promedio que los tenderos pagan es X̄_t = $3,200 con SE = 380/√120 = $34.7. IC 95%: [$3,132, $3,268]. Tu precio de $3,100 esta JUSTO en el limite inferior del IC, lo que significa que la mayoria de tenderos lo aceptan. Para consumidores, X̄_c = $3,800 con SE = 520/√200 = $36.8. IC 95%: [$3,728, $3,872]. A $3,100 estas MUY por debajo de lo que el consumidor pagaria, dejando margen para que el tendero gane. La clave es que el error estandar ($34.7 y $36.8) te dice que tus estimaciones son PRECISAS — muestras grandes dan SEs pequenos."
+          },
+          "B": {
+            "label": "Mantener precio y aumentar publicidad",
+            "detail": "No bajas precio. En vez de eso, inviertes $30M en publicidad para justificar el precio premium.",
+            "effects": {
+              "cash": -30000000,
+              "market_share": -3,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-15000000, 10000000],
+            "narrative": "Mantuviste los $3,500 y sacaste publicidad en emisoras del Eje Cafetero: 'Los platanitos de verdad no necesitan bajar de precio'. Suena bien, pero los tenderos de barrio se pasaron a la competencia que les dejaba mas margen. Perdiste presencia en tiendas pequenas aunque mantuviste las cadenas grandes.",
+            "stats_insight": "El IC para tenderos es [$3,132, $3,268]. Tu precio de $3,500 esta FUERA del intervalo — por encima del limite superior por $232. Esto significa que $3,500 es significativamente mayor que lo que el tendero promedio esta dispuesto a pagar. La publicidad puede mover la percepcion del consumidor final (cuyo IC llega hasta $3,872), pero el tendero mira margen, no publicidad. Dos mercados distintos requieren analisis por separado — el error fue tratar a tenderos y consumidores como una sola poblacion."
+          },
+          "C": {
+            "label": "Igualar el precio del rival a $2,900",
+            "detail": "Bajas a $2,900 inmediatamente. Guerra de precios frontal. El que aguante mas gana.",
+            "effects": {
+              "cash": -40000000,
+              "market_share": 6,
+              "quality": -3,
+              "climate": -5,
+              "efficiency": -3,
+              "reputation": -2
+            },
+            "risk": [-25000000, 10000000],
+            "narrative": "Bajaste a $2,900 y los tenderos aplaudieron. Las ventas subieron 25% en volumen pero el margen se apretó tanto que produccion tuvo que recortar costos. Los platanitos quedaron mas delgados y menos crujientes. Un tendero en Dosquebradas dijo: 'Estan baratos pero ya no saben igual'. Ganaste volumen, perdiste alma.",
+            "stats_insight": "El IC del tendero [$3,132, $3,268] te decia que $2,900 esta POR DEBAJO de lo que estan dispuestos a pagar. Bajaste MAS de lo necesario — regalaste $200-$300 por paquete de margen. Con 140,000 paquetes/mes, eso son $28-42M/mes de margen perdido innecesariamente. El error estandar bajo (SE=$34.7) te daba precision suficiente para saber que $3,100-$3,200 era el sweet spot. Bajar a $2,900 fue decision de panico, no de datos."
+          },
+          "D": {
+            "label": "Crear segunda marca economica",
+            "detail": "Lanzas una segunda marca de platanitos mas economica ($2,800) para tiendas de barrio, manteniendo la marca premium.",
+            "effects": {
+              "cash": -35000000,
+              "market_share": 4,
+              "quality": -1,
+              "climate": -2,
+              "efficiency": -5,
+              "reputation": 1
+            },
+            "risk": [-20000000, 20000000],
+            "narrative": "Lanzaste 'Platanikos' como marca economica. Los tenderos la recibieron bien y la marca premium se mantuvo en cadenas. Pero a los 3 meses, algunos consumidores descubrieron que era la misma fabrica y empezaron a comprar solo la barata. Canibalizacion del 15% entre tus propias marcas.",
+            "stats_insight": "La estrategia de dos marcas se basa en segmentacion: tenderos (dispuestos a pagar ~$3,200) y consumidores finales ($3,800). Estadisticamente, los IC no se solapan significativamente con $2,800, lo que sugiere que ambos segmentos pagarian mas. El problema es que no estimaste la probabilidad de CANIBALIZACION — que consumidores de la marca cara migren a la barata. Para eso necesitabas una encuesta adicional: 'Si existiera una version mas barata, dejaria la premium?'. Sin ese dato, el riesgo era invisible."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "cfo-05",
+        "month": 5,
+        "title": "D1 vende mas que Exito... o no?",
+        "situation": "Vendes platanitos en D1 y en Exito. El equipo comercial jura que D1 vende mas pero cobra menos margen. Necesitas saber si la diferencia es real o si es percepcion, porque vas a renegociar contratos con ambas cadenas el proximo mes.",
+        "data_panel": "Ventas mensuales en D1 (ultimos 24 meses): promedio 18,500 paquetes, desviacion 3,200. Ventas mensuales en Exito (ultimos 24 meses): promedio 16,800 paquetes, desviacion 2,900. Margen por paquete en D1: $800. Margen por paquete en Exito: $1,200.",
+        "concept": "Diferencia de medias y significancia practica vs estadistica",
+        "options": {
+          "A": {
+            "label": "Priorizar D1 por volumen superior",
+            "detail": "Asignas mas inventario a D1 y negocias exclusividad regional para mejorar volumen.",
+            "effects": {
+              "cash": 15000000,
+              "market_share": 4,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 3,
+              "reputation": -2
+            },
+            "risk": [-10000000, 12000000],
+            "narrative": "Le metiste ficha a D1 y el volumen subio a 22,000/mes. Pero Exito se enteró que estabas priorizando a D1 y redujo tu espacio en gondola de 3 caras a 1. Las ventas en Exito cayeron a 10,000/mes. En neto, vendias mas unidades pero ganabas MENOS plata por el menor margen de D1.",
+            "stats_insight": "La diferencia de medias es 18,500 - 16,800 = 1,700 paquetes. SE de la diferencia = √(3,200²/24 + 2,900²/24) = √(426,667 + 350,417) = √777,084 = 881.5. Z = 1,700/881.5 = 1.929, p = 0.054 (bilateral). Al 5%, la diferencia NO es estadisticamente significativa — esta en el borde. Pero mas importante: la significancia PRACTICA requiere considerar el margen. Ingreso D1 = 18,500 x $800 = $14.8M. Ingreso Exito = 16,800 x $1,200 = $20.16M. Exito genera $5.36M MAS de ingreso mensual. El volumen engana cuando ignoras el margen."
+          },
+          "B": {
+            "label": "Priorizar Exito por margen superior",
+            "detail": "Negocias mejor espacio en gondola con Exito y reduces el inventario en D1.",
+            "effects": {
+              "cash": 20000000,
+              "market_share": -2,
+              "quality": 2,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-8000000, 12000000],
+            "narrative": "Negociaste 4 caras de gondola en Exito con exhibicion en isla los fines de semana. Las ventas en Exito subieron a 20,000/mes y el margen se mantuvo en $1,200. D1 siguió vendiendo 15,000/mes sin drama. El ingreso total subio de $34.96M a $36M mensuales. Decision rentable.",
+            "stats_insight": "El analisis correcto no es solo comparar medias de volumen sino de RENTABILIDAD. Ingreso mensual promedio: D1 = 18,500 x $800 = $14.8M, Exito = 16,800 x $1,200 = $20.16M. La diferencia de ingreso es $5.36M a favor de Exito. SE del ingreso = √((800*3,200)²/24 + (1,200*2,900)²/24)... simplificando, Exito claramente genera mas ingreso por paquete. La leccion: la significancia ESTADISTICA (p=0.054 para volumen) es menos relevante que la significancia ECONOMICA ($5.36M/mes de diferencia en ingreso)."
+          },
+          "C": {
+            "label": "Mantener ambos canales en equilibrio",
+            "detail": "No cambias nada. Ambos canales son importantes y no quieres arriesgar ninguna relacion comercial.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 0,
+              "reputation": 2
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Mantuviste el status quo. Ni D1 ni Exito recibieron trato preferencial. Las ventas se mantuvieron estables. Pero tu competencia si hizo movimientos: negocio exhibicion especial en D1 y te quito 2 puntos de participacion en tiendas de descuento. A veces no decidir tambien es una decision.",
+            "stats_insight": "Mantener el equilibrio no es mala opcion per se. Con p=0.054, los datos te dicen que la diferencia en volumen NO es concluyente al 5%. Pero la diferencia en rentabilidad SI es clara ($5.36M/mes). El error es tratar 'no decidir' como opcion segura. En mercados competitivos, el status quo pierde valor con el tiempo. La estadistica te daba informacion para optimizar y no la usaste. Es como tener los resultados del examen de sangre y no ir al medico."
+          },
+          "D": {
+            "label": "Exigir a D1 igualar el margen de Exito",
+            "detail": "Vas a D1 y dices: 'O me suben el margen a $1,100/paquete o reduzco el surtido'. Jugada arriesgada.",
+            "effects": {
+              "cash": 10000000,
+              "market_share": -3,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 0,
+              "reputation": -5
+            },
+            "risk": [-30000000, 20000000],
+            "narrative": "D1 se rio en tu cara. Su modelo de negocio es precio bajo y margen ajustado — no van a cambiar por un proveedor de platanitos. Te reemplazaron con una marca blanca en 2 semanas. Perdiste 18,500 paquetes/mes de volumen y la presencia en 150 tiendas D1 del Eje Cafetero. Recuperar ese canal va a tomar meses de negociacion.",
+            "stats_insight": "El error aqui es asumir que puedes cambiar los parametros del mercado unilateralmente. El margen de D1 ($800) no es negociable — es parte de su modelo de negocio. D1 maneja ~35% del mercado de tiendas de descuento en la region. Perder ese canal significa perder acceso a P(consumidor compra en D1) ≈ 0.35 del mercado. El calculo correcto era: ingreso total = D1 + Exito = $14.8M + $20.16M = $34.96M. Sin D1: solo $20.16M. Perdida: $14.8M/mes. Ningun aumento de margen compensa perder un canal completo."
+          }
+        },
+        "recommended": "B",
+        "common_sense": ["B", "C"]
+      },
+      {
+        "id": "cfo-06",
+        "month": 6,
+        "title": "Cuanto vale esta empresa?",
+        "situation": "Un grupo empresarial de Bogota quiere comprar el 30% de tu empresa. Necesitas presentar una valoracion solida. El precio que propongas determina si consigues un socio estrategico o si te subvaloran. Tienes datos de 6 meses de operacion y necesitas integrar todo lo que has aprendido.",
+        "data_panel": "EBITDA mensual (ultimos 6 meses): $85M, $92M, $78M, $95M, $88M, $91M. Promedio: $88.17M, desviacion: $6.08M. Multiplo de EBITDA para empresas del sector: entre 4x y 7x segun tamano y crecimiento.",
+        "concept": "Integracion de conceptos: estimacion puntual, IC, error estandar",
+        "options": {
+          "A": {
+            "label": "Valorar con IC conservador (limite inferior)",
+            "detail": "Presentas el valor usando el limite inferior del IC del EBITDA anualizado x multiplo 5x. Negociacion desde abajo.",
+            "effects": {
+              "cash": 80000000,
+              "market_share": 2,
+              "quality": 0,
+              "climate": 5,
+              "efficiency": 3,
+              "reputation": 8
+            },
+            "risk": [-10000000, 30000000],
+            "narrative": "Presentaste una valoracion conservadora de $4,812M (basada en el limite inferior del EBITDA). El grupo de Bogota aprecio la transparencia y ofrecio $5,200M. Negociaste con datos y cerraste en $5,500M por el 30%. Con esos $1,650M de inversion fresca, pudiste comprar la empacadora automatica, ampliar la planta y abrir mercado en Armenia.",
+            "stats_insight": "EBITDA mensual: X̄ = $88.17M, s = $6.08M, n = 6. IC 95%: 88.17 +/- 2.571*(6.08/√6) = 88.17 +/- 6.38 = [$81.79M, $94.55M]. EBITDA anualizado conservador (limite inferior): $81.79M x 12 = $981.5M. Con multiplo 5x: $981.5M x 5 = $4,907M. Presentar el limite inferior muestra rigurosidad y deja espacio para negociar hacia arriba. El error estandar de $2.48M/mes (SE = 6.08/√6) te dice que con solo 6 meses de datos hay bastante incertidumbre — razon mas para ser conservador."
+          },
+          "B": {
+            "label": "Valorar con promedio x multiplo alto (7x)",
+            "detail": "Presentas el EBITDA promedio anualizado x 7x por el potencial de crecimiento. Negociacion desde arriba.",
+            "effects": {
+              "cash": 50000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 0,
+              "reputation": -3
+            },
+            "risk": [-20000000, 15000000],
+            "narrative": "Presentaste una valoracion de $7,405M. El grupo de Bogota se rio: 'Eso es valoracion de startup de Silicon Valley, no de platanitos en Dosquebradas'. Contraofertaron $4,200M. Despues de semanas de negociacion tensa, cerraste en $4,800M. Menos de lo que habrias conseguido empezando conservador. Ademas, quedaron dudas sobre tu credibilidad financiera.",
+            "stats_insight": "EBITDA promedio anualizado: $88.17M x 12 = $1,058M. Con multiplo 7x: $7,406M. El problema: el IC al 95% para el EBITDA anual es [$981.5M, $1,134.6M], un rango de $153M. Usar el punto medio con el multiplo MAS alto es optimismo doble — es como decir 'todo va a salir perfecto dos veces'. Un analista serio ve que n=6 es una muestra PEQUENA (SE = $2.48M/mes) y que el multiplo 7x solo aplica a empresas con crecimiento comprobado de 3+ anos. Con 6 meses de datos, la incertidumbre es grande y el multiplo deberia ser conservador."
+          },
+          "C": {
+            "label": "Pedir valoracion externa independiente",
+            "detail": "Contratas a una firma de valoracion de Bogota ($45M) para que haga el ejercicio con metodologia DCF y multiplos.",
+            "effects": {
+              "cash": -45000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 0,
+              "reputation": 5
+            },
+            "risk": [-10000000, 20000000],
+            "narrative": "La firma valoró la empresa en $5,800M usando DCF con tasa de descuento del 22% y multiplos comparables de Frito-Lay Colombia y Super Ricas. El grupo de Bogota acepto la valoracion porque venia de un tercero independiente. Cerro rapido: 30% por $1,740M. Costó la consultoria pero valio cada peso.",
+            "stats_insight": "La valoracion externa usa mas informacion que solo tu EBITDA: flujos proyectados, comparables del sector, prima de control, descuento por iliquidez. Estadisticamente, es como pasar de una muestra de n=6 (tus datos) a combinarla con datos de toda la industria (informacion a priori). Es un enfoque BAYESIANO: tu EBITDA es la evidencia, los comparables del sector son el prior. La estimacion resultante es mas robusta porque no depende solo de 6 observaciones con SE alto ($2.48M)."
+          },
+          "D": {
+            "label": "Rechazar la oferta y crecer solo",
+            "detail": "No vendes nada. Prefieres quedarte con el 100% y crecer con recursos propios y creditos.",
+            "effects": {
+              "cash": -10000000,
+              "market_share": -1,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": -3,
+              "reputation": 0
+            },
+            "risk": [-30000000, 10000000],
+            "narrative": "Rechazaste al grupo de Bogota. Los primeros 3 meses todo bien, pero cuando necesitaste $200M para una oportunidad de exportacion, no tenias el capital ni el socio. Tu competencia, que si acepto un socio estrategico, empezo a exportar a Ecuador. Te quedaste mirando desde Dosquebradas como se iba la oportunidad.",
+            "stats_insight": "El EBITDA promedio de $88.17M con SE=$2.48M da un IC anual de [$981.5M, $1,134.6M]. Con crecimiento organico, la empresa podria llegar a $1,300M en 3 anos (tasa compuesta del ~7%). Con un socio estrategico que inyecta capital y abre mercados, podria ser $1,800M en el mismo periodo. La diferencia es $500M de EBITDA anual multiplicada por anos de ventaja competitiva. Los datos de 6 meses muestran una empresa ESTABLE (CV = 6.08/88.17 = 6.9%) lo cual es atractivo para inversionistas. Rechazar capital cuando tu negocio es estable y con potencial es dejar plata sobre la mesa."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      }
+    ],
+    "CMO": [
+      {
+        "id": "cmo-01",
+        "month": 1,
+        "title": "Platanitos de limon: genialidad o locura?",
+        "situation": "Tu equipo creativo propone lanzar platanitos sabor limon-pimienta, inspirados en el 'limon manizaleno'. El diseno del empaque ya esta listo y el chef de I+D jura que es el mejor sabor que ha creado. Pero lanzar un sabor nuevo cuesta $60M y el ultimo sabor que lanzaste (chipotle) fue un fracaso.",
+        "data_panel": "Focus group con 150 consumidores del Eje Cafetero: 87 dijeron que comprarian el sabor limon-pimienta (58%). Error estandar de la proporcion: SE = sqrt(0.58 * 0.42 / 150) = 0.0403.",
+        "concept": "Proporcion muestral e intervalo de confianza para proporciones",
+        "options": {
+          "A": {
+            "label": "Lanzamiento regional controlado primero",
+            "detail": "Lanzas solo en Pereira y Dosquebradas por 2 meses. Si vende bien, escalas a todo el Eje Cafetero.",
+            "effects": {
+              "cash": -25000000,
+              "market_share": 3,
+              "quality": 2,
+              "climate": 3,
+              "efficiency": -2,
+              "reputation": 5
+            },
+            "risk": [-8000000, 15000000],
+            "narrative": "Lanzaste en Pereira y Dosquebradas con exhibicion especial en D1 y tiendas de la 8va. Los platanitos de limon-pimienta se agotaron en la primera semana. Los tiktokers de Pereira hicieron reviews organicos y la demanda se disparo. Escalaste a Armenia y Manizales en el mes 3 con datos reales de venta.",
+            "stats_insight": "Con p̂ = 0.58, el IC 95% para la intencion de compra es: 0.58 +/- 1.96 * 0.0403 = [0.501, 0.659]. El limite inferior (50.1%) esta apenas por encima del 50%, lo que significa que al menos la mitad del mercado esta interesado. Pero ojo: intencion de compra NO es compra real — tipicamente solo 30-40% de los que dicen 'si compraria' realmente compran. Asi que la tasa real esperada es ~0.58 * 0.35 = 20.3%. Un lanzamiento regional te permite validar esta conversion REAL sin arriesgar $60M. Es la diferencia entre estadistica de encuesta y estadistica de ventas."
+          },
+          "B": {
+            "label": "Lanzamiento masivo en todo el Eje Cafetero",
+            "detail": "58% de aceptacion es buenisimo. Lanzas en todas las tiendas y cadenas de Risaralda, Quindio y Caldas.",
+            "effects": {
+              "cash": -60000000,
+              "market_share": 5,
+              "quality": 0,
+              "climate": 5,
+              "efficiency": -5,
+              "reputation": 4
+            },
+            "risk": [-30000000, 25000000],
+            "narrative": "Lanzaste a lo grande con publicidad en RCN radio y vallas en la Autopista del Cafe. Las primeras 2 semanas fueron excelentes. Pero en Armenia el sabor no pego tanto — la gente preferia el clasico. Quedaste con inventario acumulado en Quindio que toco rematar con descuento. En Risaralda fue un exito total.",
+            "stats_insight": "El IC [50.1%, 65.9%] es para el EJE CAFETERO como un todo, pero el focus group se hizo en Pereira. Si la muestra no es representativa de Armenia o Manizales (donde los gustos pueden diferir), estas EXTRAPOLANDO mas alla de tus datos. El error estandar de 4.03% parece pequeno, pero recuerda que el limite inferior es 50.1% — muy cerca del punto de quiebre. Un lanzamiento masivo basado en un IC que apenas supera 50% es una apuesta, no una decision basada en datos."
+          },
+          "C": {
+            "label": "Hacer segundo focus group mas grande",
+            "detail": "El IC es muy ancho. Haces otro estudio con 400 personas antes de invertir $60M.",
+            "effects": {
+              "cash": -12000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": -3,
+              "reputation": 1
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Gastaste $12M en un segundo focus group de 400 personas. Resultado: 54% de aceptacion (IC mas estrecho). El equipo creativo se desanimo con la espera. Mientras tanto, tu competencia lanzo platanitos de chicharron que capturaron la atencion del mercado. Tu sabor limon-pimienta llego 2 meses tarde y tuvo que competir por atencion.",
+            "stats_insight": "Con n=400 y p̂=0.54, SE = √(0.54*0.46/400) = 0.0249. IC 95%: [0.491, 0.589]. Ahora el limite inferior es 49.1% — DEBAJO de 50%. Mas datos no siempre confirman la hipotesis original; a veces la refinan hacia abajo. Pero el verdadero costo fue TIEMPO: 2 meses de ventana de mercado perdidos. En marketing, el timing importa tanto como la precision. La opcion A te daba datos REALES de venta (no encuesta) en el mismo periodo."
+          },
+          "D": {
+            "label": "Cancelar y enfocarse en sabor clasico",
+            "detail": "El chipotle fue un fracaso. Mejor invertir los $60M en promocionar el sabor que ya funciona.",
+            "effects": {
+              "cash": 10000000,
+              "market_share": -1,
+              "quality": 0,
+              "climate": -3,
+              "efficiency": 5,
+              "reputation": -2
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Cancelaste el limon-pimienta. El equipo creativo quedo desmotivado: 'Para que hacemos focus groups si nunca nos dejan lanzar?'. Invertiste en el sabor clasico que crecio 3%. Pero tu competencia lanzo 2 sabores nuevos y capturo el segmento 'aventurero' del mercado. Te quedaste como la marca del abuelo — confiable pero aburrida.",
+            "stats_insight": "58% de aceptacion con IC [50.1%, 65.9%] NO justifica cancelar — justifica precaucion. El limite inferior esta por encima de 50%, lo que es mejor que lo que tenia chipotle cuando se lanzo (42%). Descartar un proyecto porque el anterior fallo es la falacia del jugador — cada sabor es un evento independiente. Los datos de ESTE focus group son favorables; los datos del chipotle son irrelevantes estadisticamente. La decision deberia basarse en los datos ACTUALES, no en el trauma del pasado."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "cmo-02",
+        "month": 2,
+        "title": "Quien es mas famoso en el Eje Cafetero?",
+        "situation": "Tu marca tiene reconocimiento del 62% en el Eje Cafetero. Tu competencia dice en una entrevista de radio que ellos tienen 70%. Necesitas saber si realmente te estan ganando o si estan inflando numeros. El gerente quiere que respondas con datos, no con opiniones.",
+        "data_panel": "Tu encuesta: 310 de 500 personas reconocen tu marca (p̂₁ = 0.62). Encuesta del rival (publicada): 280 de 400 personas reconocen su marca (p̂₂ = 0.70). Ambas encuestas fueron en el Eje Cafetero en el mismo periodo.",
+        "concept": "Diferencia de proporciones y su intervalo de confianza",
+        "options": {
+          "A": {
+            "label": "Campaña agresiva de brand awareness",
+            "detail": "Inviertes $40M en publicidad masiva: vallas, radio, TikTok y patrocinio de Once Caldas.",
+            "effects": {
+              "cash": -40000000,
+              "market_share": 4,
+              "quality": 0,
+              "climate": 3,
+              "efficiency": 0,
+              "reputation": 8
+            },
+            "risk": [-10000000, 15000000],
+            "narrative": "Patrocinaste al Once Caldas y pusiste tu logo en la camiseta de entrenamiento. Los platanitos aparecian en cada transmision de futbol regional. TikTok fue un hit: el 'PlataniChallenge' llego a 500,000 vistas. En 2 meses, una nueva encuesta mostro reconocimiento del 71%. Le quitaste el trono al rival.",
+            "stats_insight": "La diferencia de proporciones es p̂₂ - p̂₁ = 0.70 - 0.62 = 0.08. SE = √(0.62*0.38/500 + 0.70*0.30/400) = √(0.000472 + 0.000525) = √0.000997 = 0.03157. IC 95% para la diferencia: 0.08 +/- 1.96*0.03157 = [0.018, 0.142]. Como el IC NO contiene 0, la diferencia ES estadisticamente significativa — tu rival SI te gana en reconocimiento. Invertir en awareness estaba justificado por los datos. No era paranoia: los numeros confirmaban la brecha."
+          },
+          "B": {
+            "label": "Cuestionar la metodologia del rival",
+            "detail": "Publicas en redes que la encuesta del rival fue 'bananeada' y que tus datos son mas confiables.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": -2,
+              "quality": 0,
+              "climate": -3,
+              "efficiency": 0,
+              "reputation": -8
+            },
+            "risk": [-15000000, 2000000],
+            "narrative": "Publicaste un comunicado cuestionando la encuesta del rival. El rival respondio con los datos crudos y la firma encuestadora. Quedaste como mal perdedor. Un periodista de El Diario de Pereira titulo: 'Guerra de platanitos: marca local ataca a rival sin evidencia'. Peor publicidad imposible.",
+            "stats_insight": "Cuestionar una encuesta sin evidencia de fallo metodologico es falacia ad hominem. Ambas encuestas tienen tamanos de muestra grandes (n₁=500, n₂=400) y errores estandar pequenos (SE₁=0.022, SE₂=0.023). Los IC individuales son: tu marca [0.577, 0.663], rival [0.655, 0.745]. Ni siquiera se SOLAPAN (0.663 < 0.655 es muy cercano pero sugiere diferencia real). Sin evidencia de sesgo en su muestreo, atacar la encuesta es atacar la estadistica misma."
+          },
+          "C": {
+            "label": "Enfocarse en lealtad, no en reconocimiento",
+            "detail": "No importa quien es mas conocido sino quien repite compra. Inviertes $25M en programa de fidelidad.",
+            "effects": {
+              "cash": -25000000,
+              "market_share": 2,
+              "quality": 3,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": 4
+            },
+            "risk": [-8000000, 12000000],
+            "narrative": "Lanzaste el programa 'PlataniPuntos': por cada 5 paquetes, el sexto es gratis. Los tenderos de barrio se volvieron promotores de tu marca porque el programa movia inventario. La lealtad subio de 45% a 61% en 3 meses. El rival tenia mas reconocimiento pero tu tenias mas recompra.",
+            "stats_insight": "Esta es una decision estrategica valida que redefine la metrica. Si bien el rival gana en reconocimiento (p̂₂-p̂₁=0.08, significativo), reconocimiento no es lo mismo que compra. En marketing, el 'funnel' va: Conocimiento → Consideracion → Compra → Recompra. Puedes perder en la primera etapa y ganar en la ultima. Estadisticamente, cambiaste la variable de interes de 'proporcion que conoce' a 'proporcion que recompra'. Ambas son proporciones muestrales validas pero miden cosas distintas."
+          },
+          "D": {
+            "label": "Ignorar y seguir como si nada",
+            "detail": "8 puntos de diferencia no es nada. La gente compra por sabor, no por reconocimiento de marca.",
+            "effects": {
+              "cash": 0,
+              "market_share": -3,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": 0,
+              "reputation": -3
+            },
+            "risk": [-10000000, 0],
+            "narrative": "Ignoraste la brecha de reconocimiento. En 3 meses, el rival empezo a aparecer en las gondolas de D1 donde antes estabas solo tu. Los tenderos decian: 'La gente pregunta por la otra marca, a mi me toca tenerla'. Perdiste espacio de gondola en 40 tiendas del area metropolitana de Pereira.",
+            "stats_insight": "La diferencia de 8 puntos porcentuales con IC [1.8%, 14.2%] es estadisticamente significativa al 5%. Decir que '8 puntos no es nada' es ignorar lo que los datos te dicen. El limite inferior es 1.8% — incluso en el mejor escenario, el rival te gana. Y en el peor, te gana por 14.2 puntos. En un mercado donde 5 puntos de reconocimiento se traducen en espacio de gondola, esta diferencia tiene consecuencias economicas reales. Ignorar datos significativos no los hace desaparecer."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "cmo-03",
+        "month": 3,
+        "title": "Empaque ecologico: moda o futuro?",
+        "situation": "La tendencia mundial es empaques biodegradables. Un proveedor de Bogota ofrece empaque de yuca (si, de yuca) que se biodegrada en 6 meses. Cuesta 40% mas que el plastico actual. Quieres hacer un estudio de mercado para saber si el consumidor pagaria mas, pero no tienes NINGUN dato previo sobre esto.",
+        "data_panel": "No hay datos previos de intencion de pago por empaque ecologico en el Eje Cafetero. Necesitas disenar el estudio desde cero. Presupuesto para investigacion: $15M. Costo por encuesta completada: $25,000.",
+        "concept": "Tamano de muestra sin piloto (caso conservador p=0.5)",
+        "options": {
+          "A": {
+            "label": "Estudio con 385 personas (margen 5%)",
+            "detail": "Tamano de muestra calculado para 95% de confianza y +/-5% de margen. Cuesta $9.6M.",
+            "effects": {
+              "cash": -9600000,
+              "market_share": 2,
+              "quality": 5,
+              "climate": 5,
+              "efficiency": -2,
+              "reputation": 8
+            },
+            "risk": [-5000000, 10000000],
+            "narrative": "Encuestaste 385 personas en centros comerciales de Pereira, Armenia y Manizales. Resultado: 47% dispuestos a pagar 15% mas por empaque ecologico. Con ese dato, negociaste con el proveedor un empaque que solo costaba 20% mas (no 40%) y lanzaste la linea 'PlataniVerde'. La prensa local hizo nota y hasta la gobernacion te menciono en un evento de sostenibilidad.",
+            "stats_insight": "Sin dato previo de p, usamos el caso conservador p=0.5 (maxima varianza). n = (Z²*p*q) / E² = (1.96² * 0.5 * 0.5) / 0.05² = (3.8416 * 0.25) / 0.0025 = 0.9604 / 0.0025 = 384.16 ≈ 385. Esto garantiza el margen de +/-5% sin importar cual sea la proporcion real. Es como prepararse para el peor caso: si p resulta ser 0.3 o 0.7, el margen real sera MENOR que 5% — sale ganando. Con costo de $25,000/encuesta, son $9.625M, dentro del presupuesto de $15M."
+          },
+          "B": {
+            "label": "Estudio express con 100 personas",
+            "detail": "Rapido y barato: $2.5M. Suficiente para tener una idea general.",
+            "effects": {
+              "cash": -2500000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 3,
+              "reputation": 2
+            },
+            "risk": [-8000000, 5000000],
+            "narrative": "Encuestaste 100 personas rapido. Resultado: 52% dispuestos a pagar mas. Lanzaste la linea ecologica basandote en eso. Pero a la hora de vender, solo el 30% realmente pago el sobrecosto. El margen de la encuesta era tan ancho que el 52% podria haber sido 42% (o 62%). Te quedo grande la incertidumbre.",
+            "stats_insight": "Con n=100 y p=0.5, el margen de error es: E = 1.96 * √(0.5*0.5/100) = 1.96 * 0.05 = 0.098, casi +/-10%. El IC seria [0.42, 0.62] si p̂=0.52. Ese rango es ENORME para una decision de $60M en empaque. La diferencia entre 42% (no viable) y 62% (exito seguro) es la diferencia entre perder y ganar. Con n=385, el margen baja a +/-5%, dando IC [0.47, 0.57] — mucho mas accionable. Ahorrarte $7M en investigacion puede costarte $30M en decisiones erradas."
+          },
+          "C": {
+            "label": "Estudio grande con 1,000 personas",
+            "detail": "Para estar super seguros: margen de +/-3%. Cuesta $25M — todo el presupuesto y mas.",
+            "effects": {
+              "cash": -25000000,
+              "market_share": 1,
+              "quality": 3,
+              "climate": 0,
+              "efficiency": -5,
+              "reputation": 5
+            },
+            "risk": [-8000000, 5000000],
+            "narrative": "Te volaste del presupuesto pero el estudio quedo impecable. Resultado: 46% con margen de +/-3%, IC [43%, 49%]. Dato revelador: menos de la mitad quiere pagar mas. Gracias a la precision, pudiste decidir NO lanzar el empaque completo sino hacer una edicion limitada premium, ahorrando $40M en empaque masivo. La precision se pago sola.",
+            "stats_insight": "Con n=1,000 y p=0.5: E = 1.96 * √(0.5*0.5/1000) = 1.96 * 0.01581 = 0.031 ≈ +/-3%. Excelente precision. Pero observa el rendimiento decreciente: pasar de n=100 (E=10%) a n=385 (E=5%) reduce el error a la mitad. Pasar de n=385 (E=5%) a n=1,000 (E=3%) solo reduce 2 puntos mas. El costo se triplica para una mejora marginal. En estadistica, el error decrece con 1/√n — duplicar la precision requiere CUADRUPLICAR la muestra. A veces el costo adicional se justifica (como aqui), pero hay que ser consciente del trade-off."
+          },
+          "D": {
+            "label": "Lanzar sin estudio — sentir el mercado",
+            "detail": "Los millennials quieren ecologia, es obvio. No se necesita encuesta para saber eso. Lanzas directo.",
+            "effects": {
+              "cash": -60000000,
+              "market_share": 1,
+              "quality": 2,
+              "climate": 5,
+              "efficiency": -8,
+              "reputation": 3
+            },
+            "risk": [-40000000, 15000000],
+            "narrative": "Lanzaste sin datos. Los millennials SI compraron pero son el 25% del mercado. El otro 75% — amas de casa y tenderos — se quejo de que el empaque se 'sentia raro' y que los platanitos se humedecian mas rapido. Las devoluciones subieron 12%. Tocó mantener ambos empaques, duplicando costos logisticos.",
+            "stats_insight": "Sin ningun dato, basaste la decision en un sesgo de confirmacion: 'los millennials quieren ecologia, es obvio'. Pero 'obvio' no es un nivel de confianza. El mercado del Eje Cafetero no es Bogota ni Medellin — la disposicion a pagar por ecologia puede ser muy diferente. Con $9.6M (opcion A) habrias sabido que solo 47% queria pagar mas, y de esos, la conversion real es ~30-35%. Eso te habria dado una demanda estimada del ~16% del mercado — suficiente para una linea premium pero no para reemplazar el empaque masivo."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "cmo-04",
+        "month": 4,
+        "title": "Conquistar a Belalcazar o no?",
+        "situation": "El equipo comercial encontro que en Belalcazar (Caldas), un pueblo de 8,000 habitantes, no hay platanitos de marca. Solo marcas blancas y genericas. Es una oportunidad de ser los primeros, pero el pueblo es tan pequeno que una encuesta normal puede sobredimensionar la demanda.",
+        "data_panel": "Poblacion objetivo (compradores de snacks): estimada en 2,000 personas. Se encuesto a 200 de esas 2,000 (10% de la poblacion). Resultado: 130 comprarian tu marca (p̂ = 0.65).",
+        "concept": "Correccion por poblacion finita",
+        "options": {
+          "A": {
+            "label": "Entrar con distribucion limitada y medida",
+            "detail": "Mandas solo 500 paquetes semanales a las 3 tiendas principales de Belalcazar. Evaluas en 1 mes.",
+            "effects": {
+              "cash": -3000000,
+              "market_share": 2,
+              "quality": 0,
+              "climate": 1,
+              "efficiency": -1,
+              "reputation": 3
+            },
+            "risk": [-2000000, 5000000],
+            "narrative": "Entraste a Belalcazar con 500 paquetes semanales en las tiendas de la plaza principal. Se agotaron el primer sabado de mercado. Los belalcazarenos estaban felices de tener platanitos de marca. Subiste a 800/semana y equilibraste oferta con demanda. Pequeno pero rentable.",
+            "stats_insight": "Como encuestaste n=200 de N=2,000 (10% de la poblacion), necesitas la correccion por poblacion finita (FPC). FPC = √((N-n)/(N-1)) = √((2000-200)/(2000-1)) = √(1800/1999) = √0.9004 = 0.949. SE corregido = √(p̂*q̂/n) * FPC = √(0.65*0.35/200) * 0.949 = 0.03374 * 0.949 = 0.03202. IC 95%: 0.65 +/- 1.96*0.032 = [0.587, 0.713]. Esto estima que entre 1,174 y 1,426 personas comprarian. Pero comprar no es comprar CADA SEMANA. Si el 65% compra 1 vez al mes: 1,300 * 1 paquete/mes / 4 semanas = ~325 paquetes/semana. Entrar con 500 fue preciso."
+          },
+          "B": {
+            "label": "Inundar Belalcazar con 2,000 paquetes/semana",
+            "detail": "Si 65% quiere comprar, mandas suficiente para cubrir toda la demanda potencial de una vez.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": 3,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": -5,
+              "reputation": -2
+            },
+            "risk": [-10000000, 3000000],
+            "narrative": "Mandaste 2,000 paquetes semanales a un pueblo de 8,000 habitantes. Las primeras semanas vendiste 600. El resto se quedo en bodega. Los platanitos se vencieron y toco hacer recall. Los tenderos dijeron: 'Nos llenaron la tienda de platanitos que nadie compra'. Mala primera impresion.",
+            "stats_insight": "El error fue confundir 'intencion de compra' con 'frecuencia de compra'. El 65% (IC [58.7%, 71.3%]) dice que COMPRARIA, no que compra CADA SEMANA. En poblaciones pequenas, el mercado total es limitado por definicion: 2,000 personas * 65% * 1 compra/mes = 1,300 paquetes/MES, no por semana. Ademas, con la FPC, el IC es un poco mas estrecho que sin correccion (SE=0.032 vs 0.034), pero la precision adicional no cambia la conclusion: 2,000/semana era cuatro veces la demanda real."
+          },
+          "C": {
+            "label": "No vale la pena — pueblo muy pequeno",
+            "detail": "2,000 consumidores potenciales no justifican el costo de distribucion. Enfocarse en ciudades grandes.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 3,
+              "reputation": -1
+            },
+            "risk": [-3000000, 0],
+            "narrative": "No entraste a Belalcazar. Tu competencia lo hizo 3 meses despues y capturo el pueblo sin oposicion. Es un mercado pequeno, pero resulto que Belalcazar era la puerta de entrada a otros 5 pueblos de Caldas occidental. Tu rival ahora tiene presencia en toda esa zona y tu empezando de cero.",
+            "stats_insight": "El IC con correccion de poblacion finita [58.7%, 71.3%] muestra demanda solida. Pero la decision de 'no vale la pena' ignora un concepto clave: el valor de un mercado no es solo su tamano actual sino su valor ESTRATEGICO. En estadistica bayesiana, esto se llama 'valor de la informacion': entrar a Belalcazar te da datos sobre pueblos similares de Caldas. Cada pueblo pequeno ganado es una observacion para estimar la demanda regional. A veces la muestra mas valiosa no es la mas grande sino la mas informativa."
+          },
+          "D": {
+            "label": "Hacer promocion intensiva primero",
+            "detail": "Antes de distribuir, mandas degustadoras al pueblo 2 fines de semana. Si pega, entras. Si no, no arriesgas.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": -2,
+              "reputation": 4
+            },
+            "risk": [-3000000, 5000000],
+            "narrative": "Las degustadoras llegaron a Belalcazar un sabado de mercado con mesa bonita y platanitos gratis. Todo el pueblo paso a probar. La segunda semana ya estaban preguntando en las tiendas 'cuando llegan los platanitos'. Entraste con 600 paquetes la semana siguiente y vendiste 550. Entrada perfecta.",
+            "stats_insight": "La degustacion es esencialmente una segunda muestra, pero de tipo diferente: no mide intencion sino EXPERIENCIA. La primera encuesta (n=200) midió 'comprarias?' — una proporcion hipotetica. La degustacion mide 'te gusto?' — una proporcion experiencial. Combinar ambas reduce la incertidumbre total. Es un diseno de investigacion en dos fases: screening (encuesta) + validacion (degustacion). El costo adicional de $5M te compra informacion que la encuesta sola no puede dar: la proporcion que REALMENTE disfruta el producto, no solo la que dice que lo compraria."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "cmo-05",
+        "month": 5,
+        "title": "TikTok vs Radio: donde poner la plata?",
+        "situation": "Tienes $50M para publicidad del proximo trimestre. El equipo joven quiere TikTok e Instagram. El equipo viejo quiere radio local y vallas. Ambos presentan numeros pero necesitas decidir basado en datos, no en preferencias generacionales.",
+        "data_panel": "Campana TikTok piloto (3 meses): retorno promedio $2.8 por cada $1 invertido, desviacion $1.5. Campana Radio piloto (3 meses): retorno promedio $2.2 por cada $1 invertido, desviacion $0.4. Ambas con n=12 mediciones mensuales (4 meses x 3 metricas).",
+        "concept": "Error estandar como medida de riesgo e incertidumbre",
+        "options": {
+          "A": {
+            "label": "Dividir 60% TikTok y 40% Radio",
+            "detail": "Apuestas mas a TikTok por mayor retorno promedio pero mantienes radio como base estable.",
+            "effects": {
+              "cash": 15000000,
+              "market_share": 4,
+              "quality": 0,
+              "climate": 5,
+              "efficiency": 3,
+              "reputation": 5
+            },
+            "risk": [-10000000, 20000000],
+            "narrative": "TikTok trajo un influencer de Pereira que hizo un video comiendo platanitos en el Viaducto y se viralizo. Radio mantuvo presencia constante en las emisoras de la manana. La combinacion fue perfecta: TikTok para jovenes, radio para amas de casa. Reconocimiento subio 8 puntos en ambos segmentos.",
+            "stats_insight": "TikTok tiene mayor retorno promedio ($2.8 vs $2.2) pero mayor riesgo (σ=$1.5 vs σ=$0.4). El coeficiente de variacion (CV = σ/μ) es: TikTok CV=1.5/2.8=53.6%, Radio CV=0.4/2.2=18.2%. TikTok es 3 veces mas volatil. Diversificar 60/40 reduce el riesgo total: Retorno esperado = 0.6*2.8 + 0.4*2.2 = $2.56. Varianza del portafolio (si son independientes) = 0.6²*1.5² + 0.4²*0.4² = 0.81 + 0.0256 = 0.836, σ = $0.914. El CV del mix es 0.914/2.56 = 35.7% — menos riesgoso que TikTok solo. Es la misma logica de diversificacion de portafolios financieros aplicada a marketing."
+          },
+          "B": {
+            "label": "100% a TikTok por mayor retorno",
+            "detail": "El retorno promedio de TikTok es 27% mayor. Toda la plata a digital.",
+            "effects": {
+              "cash": 20000000,
+              "market_share": 5,
+              "quality": 0,
+              "climate": 3,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-30000000, 40000000],
+            "narrative": "Metiste los $50M a TikTok. El primer mes fue espectacular: retorno de $4.1 por $1. El segundo mes el algoritmo cambio y el alcance cayo 60%. El tercer mes fue retorno de $1.2. Promedio final: $2.4 — menor que lo esperado. La variabilidad de TikTok te pego fuerte.",
+            "stats_insight": "Con μ=$2.8 y σ=$1.5, el SE del retorno promedio es SE = 1.5/√12 = 0.433. IC 95%: [1.95, 3.65]. El limite inferior ($1.95) muestra que en un mal escenario, TikTok retorna menos de $2 por $1 — MENOS que radio en promedio ($2.2). El rango es enorme: puedes ganar $3.65 o apenas $1.95 por dolar. Apostar todo a un canal con SE tan alto es como apostar todo al caballo mas rapido sin considerar que tambien es el mas impredecible. La volatilidad (σ=$1.5) era la senal de alerta que debias leer."
+          },
+          "C": {
+            "label": "100% a Radio por consistencia",
+            "detail": "Radio es predecible y estable. En tiempos inciertos, mejor lo seguro.",
+            "effects": {
+              "cash": 10000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": 2,
+              "reputation": 2
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Pusiste todo en radio. La campana fue consistente: presencia constante en las emisoras del Eje Cafetero. Pero el publico joven (18-30) no escucha radio. Tu competencia capturo ese segmento con memes y TikToks. En 3 meses, los jovenes asociaban platanitos con la otra marca. Perdiste una generacion.",
+            "stats_insight": "Radio tiene σ=$0.4, dando SE = 0.4/√12 = 0.115 e IC 95%: [1.97, 2.43]. Es predecible: siempre retorna entre $2 y $2.4. Pero el retorno promedio ($2.2) es MENOR que TikTok ($2.8) con diferencia de $0.60. El IC de la diferencia de retornos: 0.6 +/- 1.96*√(0.433² + 0.115²) = 0.6 +/- 0.878 = [-0.278, 1.478]. Como el IC incluye 0, NO hay diferencia significativa. Eso significa que radio no es significativamente peor — pero tampoco es mejor. Apostar 100% a lo seguro cuando los datos no muestran diferencia significativa es aversion al riesgo excesiva."
+          },
+          "D": {
+            "label": "Probar 50/50 este trimestre y decidir despues",
+            "detail": "Divides exacto mitad y mitad para generar datos comparables antes de comprometer mas recursos.",
+            "effects": {
+              "cash": 12000000,
+              "market_share": 3,
+              "quality": 0,
+              "climate": 4,
+              "efficiency": 0,
+              "reputation": 4
+            },
+            "risk": [-8000000, 12000000],
+            "narrative": "Dividiste 50/50. Al final del trimestre tenias datos frescos y comparables. TikTok retorno $2.6 promedio, radio $2.3. La diferencia era menor de lo esperado pero ahora tenias datos PROPIOS, no de piloto. Para el proximo trimestre, pudiste hacer 65/35 con confianza estadistica.",
+            "stats_insight": "Dividir 50/50 es un diseno experimental: asignas el mismo presupuesto a ambos 'tratamientos' y comparas. Con 3 meses de datos propios (n=3 por canal), tendras SE grandes — pero sumados a los 12 anteriores, puedes tener n=15 total. SE_TikTok = 1.5/√15 = 0.387, SE_Radio = 0.4/√15 = 0.103. Cada trimestre de datos nuevos REDUCE la incertidumbre. La opcion A es mejor porque ya optimiza con los datos existentes, pero la D no es mala — es la opcion del que prefiere mas datos antes de actuar."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "cmo-06",
+        "month": 6,
+        "title": "Exito nos quiere en exclusiva",
+        "situation": "El jefe de compras de Exito Eje Cafetero llama con una propuesta: exclusividad de 6 meses en sus tiendas a cambio de un descuento del 12% y exhibicion premium en gondola. Si aceptas, no puedes vender en D1, Ara ni Olimpica por medio ano. La propuesta vence en 48 horas.",
+        "data_panel": "Ventas actuales por canal (promedio mensual): Exito 16,800 paquetes (σ=2,900), D1 18,500 paquetes (σ=3,200), Ara 8,200 paquetes (σ=2,100), tiendas de barrio 22,000 paquetes (σ=5,500). Total: 65,500 paquetes/mes.",
+        "concept": "Estimacion de demanda y analisis de riesgo integrado",
+        "options": {
+          "A": {
+            "label": "Rechazar exclusividad, mantener multicanalidad",
+            "detail": "Dices no a Exito. Mantener todos los canales diversifica el riesgo.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 3,
+              "reputation": 3
+            },
+            "risk": [-8000000, 10000000],
+            "narrative": "Rechazaste la exclusividad con respeto. Exito se molesto un poco pero siguio comprando. Tu diversificacion te protegió cuando Ara hizo una promocion especial y tus ventas subieron 30% en esa cadena ese mes. Si hubieras estado con Exito exclusivamente, habrias perdido esa oportunidad.",
+            "stats_insight": "Ventas actuales: Exito 16,800, D1 18,500, Ara 8,200, tiendas 22,000 = 65,500 total. Con exclusividad perderias D1+Ara+tiendas = 48,700 paquetes (74.4% de tus ventas). Exito tendria que compensar ESO. Incluso si Exito sube 50% (a 25,200), perdarias 40,300 paquetes/mes. La varianza total actual es σ² = 2,900² + 3,200² + 2,100² + 5,500² = 8.41M + 10.24M + 4.41M + 30.25M = 53.31M, σ_total ≈ 7,302. Con solo Exito: σ = 2,900. Menor varianza pero MUCHO menor media. Diversificacion = menor riesgo relativo (CV = 7,302/65,500 = 11.1% vs un solo canal)."
+          },
+          "B": {
+            "label": "Aceptar exclusividad con condiciones",
+            "detail": "Aceptas pero exiges: descuento solo del 8%, exhibicion en isla los fines de semana, y clausula de salida anticipada si ventas caen 20%.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": -4,
+              "quality": 0,
+              "climate": -3,
+              "efficiency": 5,
+              "reputation": 2
+            },
+            "risk": [-25000000, 15000000],
+            "narrative": "Negociaste duro y Exito acepto el 8% de descuento con exhibicion premium. Los primeros 2 meses las ventas en Exito subieron a 28,000/mes. Pero D1 y Ara trajeron marcas sustitutas y los tenderos de barrio dejaron de buscarte. Al mes 4 activaste la clausula de salida porque las ventas totales habian caido 25%.",
+            "stats_insight": "La exclusividad es estadisticamente arriesgada: concentras toda tu distribucion en UN canal con μ=16,800 y σ=2,900. El IC 95% para ventas de Exito es: 16,800 +/- 1.96*(2,900/√24) = [15,640, 17,960]. Incluso si duplicas las ventas en Exito a ~33,600, todavia es MENOS que los 65,500 actuales. Necesitarias que Exito cuadruplicara tus ventas para igualar — estadisticamente implausible. El error estandar de un solo canal (SE=592) parece bajo, pero estas comparando una distribucion de μ=16,800 contra una de μ=65,500. Ningun IC de un canal supera la media de 4 canales combinados."
+          },
+          "C": {
+            "label": "Contrapropuesta: exclusividad parcial",
+            "detail": "Ofreces exclusividad en cadenas grandes (Exito) pero mantienes D1 y tiendas de barrio como canales populares.",
+            "effects": {
+              "cash": 8000000,
+              "market_share": 2,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 5
+            },
+            "risk": [-10000000, 15000000],
+            "narrative": "Propusiste exclusividad solo en supermercados premium (no Ara, no Olimpica) pero manteniendo D1 y tiendas. Exito acepto porque su verdadera competencia era Olimpica, no D1. Resultado: ventas en Exito subieron a 22,000/mes con exhibicion premium, D1 y tiendas se mantuvieron. Volumen total subio a 67,700/mes.",
+            "stats_insight": "Solo pierdes Ara (8,200 paquetes, 12.5% del total). Exito puede compensar con exhibicion premium: si sube de 16,800 a ~22,000 (+31%), el volumen total pasa de 65,500 a 70,700. El riesgo es moderado: pierdes el canal de menor volumen y menor margen. La varianza se reduce: σ²_nuevo = 2,900² + 3,200² + 5,500² = 44.9M vs 53.31M original. CV nuevo = √44.9M / (22,000+18,500+22,000) = 6,700/62,500 = 10.7%. Menor varianza relativa con similar volumen. Esta es una solucion de compromiso que los datos respaldan: mantener diversificacion SUFICIENTE mientras capturas el beneficio de la alianza."
+          },
+          "D": {
+            "label": "Aceptar exclusividad total — ir con todo",
+            "detail": "Exito es la cadena premium. Si apuestan por ti, tu apuestas por ellos. All in.",
+            "effects": {
+              "cash": -30000000,
+              "market_share": -8,
+              "quality": 3,
+              "climate": -5,
+              "efficiency": 8,
+              "reputation": -3
+            },
+            "risk": [-50000000, 20000000],
+            "narrative": "Aceptaste exclusividad total. Los primeros 2 meses fueron buenos en Exito: 26,000/mes. Pero perdiste D1 (18,500), Ara (8,200) y tiendas (22,000). Tu competencia lleno esos espacios. Al mes 5, Exito renegocio pidiendo descuento del 18% porque eras proveedor cautivo. Te tenian acorralado.",
+            "stats_insight": "Aceptar exclusividad total es pasar de μ_total=65,500 con 4 canales a μ_exito ≈ 26,000 con 1 canal. Pierdes 60% del volumen. Ademas, con un solo canal, tu poder de negociacion CAE porque Exito sabe que no tienes alternativa. Es un riesgo que va mas alla de la estadistica: es teoria de juegos. Tu varianza de ventas puede bajar (un canal, menos ruido), pero tu RIESGO de negocio sube exponencialmente. Regla de oro: nunca dependas de un cliente que represente mas del 30% de tus ventas. Aqui seria 100%."
+          }
+        },
+        "recommended": "C",
+        "common_sense": ["A", "C"]
+      }
+    ],
+    "CHRO": [
+      {
+        "id": "chro-01",
+        "month": 1,
+        "title": "El supervisor estrella... o no?",
+        "situation": "Don Hernando lleva 12 anos como supervisor de planta. El gerente de produccion dice que es el mejor que ha tenido. Pero el equipo de datos encontro algo interesante al analizar los numeros. Necesitas decidir si Don Hernando realmente ES el mejor o si es solo percepcion.",
+        "data_panel": "Evaluacion 360 de Don Hernando (dato puntual): 78/100. Promedio historico de TODOS los supervisores de la empresa (25 supervisores en 10 anos): μ = 72, σ = 9. La evaluacion del mejor supervisor registrado fue 91/100.",
+        "concept": "Parametro vs estadistico — poblacion vs muestra",
+        "options": {
+          "A": {
+            "label": "Reconocer a Don Hernando con datos contextualizados",
+            "detail": "Le muestras que esta por encima del promedio pero le planteas metas basadas en los mejores del historico.",
+            "effects": {
+              "cash": -3000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": 10,
+              "efficiency": 3,
+              "reputation": 2
+            },
+            "risk": [-2000000, 5000000],
+            "narrative": "Sentaste a Don Hernando y le dijiste: 'Usted esta en el top 25% de supervisores de la historia de la empresa — eso es bueno. Pero el mejor tuvo 91 y usted 78. Aqui hay un plan para llegar a 85 en 6 meses'. Don Hernando salio motivado: nadie le habia mostrado donde estaba parado con numeros. Se puso las pilas.",
+            "stats_insight": "78/100 es un ESTADISTICO (medicion de una persona en un momento). Los 72 y σ=9 son PARAMETROS de la poblacion de supervisores (25 supervisores x 10 anos ≈ 250 evaluaciones). Z de Don Hernando = (78-72)/9 = 0.667. Esto lo ubica en el percentil 74.75 — mejor que el 75% de los supervisores historicos. Es bueno, pero no excepcional. El gerente confundia 'lleva mucho tiempo' (antiguedad) con 'es el mejor' (rendimiento). La diferencia entre un estadistico (dato puntual) y un parametro (referencia poblacional) es la clave para evaluar correctamente."
+          },
+          "B": {
+            "label": "Ascender a Don Hernando a jefe de planta",
+            "detail": "Si el gerente dice que es el mejor, premiale con un ascenso. Motiva a todos.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 0,
+              "quality": -2,
+              "climate": 5,
+              "efficiency": -5,
+              "reputation": 0
+            },
+            "risk": [-10000000, 3000000],
+            "narrative": "Ascendiste a Don Hernando. El primer mes fue caotico: excelente supervisor pero pesimo gerente. No sabia manejar presupuesto, programar produccion ni negociar con proveedores. Es el clasico Principio de Peter — lo ascendiste a su nivel de incompetencia. Tocó traerle un asistente para cubrir sus debilidades.",
+            "stats_insight": "Ascender basandose en una evaluacion de 78/100 sin considerar el contexto (μ=72, σ=9) es como comprar una accion porque subio sin saber si el mercado entero subio mas. Z=0.667 dice que esta 0.67 desviaciones arriba del promedio — bueno pero no excepcional. Ademas, la evaluacion 360 mide SUPERVISION, no gerencia. Es como usar el puntaje de un portero para decidir si es buen delantero. Las variables son diferentes."
+          },
+          "C": {
+            "label": "Evaluar a todos los supervisores actuales",
+            "detail": "Antes de decidir sobre Don Hernando, evaluas a los 5 supervisores actuales para tener contexto real.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-3000000, 5000000],
+            "narrative": "Evaluaste a los 5 supervisores. Resultados: 78, 81, 69, 73, 75. Sorpresa: Don Hernando NO es el mejor actual — Dona Patricia (81) lo supera. El gerente no lo sabia porque evaluaba por percepcion, no por datos. Ahora tienes un ranking objetivo y un plan de desarrollo para cada uno.",
+            "stats_insight": "Los 5 datos actuales (78, 81, 69, 73, 75) son una MUESTRA de la poblacion historica (μ=72, σ=9). La media muestral X̄ = 75.2. Si los comparas con μ=72, la muestra actual esta ligeramente arriba: Z = (75.2-72)/(9/√5) = 3.2/4.025 = 0.795, lo que es normal (p=0.213 unilateral). No hay evidencia de que los supervisores actuales sean diferentes del historico. Pero DENTRO de la muestra actual, Don Hernando (78) no es el maximo — Dona Patricia (81) si. El parametro poblacional te da contexto; el estadistico individual te da la evaluacion. Necesitas AMBOS para decidir."
+          },
+          "D": {
+            "label": "Confiar en el gerente sin revisar datos",
+            "detail": "Don Hernando lleva 12 anos y el gerente lo respalda. Los datos son frios, la experiencia vale mas.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": -3,
+              "climate": -2,
+              "efficiency": -3,
+              "reputation": -2
+            },
+            "risk": [-5000000, 0],
+            "narrative": "Confiaste en la percepcion del gerente. Don Hernando siguio igual — ni mejor ni peor. Pero Dona Patricia, que nadie reconocia, se desmotivo y se fue a la competencia. Resulto que era la mejor supervisora y la perdiste por no mirar los datos. El gerente dijo: 'No sabia que ella era tan buena'. Claro — nunca midio.",
+            "stats_insight": "Confiar solo en percepcion es usar un 'estimador sesgado': el gerente pondera antiguedad y relacion personal, no rendimiento objetivo. Su 'estimacion' de que Don Hernando es el mejor tiene un SESGO DE ANCLAJE (lleva 12 anos, lo conoce bien) y un SESGO DE DISPONIBILIDAD (lo ve todos los dias). La estadistica descriptiva (rankings, percentiles, Z-scores) existe para corregir estos sesgos cognitivos. No reemplaza la experiencia del gerente, pero la complementa con objetividad."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "chro-02",
+        "month": 2,
+        "title": "La capacitacion mas cara de Risaralda",
+        "situation": "El SENA de Dosquebradas ofrece un programa de 'Tecnologia de Alimentos' para tus operarios. Cuesta $45M y dura 3 meses. El gerente de produccion quiere inscribir a 15 operarios. Pero $45M es mucho — necesitas evidencia de que la capacitacion realmente mejora el rendimiento.",
+        "data_panel": "Prueba piloto: 20 operarios fueron evaluados ANTES (productividad paquetes/hora): promedio 42, σ=6. Los MISMOS 20 operarios fueron evaluados DESPUES de un mini-curso de 2 semanas: promedio 46, σ=5. Diferencia promedio pareada: 4 paquetes/hora, σ_diferencia=3.5.",
+        "concept": "Diferencia de medias pareadas (before/after)",
+        "options": {
+          "A": {
+            "label": "Inscribir a los 15 operarios en el SENA",
+            "detail": "Los datos del piloto muestran mejora significativa. Inviertes en la capacitacion completa de 3 meses.",
+            "effects": {
+              "cash": -45000000,
+              "market_share": 0,
+              "quality": 8,
+              "climate": 12,
+              "efficiency": 10,
+              "reputation": 5
+            },
+            "risk": [-8000000, 15000000],
+            "narrative": "Los 15 operarios fueron al SENA 3 meses. Volvieron como nuevos: entendian temperaturas de fritura, tiempos de empaque, control de calidad. La productividad subio 22% y los defectos bajaron 40%. Don Hernando dijo: 'Ahora si entienden por que les pido las cosas'. La inversion se pago en 5 meses con el ahorro en reprocesos.",
+            "stats_insight": "Test de medias pareadas: d̄ = 4, σ_d = 3.5, n = 20. t = d̄ / (σ_d/√n) = 4 / (3.5/√20) = 4 / 0.783 = 5.11. Con t=5.11 y 19 grados de libertad, p < 0.001. La mejora es ALTAMENTE significativa. IC 95% para la diferencia: 4 +/- 2.093*(3.5/√20) = 4 +/- 1.64 = [2.36, 5.64] paquetes/hora. Incluso en el peor caso, cada operario mejora al menos 2.36 paq/hora. Con 15 operarios x 8 horas x 22 dias: 15 * 2.36 * 8 * 22 = 6,254 paquetes adicionales/mes. A $2,500/paquete = $15.6M/mes adicionales. La inversion de $45M se recupera en ~3 meses."
+          },
+          "B": {
+            "label": "Capacitacion interna mas barata",
+            "detail": "En vez de SENA, creas un programa interno con Don Hernando y el jefe de calidad. Cuesta $10M.",
+            "effects": {
+              "cash": -10000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": 5,
+              "efficiency": 4,
+              "reputation": 1
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Don Hernando dio clases de 1 hora diaria durante 3 semanas. Los operarios mejoraron un poco pero Don Hernando no es pedagogo — explicaba a los gritos y la mitad no entendia. La productividad subio 8% en vez del 22% del piloto. Mejor que nada pero lejos del potencial.",
+            "stats_insight": "El piloto midio una mejora de d̄=4 con un MINI-CURSO (2 semanas, instructor profesional). Extrapolar ese resultado a una capacitacion interna (diferente instructor, diferente duracion, diferente metodologia) NO es valido estadisticamente. Es como decir 'la aspirina bajo la fiebre, entonces el tecito tambien'. Las condiciones del experimento cambiaron. Para la capacitacion interna, necesitarias su PROPIO piloto. El t-test solo aplica a las condiciones en las que se recolectaron los datos."
+          },
+          "C": {
+            "label": "Solo capacitar a los 5 mejores operarios",
+            "detail": "Mandas a los 5 mejores al SENA. Ellos transmiten el conocimiento al resto. Cuesta $15M.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 0,
+              "quality": 4,
+              "climate": -3,
+              "efficiency": 5,
+              "reputation": 2
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Los 5 mejores fueron al SENA y volvieron como expertos. Pero al intentar ensenarles a los otros, generaron resentimiento: 'Por que ellos si y nosotros no?'. Ademas, los mejores no siempre son buenos profesores. La transferencia de conocimiento fue parcial — solo el 40% de lo aprendido llego al resto del equipo.",
+            "stats_insight": "El piloto se hizo con 20 operarios ALEATORIOS, no con los 5 mejores. Si solo capacitas a los mejores, hay un sesgo de seleccion: los que ya son buenos mejoran mas facil (efecto techo mas bajo para ellos). Ademas, la 'transferencia de conocimiento' tiene su propia tasa de perdida — la literatura dice que solo se transfiere 20-40% en cascada. Si d̄=4 para los que asisten, los que reciben la cascada mejoran ~d̄=1.2 a 1.6. El ahorro en costo ($15M vs $45M) se pierde en productividad no realizada."
+          },
+          "D": {
+            "label": "No capacitar — contratar gente ya capacitada",
+            "detail": "En vez de capacitar, reemplazas a los 5 operarios con menor rendimiento por tecnologos del SENA.",
+            "effects": {
+              "cash": -20000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": -15,
+              "efficiency": 3,
+              "reputation": -5
+            },
+            "risk": [-15000000, 5000000],
+            "narrative": "Despediste a 5 operarios con familia en Dosquebradas para traer tecnologos jovenes. El sindicato amenazo con paro. Los operarios restantes quedaron con miedo: 'El proximo puedo ser yo'. El clima laboral cayo al piso. Los tecnologos nuevos eran buenos pero no conocian la maquinaria especifica de la planta. La productividad no mejoro en 2 meses.",
+            "stats_insight": "El test pareado mostro que los MISMOS operarios mejoran despues de capacitacion (t=5.11, p<0.001). Eso significa que el problema NO son las personas sino el CONOCIMIENTO. Reemplazar personas cuando los datos dicen que las mismas personas pueden mejorar es resolver el problema equivocado. Ademas, al perder 5 operarios pierdes 5 observaciones de tu linea de produccion — pierdes datos y experiencia especifica. El costo real incluye: indemnizacion (~$12M), reclutamiento (~$5M), curva de aprendizaje (~3 meses), y clima laboral destruido (intangible pero muy real)."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "chro-03",
+        "month": 3,
+        "title": "La encuesta que nadie quiso contestar",
+        "situation": "Mandaste una encuesta de clima laboral a los 80 empleados de la planta. Solo respondieron 28 (35% de respuesta). Los resultados son alarmantes: satisfaccion promedio de 3.1/5. Pero el gerente dice: 'Solo contestaron los amargados, no le pare bolas a eso'.",
+        "data_panel": "Encuesta enviada a 80 empleados. Respondieron 28 (35%). Satisfaccion promedio de los 28: 3.1/5, desviacion 0.9. Para referencia, la encuesta del ano pasado (72 respuestas de 80, 90% de respuesta) dio promedio 3.8/5.",
+        "concept": "Sesgo de no-respuesta y validez del muestreo",
+        "options": {
+          "A": {
+            "label": "Repetir encuesta con incentivo de respuesta",
+            "detail": "Ofreces medio dia libre a quien responda y mandas la encuesta por celular con seguimiento personalizado.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": 8,
+              "efficiency": -2,
+              "reputation": 3
+            },
+            "risk": [-3000000, 5000000],
+            "narrative": "La segunda ronda con incentivo logro 68 respuestas (85%). Resultado: satisfaccion promedio 3.4/5. Mejor que el 3.1 de los 'amargados' pero peor que el 3.8 del ano pasado. Habia un problema real de clima que la primera encuesta habia detectado (exagerado) pero el gerente queria ignorar. Ahora tenia datos solidos para actuar.",
+            "stats_insight": "Con solo 28 de 80 respuestas (35%), el sesgo de no-respuesta es grave. Los que NO respondieron probablemente son: (1) satisfechos que no se molestan, o (2) temerosos de represalias. El resultado de 3.1 probablemente SUBESTIMA la satisfaccion real (los insatisfechos tienen mas motivacion para responder — es el 'sesgo de queja'). Al subir la respuesta a 85% (68/80), obtuviste X̄=3.4, confirmando que 3.1 era sesgado hacia abajo. PERO tambien confirmando que la caida vs ano pasado (3.8→3.4) es REAL. El gerente tenia parcialmente razon (el 3.1 era pesimista) pero estaba equivocado en ignorar la senal."
+          },
+          "B": {
+            "label": "Tomar acciones basadas en los 28 datos",
+            "detail": "3.1/5 es preocupante. No puedes esperar — implementas mejoras de clima inmediatamente.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 5,
+              "efficiency": -3,
+              "reputation": 2
+            },
+            "risk": [-8000000, 5000000],
+            "narrative": "Implementaste cambios basandote en los 28 datos: sala de descanso nueva, horario flexible los viernes, y buzon de quejas anonimo. Los 28 que contestaron quedaron felices. Pero el 65% que no contesto no entendia los cambios: 'Por que pusieron un buzon si nadie se quejo?'. Gastaste en soluciones para problemas que quizas no existian para la mayoria.",
+            "stats_insight": "Tomar decisiones con una muestra autoseleccionada (no aleatoria) es peligroso. Los 28 respondentes NO son representativos de los 80 — se autoseleccionaron. El IC con n=28 es: 3.1 +/- 2.052*(0.9/√28) = 3.1 +/- 0.349 = [2.751, 3.449]. Este IC tiene buena precision PARA LOS QUE RESPONDIERON, pero NO para la poblacion total. Es como hacer una encuesta electoral solo con los que van a marchas: tienes datos precisos de los marchantes, no del electorado. Se necesita representatividad, no solo tamano."
+          },
+          "C": {
+            "label": "Hacer grupos focales con no-respondentes",
+            "detail": "Identificas a 15 de los que NO respondieron y los invitas a un grupo focal para entender por que no contestaron.",
+            "effects": {
+              "cash": -4000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 6,
+              "efficiency": -1,
+              "reputation": 4
+            },
+            "risk": [-2000000, 5000000],
+            "narrative": "Los grupos focales revelaron que los no-respondentes se dividian en: 40% 'no me importa, todo esta bien', 35% 'miedo a represalias', y 25% 'la encuesta es muy larga'. El miedo a represalias explico parte del sesgo: los que respondieron eran los que NO tenian miedo de quejarse. Solucion: encuesta ANONIMA verificable. El siguiente intento logro 90% de respuesta.",
+            "stats_insight": "Investigar la NO-RESPUESTA es tan importante como analizar la respuesta. En estadistica de encuestas, el sesgo de no-respuesta se modela como: E[X̄_observado] = p_R * μ_R + (1-p_R) * μ_NR, donde p_R es la proporcion de respuesta. Con p_R=0.35, si μ_R=3.1 (respondentes) y μ_NR fuera 3.8 (no-respondentes): E[X̄_real] = 0.35*3.1 + 0.65*3.8 = 1.085 + 2.47 = 3.555. El promedio real podria ser 3.55, no 3.1. Entender POR QUE no respondieron es la clave para estimar la direccion del sesgo."
+          },
+          "D": {
+            "label": "Hacerle caso al gerente — ignorar la encuesta",
+            "detail": "35% de respuesta no es confiable. El gerente conoce a su gente mejor que una encuesta.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": -3,
+              "climate": -10,
+              "efficiency": -3,
+              "reputation": -5
+            },
+            "risk": [-20000000, 0],
+            "narrative": "Ignoraste la encuesta. Dos meses despues, 8 operarios renunciaron la misma semana. Todos del turno noche. El sindicato presento un pliego de peticiones. El gerente se sorprendio: 'No se veian desmotivados'. Claro — los desmotivados no dicen nada, simplemente se van. La encuesta del 3.1 habia sido una senal que nadie escucho.",
+            "stats_insight": "Ignorar datos porque la tasa de respuesta es baja es un error. Si, 35% de respuesta tiene sesgo. Pero 3.1/5 cuando el historico era 3.8/5 es una SEÑAL que algo cambio. Incluso si el 3.1 esta sesgado hacia abajo, el cambio de 3.8 a 3.1 (diferencia de 0.7 en 5) es demasiado grande para ignorar. La tasa de respuesta MISMA es un dato: bajar de 90% a 35% indica que algo cambio en la relacion empleados-empresa. A veces el dato mas importante no es el numero sino la AUSENCIA de datos."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "chro-04",
+        "month": 4,
+        "title": "Bonificacion: merito o loteria?",
+        "situation": "Fin de ano se acerca y tienes $60M para bonificaciones. Antes se repartia igual para todos ($750,000 por persona). El gerente general quiere un sistema de merito basado en evaluacion de desempeno. El sindicato quiere mantener la reparticion igualitaria.",
+        "data_panel": "Evaluacion de desempeno de 80 empleados: distribucion normal con μ = 70/100 y σ = 12. El gerente quiere bonificar solo al top 25%. El sindicato quiere que sea parejo para todos.",
+        "concept": "Distribucion normal, percentiles y umbrales",
+        "options": {
+          "A": {
+            "label": "Sistema escalonado por percentiles",
+            "detail": "Top 25% recibe $1.5M, siguiente 50% recibe $750K, ultimo 25% recibe $375K. Todos reciben algo.",
+            "effects": {
+              "cash": -60000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": 5,
+              "efficiency": 8,
+              "reputation": 3
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Implementaste el sistema escalonado. El top 25% quedo motivadisimo — los mejores operarios se sintieron reconocidos. El 50% del medio dijo: 'Bueno, justo'. El 25% inferior se quejo un poco pero cuando les mostraste la rubrica de evaluacion, varios pidieron retroalimentacion para mejorar. El sindicato acepto con la condicion de que los criterios fueran publicos.",
+            "stats_insight": "Con μ=70 y σ=12, el percentil 75 (top 25%) esta en: X = μ + Z*σ = 70 + 0.674*12 = 78.09. El percentil 25 (limite inferior) esta en: X = 70 - 0.674*12 = 61.91. Asi: Top tier (>78): 20 empleados x $1,500,000 = $30M. Medio (62-78): 40 empleados x $750,000 = $30M. Base (<62): 20 empleados x $0 = $0... Ajustando para que sume $60M: Top $1.2M (20 personas=$24M), Medio $600K (40=$24M), Base $300K (20=$6M), Reserva $6M. Todos reciben algo, pero los mejores reciben 4x mas. La distribucion normal garantiza que los cortes son objetivos y matematicos, no arbitrarios."
+          },
+          "B": {
+            "label": "Solo al top 25% como quiere el gerente",
+            "detail": "Los 20 mejores reciben $3M cada uno. El resto no recibe nada. Meritocracia pura.",
+            "effects": {
+              "cash": -60000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": -12,
+              "efficiency": 5,
+              "reputation": -3
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "Los 20 mejores celebraron. Los 60 restantes se enfurecieron. El sindicato pidio reunion de emergencia. Tres operarios buenos (percentil 70-74, justo debajo del corte) renunciaron por 'injusticia'. Uno de ellos tenia evaluacion de 77 — a un punto del corte. La linea entre 'merece bono' y 'no merece nada' era arbitraria y todos lo sabian.",
+            "stats_insight": "El percentil 75 esta en 78.09 puntos. Un empleado con 77 NO recibe bono y uno con 79 recibe $3M. La diferencia de 2 puntos esta DENTRO del error de medicion de la evaluacion (si la evaluacion tiene confiabilidad 0.85, el error estandar de medicion es SEM = σ*√(1-r) = 12*√0.15 = 4.65 puntos). Eso significa que alguien con 77 podria realmente ser de 82, y alguien de 79 podria ser de 74. Cortar en un punto fijo ignora la INCERTIDUMBRE de la medicion. Los umbrales rigidos sobre variables continuas con error crean injusticias sistematicas."
+          },
+          "C": {
+            "label": "Igual para todos como quiere el sindicato",
+            "detail": "$750,000 para cada uno de los 80 empleados. Parejo, sin drama, sin resentimientos.",
+            "effects": {
+              "cash": -60000000,
+              "market_share": 0,
+              "quality": -2,
+              "climate": 3,
+              "efficiency": -5,
+              "reputation": 0
+            },
+            "risk": [-3000000, 3000000],
+            "narrative": "Repartiste parejo. Nadie se quejo. Pero nadie se motivo tampoco. Los mejores empleados pensaron: 'Para que esforzarme si recibo lo mismo que el que llega tarde?'. La productividad del top 25% cayo 8% en enero — efecto desmotivacion de los mejores. El sistema igualitario premio la mediocridad.",
+            "stats_insight": "Un sistema igualitario asume implicitamente que la varianza del desempeno es 0 — que todos aportan igual. Pero con σ=12, hay una diferencia ENORME entre el mejor (percentil 99: 70+2.326*12=97.9) y el peor (percentil 1: 70-2.326*12=42.1). Son 56 puntos de diferencia. Premiar igual a alguien de 98 y a alguien de 42 ignora completamente la distribucion. Estadisticamente, es como calcular un promedio y no reportar la varianza — pierdes toda la informacion sobre diferencias individuales."
+          },
+          "D": {
+            "label": "Bono base + multiplicador por desempeno",
+            "detail": "Todos reciben $400K base + un multiplicador de 0.5x a 2x segun su posicion en la distribucion.",
+            "effects": {
+              "cash": -60000000,
+              "market_share": 0,
+              "quality": 4,
+              "climate": 7,
+              "efficiency": 6,
+              "reputation": 4
+            },
+            "risk": [-3000000, 8000000],
+            "narrative": "El sistema hibrido fue un hit. Todos tenian un piso ($400K) y un techo proporcional al desempeno. El operario con evaluacion de 95 recibio $1.6M; el de 45 recibio $400K. Nadie se quedo en ceros y los mejores fueron reconocidos proporcionalmente. El sindicato acepto porque todos recibian algo.",
+            "stats_insight": "Este sistema usa la distribucion de manera PROPORCIONAL, no como corte. Multiplicador = 0.5 + 1.5 * (score - min) / (max - min). Si min=42 y max=98: alguien con 70 (media) recibe: 0.5 + 1.5*(70-42)/(98-42) = 0.5 + 0.75 = 1.25x → $400K * 1.25 = $500K. Alguien con 90: 0.5 + 1.5*(90-42)/56 = 0.5 + 1.286 = 1.786x → $714K. Es una transformacion LINEAL de la distribucion normal de desempeno a la distribucion de bonificacion. Mantiene la forma de la distribucion pero con piso garantizado. Matematicamente elegante y humanamente justo."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "chro-05",
+        "month": 5,
+        "title": "Se nos van los nuevos",
+        "situation": "De los ultimos 30 empleados contratados en el ultimo ano, 12 renunciaron antes de cumplir 6 meses (40%). El gerente dice que es 'normal en la industria'. El sindicato dice que es por malas condiciones. Necesitas datos para saber quien tiene razon y que hacer.",
+        "data_panel": "Tasa de desercion en tu empresa (ultimo ano): 12 de 30 nuevos renuncian antes de 6 meses (p̂ = 0.40). Tasa promedio del sector de alimentos en el Eje Cafetero (segun ANDI): 22%. Error estandar del sector reportado con n=500 empresas.",
+        "concept": "Test de proporcion — comparar con referencia del sector",
+        "options": {
+          "A": {
+            "label": "Plan de retencion integral con datos",
+            "detail": "Implementas: mentoria, mejor onboarding, revision salarial y encuesta de salida para nuevos empleados.",
+            "effects": {
+              "cash": -20000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": 10,
+              "efficiency": 5,
+              "reputation": 5
+            },
+            "risk": [-5000000, 10000000],
+            "narrative": "El plan de retencion incluia: buddy system (cada nuevo con un veterano), revision salarial a los 3 meses, y encuesta a los 30/60/90 dias. En los siguientes 6 meses, de 20 nuevos solo se fueron 3 (15%). La retencion mejoro dramaticamente. El costo del plan ($20M) se recupero en ahorro de reclutamiento: cada reemplazo costaba $8M entre busqueda, seleccion y curva de aprendizaje.",
+            "stats_insight": "Test de proporcion: H₀: p = 0.22 (igual al sector), H₁: p > 0.22. Z = (p̂ - p₀) / √(p₀*q₀/n) = (0.40 - 0.22) / √(0.22*0.78/30) = 0.18 / 0.0756 = 2.381. Con Z=2.381, p-valor = 0.0086 (unilateral). La tasa de desercion es SIGNIFICATIVAMENTE mayor que el sector al 1%. El gerente estaba equivocado: no es 'normal'. Tu empresa tiene CASI EL DOBLE de la tasa del sector. El IC 95% para tu tasa: 0.40 +/- 1.96*√(0.40*0.60/30) = [0.225, 0.575]. Incluso el limite inferior (22.5%) apenas iguala al sector. El problema es real y requiere accion."
+          },
+          "B": {
+            "label": "Subir salarios 15% para nuevos empleados",
+            "detail": "Atacas lo que crees que es la causa principal: plata. Subes salario de entrada 15%.",
+            "effects": {
+              "cash": -35000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 5,
+              "efficiency": 0,
+              "reputation": 2
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "Subiste salarios para nuevos. La desercion bajo a 30% — mejor, pero todavia por encima del sector. El problema: las encuestas de salida decian que la razon principal no era plata sino 'falta de acompanamiento' y 'no me explicaron bien el trabajo'. Gastaste $35M tratando un sintoma sin diagnosticar la causa raiz.",
+            "stats_insight": "Sin hacer analisis de CAUSAS, subir salario es un disparo al aire. El test confirma que p̂=0.40 es anormalmente alto (Z=2.381, p=0.009). Pero Z no dice POR QUE es alto. Es como saber que tienes fiebre (dato) pero recetar sin examinar. Si la causa principal es onboarding deficiente (no salario), la solucion salarial tiene baja 'potencia' — ataca el factor equivocado. En estadistica, un test te dice SI hay un efecto, no CUAL es la causa. Para eso necesitas datos cualitativos (encuestas de salida) o un diseno experimental (probar intervenciones distintas)."
+          },
+          "C": {
+            "label": "Filtrar mejor en la seleccion de personal",
+            "detail": "El problema es que contratamos mal. Implementas pruebas psicotecnicas mas rigurosas y periodo de prueba mas largo.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": -3,
+              "efficiency": 2,
+              "reputation": 0
+            },
+            "risk": [-5000000, 5000000],
+            "narrative": "Endureciste el filtro de seleccion. Ahora tardas 6 semanas en contratar (antes 2). Perdiste 3 candidatos buenos que se fueron a la competencia mientras esperaban tu decision. De los que contrataste, la desercion bajo a 33% — algo mejor pero el proceso de onboarding seguia siendo el mismo desastre. Mas filtro no compensa un mal proceso.",
+            "stats_insight": "Mejorar la seleccion cambia la POBLACION de nuevos empleados (filtra a los de menor fit), pero no cambia el AMBIENTE al que llegan. Si 40% se va por malas condiciones de onboarding, filtrar mejor solo retrasa la salida — los bien seleccionados tambien se van si la experiencia es mala. El test Z=2.381 compara tu tasa con el sector. Si el sector tiene mejor onboarding (no solo mejor seleccion), copiar solo el filtro inicial es copiar la mitad de la solucion. Es como copiar la respuesta sin copiar el procedimiento."
+          },
+          "D": {
+            "label": "Aceptar que 40% es normal para tu empresa",
+            "detail": "El gerente tiene razon: los jovenes hoy no se quedan en ningun trabajo. Es la generacion, no la empresa.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": -5,
+              "climate": -8,
+              "efficiency": -5,
+              "reputation": -5
+            },
+            "risk": [-15000000, 0],
+            "narrative": "Aceptaste el 40% como 'lo normal'. En 6 meses mas se fueron 14 de 35 nuevos (misma tasa). El costo acumulado en reclutamiento y capacitacion desperdiciada: $112M al ano (14 x $8M). La competencia, con tasa del 20%, tenia equipos estables y productivos. Tu planta era una puerta giratoria.",
+            "stats_insight": "El test estadistico RECHAZA la hipotesis de que tu tasa es 'normal' (Z=2.381, p=0.009). Decir que '40% es normal' cuando los datos muestran que es significativamente diferente al 22% del sector es NEGAR la evidencia estadistica. El costo de la negacion: cada empleado que se va cuesta ~$8M en reemplazo. Con 12 salidas extras (vs 6.6 que seria al 22%): 5.4 salidas innecesarias x $8M = $43.2M/ano desperdiciados. Los datos no solo te decian que habia un problema — te decian cuanto te estaba costando ignorarlo."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "chro-06",
+        "month": 6,
+        "title": "El gran plan de retencion 2027",
+        "situation": "Despues de 6 meses de datos, necesitas presentar a la junta directiva un plan de retencion para el 2027. Tienes evidencia de que la rotacion cayo pero quieres saber si es suficiente o necesitas hacer mas. La junta quiere numeros, no presentimientos.",
+        "data_panel": "Despues de implementar el plan de retencion (mes 5): de 20 nuevos empleados, solo 3 se fueron en 6 meses (p̂ = 0.15). IC 95% para la proporcion: [0.032, 0.268]. La meta del sector es 22% o menos. Presupuesto solicitado para 2027: $80M.",
+        "concept": "Intervalo de confianza para proporcion y toma de decisiones",
+        "options": {
+          "A": {
+            "label": "Mantener plan actual con monitoreo trimestral",
+            "detail": "Los datos muestran que el plan funciona. Lo mantienes y mides cada 3 meses para ajustar.",
+            "effects": {
+              "cash": -25000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": 8,
+              "efficiency": 5,
+              "reputation": 5
+            },
+            "risk": [-5000000, 10000000],
+            "narrative": "Presentaste a la junta: 'Pasamos de 40% a 15% de desercion. El IC al 95% muestra que podemos estar entre 3% y 27%. Necesitamos mas datos pero la tendencia es clara'. La junta aprobo $25M para mantener el plan y monitorear. Un ano despues, con 60 empleados nuevos, la tasa se estabilizo en 18% — dentro del rango del sector. Exito.",
+            "stats_insight": "El IC [3.2%, 26.8%] es ANCHO porque n=20 es pequeno. El limite superior (26.8%) todavia supera la meta del sector (22%). Con 95% de confianza, NO podemos afirmar que ya cumplimos la meta. Pero p̂=15% es prometedor. Para estrechar el IC, necesitas mas datos (mas tiempo). Con n=60 en un ano: si p se mantiene en 15%, IC = 0.15 +/- 1.96*√(0.15*0.85/60) = [0.060, 0.240]. El limite superior baja a 24% — todavia amplio pero mejorando. La decision correcta es mantener y monitorear hasta tener evidencia concluyente."
+          },
+          "B": {
+            "label": "Ampliar el plan con $80M de presupuesto",
+            "detail": "15% es bueno pero no suficiente. Pides presupuesto para agregar gimnasio, guarderia y capacitacion permanente.",
+            "effects": {
+              "cash": -80000000,
+              "market_share": 0,
+              "quality": 3,
+              "climate": 12,
+              "efficiency": 2,
+              "reputation": 8
+            },
+            "risk": [-15000000, 10000000],
+            "narrative": "La junta aprobo los $80M despues de ver los datos. Construiste un area de bienestar con gimnasio pequeno y convenio con guarderia. Los empleados no lo podian creer. La retencion se disparo: en el siguiente ano, solo 2 de 40 nuevos se fueron (5%). La empresa se volvio el empleador mas deseado de Dosquebradas. Los de la competencia querian venirse a trabajar contigo.",
+            "stats_insight": "El IC [3.2%, 26.8%] tiene un rango de 23.6 puntos porcentuales — demasiada incertidumbre para invertir $80M con confianza. El limite superior (26.8%) indica que es POSIBLE que la mejora sea ilusoria (podrias estar en 27%, cerca del 40% original). Con n=20, pedir $80M es arriesgado estadisticamente. Si la tasa real fuera 27% (no 15%), los $80M habrian sido mal invertidos. La decision fue AUDAZ, no basada en datos. Funciono, pero por suerte, no por estadistica. Un enfoque mas prudente habria sido esperar 1 trimestre mas de datos."
+          },
+          "C": {
+            "label": "Eliminar el plan — fue coincidencia",
+            "detail": "20 empleados es muy poca muestra. La mejora puede ser coincidencia. Volvemos al sistema anterior.",
+            "effects": {
+              "cash": 20000000,
+              "market_share": 0,
+              "quality": -5,
+              "climate": -10,
+              "efficiency": -5,
+              "reputation": -5
+            },
+            "risk": [-20000000, 0],
+            "narrative": "Eliminaste el plan de retencion. En 3 meses, la rotacion volvio al 35%. Los empleados que se habian motivado con el buddy system y las encuestas de 30/60/90 dias se sintieron traicionados. El mensaje fue claro: 'La empresa no nos valora'. Dos supervisores experimentados renunciaron en solidaridad. Desastre total.",
+            "stats_insight": "Si bien es cierto que n=20 es pequeno y el IC es ancho, el CAMBIO de p̂=0.40 a p̂=0.15 es sustancial. Test para comparar antes (12/30=0.40) vs despues (3/20=0.15): Z = (0.40-0.15)/√(p̂_pool*(1-p̂_pool)*(1/30+1/20)), donde p̂_pool = 15/50 = 0.30. Z = 0.25/√(0.30*0.70*0.0833) = 0.25/0.1323 = 1.889, p = 0.059 (bilateral). Esta en el borde de significancia. NO es concluyente, pero hay indicios fuertes. Eliminar un programa que muestra mejora prometedora por 'muestra pequena' es tirar al bebe con el agua de la banera. Lo correcto es seguir midiendo, no cancelar."
+          },
+          "D": {
+            "label": "Comparar con la competencia antes de decidir",
+            "detail": "Antes de pedir presupuesto, investigas que hacen las otras empresas de platanitos para retener gente.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": 3,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-3000000, 5000000],
+            "narrative": "Investigaste a la competencia. Descubriste que una empresa de platanitos en Armenia tenia rotacion del 12% con un programa muy similar al tuyo pero que incluia un bono de permanencia a los 6 meses ($500K). Copiaste la idea y le sumaste a tu plan. Costo minimo, impacto maximo.",
+            "stats_insight": "El benchmarking es estadistica comparativa: posicionas tu p̂=0.15 contra los 'parametros' de referencia del mercado. Si la competencia tiene 12%, 18%, 25%, la media del sector es ~18.3%. Tu 15% esta en buen rango pero con IC [3.2%, 26.8%] que es ancho. El benchmarking te da CONTEXTO para interpretar tu IC. Si las mejores empresas estan en 10-12%, tu limite inferior (3.2%) es alcanzable. Si las peores estan en 25-30%, tu limite superior (26.8%) es zona de peligro. Los datos de la competencia funcionan como informacion a priori que complementa tu muestra pequena."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      }
+    ],
+    "ANALYST": [
+      {
+        "id": "analyst-01",
+        "month": 1,
+        "title": "Como medir sin medir todo?",
+        "situation": "Eres el primer analista de datos en la historia de esta empresa de platanitos. El gerente general te dice: 'Necesitamos datos de todo: produccion, ventas, calidad, satisfaccion, proveedores. Pero no tenemos presupuesto infinito. Diseneme un plan de muestreo inteligente'.",
+        "data_panel": "La empresa tiene: 35,000 paquetes de produccion semanal, 4,800 facturas anuales, 80 empleados, 3 turnos de produccion, 120 puntos de venta entre D1/Exito/Ara/tiendas, y 5 proveedores de platano verde. Presupuesto para datos: $15M/trimestre.",
+        "concept": "Tipos de muestreo: aleatorio simple, estratificado, sistematico, por conglomerados",
+        "options": {
+          "A": {
+            "label": "Muestreo estratificado por area clave",
+            "detail": "Divides la empresa en estratos (produccion, ventas, calidad, personal) y muestrear proporcionalmente dentro de cada uno.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 2,
+              "quality": 5,
+              "climate": 3,
+              "efficiency": 5,
+              "reputation": 5
+            },
+            "risk": [-3000000, 8000000],
+            "narrative": "Disenaste un plan impecable: calidad se mide con muestreo sistematico (cada 100 paquetes), ventas con muestreo por conglomerados (20 tiendas representativas), satisfaccion con muestreo aleatorio estratificado por turno, y proveedores con muestreo aleatorio simple. Cada area tenia su frecuencia y tamano de muestra optimo. El gerente quedo encantado: por primera vez tenia un dashboard con datos REALES.",
+            "stats_insight": "El muestreo estratificado asegura representacion de cada subgrupo. Para calidad: estrato 'turno dia' (50% produccion), 'turno noche' (35%), 'turno fin de semana' (15%). Si muestreos n=100 paquetes proporcionalmente: 50 de dia, 35 de noche, 15 de finde. Esto garantiza que si un turno tiene problemas, lo detectas. El muestreo aleatorio simple de n=100 podria darte 70 de dia y 2 de finde — subrepresentando el turno problematico. Ventaja del estratificado: Var(X̄_est) ≤ Var(X̄_SRS) siempre, con igualdad solo si todos los estratos tienen la misma media."
+          },
+          "B": {
+            "label": "Medir todo pero con frecuencia baja",
+            "detail": "Revisas todo una vez al mes: todos los paquetes de un dia, todas las facturas del mes, todos los empleados.",
+            "effects": {
+              "cash": -15000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": -2,
+              "efficiency": -3,
+              "reputation": 2
+            },
+            "risk": [-8000000, 3000000],
+            "narrative": "Un dia al mes parabas todo para 'dia de medicion'. Produccion se atrasaba, los empleados se estresaban con la encuesta de clima OTRA VEZ, y las facturas del mes se revisaban todas el ultimo viernes. El gerente recibia datos una vez al mes — demasiado tarde para corregir problemas en tiempo real.",
+            "stats_insight": "Medir 'todo una vez' es un CENSO periodico, no muestreo. Un dia de produccion son ~5,000 paquetes de los 140,000 mensuales (3.6%). Es como tomar una foto — captura un instante pero pierde la variabilidad entre dias. Si el martes la maquina esta perfecta y el viernes falla, tu 'censo del martes' no detecta el problema. El muestreo sistematico (cada N paquetes, todos los dias) detecta variacion temporal. El censo periodico tiene SESGO TEMPORAL: solo captura el dia elegido."
+          },
+          "C": {
+            "label": "Solo medir lo que el gerente pida",
+            "detail": "Esperas a que surjan problemas y entonces mides. Reactivo, no proactivo. Ahorra presupuesto.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": -2,
+              "quality": -5,
+              "climate": -3,
+              "efficiency": -3,
+              "reputation": -3
+            },
+            "risk": [-10000000, 0],
+            "narrative": "El primer mes no mediste nada porque 'todo estaba bien'. El segundo mes hubo un problema de calidad que habrias detectado 3 semanas antes si tuvieras datos. El gerente pregunto: 'Para que te contratamos si no tienes datos?'. Tercera semana: el proveedor de Cartago mando platano malo y no tenias historico para comparar. Empezaste desde cero.",
+            "stats_insight": "El muestreo reactivo equivale a no tener sistema de alerta temprana. En control de calidad, la regla es: el costo de DETECTAR un problema es 10x menor que el costo de CORREGIRLO despues de que llega al cliente. Sin baseline (datos historicos), no puedes calcular Z-scores, no puedes construir intervalos de confianza, no puedes comparar turnos o proveedores. Los datos historicos son el PARAMETRO contra el cual evaluas cada nuevo estadistico. Sin parametro, cada dato es un punto flotando sin referencia."
+          },
+          "D": {
+            "label": "Automatizar con sensores y software",
+            "detail": "Compras basculas digitales, sensores de temperatura y un software que recolecta datos automaticamente. Cuesta $50M.",
+            "effects": {
+              "cash": -50000000,
+              "market_share": 1,
+              "quality": 8,
+              "climate": 0,
+              "efficiency": 3,
+              "reputation": 3
+            },
+            "risk": [-15000000, 10000000],
+            "narrative": "Gastaste 3 veces el presupuesto trimestral en sensores y software. El gerente financiero casi se desmaya. Pero al mes 3, tenias datos en TIEMPO REAL: peso de cada paquete, temperatura de fritura, humedad de bodega. El problema: tenias MILLONES de datos y no sabias que hacer con ellos. Informacion sin analisis es solo ruido caro.",
+            "stats_insight": "La automatizacion te da un CENSO continuo (N → ∞), eliminando el error muestral. Pero crea un problema nuevo: con millones de datos, CUALQUIER diferencia es estadisticamente significativa. Si comparas el peso promedio de la manana (100.01g) vs la tarde (99.99g) con n=50,000, Z = 0.02/(4/√50,000) = 1.118 puede ser significativo por puro tamano de muestra. Necesitas distinguir significancia ESTADISTICA de significancia PRACTICA. Ademas, el 80% del valor de los datos viene del 20% de las variables clave. A veces un buen muestreo de lo importante vale mas que un censo de todo."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      },
+      {
+        "id": "analyst-02",
+        "month": 2,
+        "title": "Cuantos platanitos vendemos en marzo?",
+        "situation": "El gerente comercial necesita un pronostico de ventas para marzo (mes de Semana Santa). Históricamente las ventas suben pero nadie sabe cuanto exactamente. El pronostico determina cuanta materia prima comprar: si te pasas, desperdicias; si te quedas corto, pierdes ventas.",
+        "data_panel": "Ventas semanales de los ultimos 2 marzos (8 semanas): 38K, 42K, 39K, 45K, 40K, 43K, 37K, 44K paquetes. Promedio: 41,000. Desviacion: 2,928. Enero y febrero de este ano: promedio 35,000/semana (mas bajo de lo normal).",
+        "concept": "Teorema Central del Limite y distribucion muestral",
+        "options": {
+          "A": {
+            "label": "Pronosticar con IC al 95% para planificar",
+            "detail": "Usas el promedio historico de marzo +/- margen para definir un rango y comprar materia prima para el limite superior.",
+            "effects": {
+              "cash": 10000000,
+              "market_share": 3,
+              "quality": 2,
+              "climate": 2,
+              "efficiency": 5,
+              "reputation": 5
+            },
+            "risk": [-5000000, 12000000],
+            "narrative": "Pronosticaste 41,000 +/- 2,030 paquetes/semana. Compraste materia prima para 43,000 (limite superior). Semana Santa fue fuerte: vendiste 44,500 la mejor semana. Casi te quedas corto pero el buffer del IC te salvo. El gerente quedo impresionado: 'Primera vez que no sobra ni falta mucho'. Pronostico casi perfecto.",
+            "stats_insight": "Por el Teorema Central del Limite, con n=8 semanas, la media muestral se distribuye aproximadamente normal: X̄ ~ N(μ, σ/√n). IC 95%: 41,000 +/- t₇,0.025 * (2,928/√8) = 41,000 +/- 2.365 * 1,035 = 41,000 +/- 2,448 = [38,552, 43,448]. Para planificar materia prima, usas el LIMITE SUPERIOR (43,448 ≈ 43,500) porque el costo de quedarse corto (ventas perdidas) es mayor que el de sobrar (inventario). Esta es una aplicacion directa del IC: no pronosticas UN numero sino un RANGO, y decides donde posicionarte segun el costo asimetrico del error."
+          },
+          "B": {
+            "label": "Usar el promedio simple: 41,000",
+            "detail": "El promedio de los 2 marzos anteriores es 41,000. Compras para exactamente eso.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 0
+            },
+            "risk": [-12000000, 8000000],
+            "narrative": "Compraste para 41,000/semana. Las semanas buenas (44K, 43K) te quedaste corto y perdiste ventas. Las semanas flojas (37K, 39K) te sobro. En promedio estuvo bien pero la experiencia fue de montania rusa: unos dias sin producto en gondola, otros con exceso. Ni el comercial ni el de bodega quedaron contentos.",
+            "stats_insight": "Usar solo X̄=41,000 es usar la estimacion PUNTUAL sin considerar la incertidumbre. Con σ=2,928, cada semana puede variar entre ~35,000 y ~47,000 (±2σ). Comprar para la media garantiza que el 50% de las semanas te sobra y el 50% te falta. El IC te dice que con 95% de confianza, la media verdadera esta entre 38,552 y 43,448. Comprar para el punto medio ignora la variabilidad INDIVIDUAL de cada semana. Para operaciones, necesitas planificar para la variabilidad, no para el promedio."
+          },
+          "C": {
+            "label": "Ajustar por la baja de enero-febrero",
+            "detail": "Enero-febrero estuvo en 35,000. Proyectas marzo conservador: 37,000/semana.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": -3,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": -3,
+              "reputation": -2
+            },
+            "risk": [-15000000, 3000000],
+            "narrative": "Proyectaste bajo y compraste materia prima para 37,000. Semana Santa llego con fuerza: las ventas explotaron a 44,000. Te quedaste sin platanitos el Jueves Santo — el DIA de mas ventas de snacks del ano. D1 llamo furioso: 'Me dejaron sin producto en Semana Santa, eso no se hace'. Tu competencia lleno el hueco.",
+            "stats_insight": "El error fue mezclar dos distribuciones diferentes. Enero-febrero y marzo tienen PATRONES ESTACIONALES distintos. La media de enero-febrero (35K) no es estimador valido para marzo — es como usar la temperatura de julio para pronosticar diciembre. Los datos de marzos anteriores (μ=41K) son la distribucion correcta para pronosticar marzo. El TCL aplica a datos de la MISMA poblacion. Enero-febrero y marzo son poblaciones DIFERENTES estacionalmente. Un buen analista debe separar la estacionalidad antes de pronosticar."
+          },
+          "D": {
+            "label": "Pedir al equipo comercial su 'gut feeling'",
+            "detail": "Los vendedores estan en la calle y sienten el mercado. Que cada uno de un numero y promedias.",
+            "effects": {
+              "cash": -3000000,
+              "market_share": -1,
+              "quality": 0,
+              "climate": 3,
+              "efficiency": -2,
+              "reputation": -3
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "Los 5 vendedores pronosticaron: 38K, 45K, 42K, 50K, 35K. Promedio: 42,000. Pero la varianza entre opiniones era enorme (σ=5,700). El vendedor de Armenia estaba pesimista y el de Pereira era super optimista. Compraste para 42K y estuvo cerca del historico (41K). Pero el proceso no fue reproducible — dependia de quien gritara mas fuerte.",
+            "stats_insight": "El 'pronostico de expertos' tiene media=42K, no lejano de 41K historico. Pero σ_expertos=5,700 vs σ_datos=2,928. La variabilidad de las opiniones es DOBLE que la de los datos reales. El SE del pronostico experto = 5,700/√5 = 2,549, vs el del historico = 2,928/√8 = 1,035. El IC del metodo experto es 2.5 veces mas ancho. Los datos historicos son estimadores mas EFICIENTES que las opiniones. El TCL garantiza que X̄ de datos converge a μ; no hay teorema que garantice lo mismo para opiniones. Datos > opiniones, siempre."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "analyst-03",
+        "month": 3,
+        "title": "Algo raro pasa en los martes",
+        "situation": "Al revisar datos de ventas, notas un patron extrano: las ventas de los martes son sistematicamente 25% mas altas que el resto de la semana en las tiendas de Dosquebradas. El gerente comercial dice que es coincidencia. Tu instinto de analista dice que no.",
+        "data_panel": "Ventas promedio diarias en Dosquebradas (ultimos 3 meses): Lunes 850, Martes 1,120, Miercoles 880, Jueves 870, Viernes 910, Sabado 950. Desviacion estandar por dia: ~120 paquetes. Martes tiene σ=180 (mas variable tambien).",
+        "concept": "Probabilidades y deteccion de eventos raros",
+        "options": {
+          "A": {
+            "label": "Investigar la causa del pico de martes",
+            "detail": "Mandas al equipo a las tiendas de Dosquebradas un martes para observar que esta pasando en campo.",
+            "effects": {
+              "cash": -3000000,
+              "market_share": 3,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 5,
+              "reputation": 5
+            },
+            "risk": [-2000000, 10000000],
+            "narrative": "Mandaste al equipo un martes a las tiendas. Descubrimiento: resulta que los martes hay mercado campesino en la plaza de Dosquebradas y miles de personas pasan por las tiendas cercanas. Tu competencia no tenia distribucion en esas tiendas. Reforzaste inventario de martes y ademas negociaste un puesto en la plaza del mercado. Las ventas de martes subieron otro 15%.",
+            "stats_insight": "El promedio general es (850+1120+880+870+910+950)/6 = 930. El martes (1,120) esta a Z = (1,120-930)/120 = 1.583 desviaciones de la media general. P(X ≥ 1,120) = P(Z ≥ 1.583) = 0.057 si fuera aleatorio. Pero esto ocurre CADA martes, no un solo martes. La probabilidad de que 12 martes consecutivos (3 meses) esten todos por encima del promedio por azar es P = 0.057^12 ≈ 1.36 x 10⁻¹⁵. Es VIRTUALMENTE IMPOSIBLE que sea coincidencia. Cuando un patron se repite sistematicamente, la estadistica te dice que hay una CAUSA, no suerte."
+          },
+          "B": {
+            "label": "Redistribuir inventario hacia los martes",
+            "detail": "Sin investigar la causa, aumentas 30% el inventario de martes y reduces 5% los otros dias.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": 3,
+              "reputation": 1
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Subiste inventario de martes y vendiste mas. Buena decision tactica. Pero como no investigaste la causa, no descubriste lo del mercado campesino. Cuando la alcaldia movio el mercado a los jueves (3 meses despues), tu inventario de martes empezo a sobrar y no entendias por que. Sin entender la causa, no puedes anticipar cambios.",
+            "stats_insight": "Redistribuir basandose en el patron es CORRELACION sin CAUSALIDAD. Los datos muestran: martes → ventas altas. Pero no dicen POR QUE. Si la causa es el mercado campesino, el patron desaparece si el mercado se mueve. Si la causa es cultural (martes de compras), el patron es estable. Sin conocer la causa, tu modelo predictivo es fragil. En estadistica: la correlacion te dice QUE optimizar hoy; la causalidad te dice si puedes confiar en que funcione manana."
+          },
+          "C": {
+            "label": "Recolectar 3 meses mas de datos",
+            "detail": "3 meses pueden ser coincidencia estacional. Mejor juntar 6 meses para confirmar.",
+            "effects": {
+              "cash": -2000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 0,
+              "efficiency": -2,
+              "reputation": 0
+            },
+            "risk": [-5000000, 3000000],
+            "narrative": "Esperaste 3 meses mas. El patron se confirmo: los martes seguian 25% arriba. Ahora tenias datos de sobra. Pero durante esos 3 meses, tu competencia tambien detecto el patron y puso un puesto en la plaza del mercado campesino. Llegaste con los datos perfectos pero la oportunidad ya la habia tomado otro.",
+            "stats_insight": "Con 3 meses (12 martes), la probabilidad de que sea azar ya era P ≈ 10⁻¹⁵ — no necesitabas mas datos. El error estandar de la media de martes con n=12 es SE = 180/√12 = 51.96. IC 95%: 1,120 +/- 1.96*52 = [1,018, 1,222]. El limite inferior (1,018) sigue siendo MUCHO mayor que el promedio general (930). Esperando 3 meses mas tendrias n=24 y SE=36.7 — un poco mas preciso pero la conclusion NO cambia. Cuando la evidencia es abrumadora, mas datos no agregan valor — agregan demora."
+          },
+          "D": {
+            "label": "Es coincidencia, ignorar el patron",
+            "detail": "El gerente comercial tiene razon: los datos fluctuan y ver patrones donde no hay es un sesgo cognitivo.",
+            "effects": {
+              "cash": 0,
+              "market_share": -2,
+              "quality": 0,
+              "climate": -2,
+              "efficiency": -2,
+              "reputation": -3
+            },
+            "risk": [-8000000, 0],
+            "narrative": "Ignoraste el patron. Tu competencia no. Ellos pusieron promotora en la plaza de Dosquebradas los martes y capturaron el 30% de los compradores del mercado campesino. Un semestre despues, su participacion en Dosquebradas subio 8 puntos. El patrón era real, la oportunidad era real, y la dejaste ir.",
+            "stats_insight": "Decir que es 'coincidencia' cuando P < 10⁻¹⁵ es estadisticamente indefendible. Para referencia: la probabilidad de que te caiga un rayo es ~10⁻⁶. La probabilidad de que 12 martes consecutivos esten todos arriba del promedio por azar es un MILLON de veces mas improbable que un rayo. A veces nuestro cerebro ve patrones donde no hay (pareidolia), pero la estadistica sirve para distinguir patrones reales de ilusiones. Z=1.583 con repeticion sistematica es senal, no ruido."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "B"]
+      },
+      {
+        "id": "analyst-04",
+        "month": 4,
+        "title": "Dos proveedores, un dolor de cabeza",
+        "situation": "Usas platano del proveedor de Pereira y del de Cartago. El jefe de produccion se queja de que la calidad final del platanito es 'muy variable'. Necesitas determinar si el problema es UN proveedor o la COMBINACION de ambos.",
+        "data_panel": "Proveedor Pereira: indice de calidad μ₁=7.5, σ₁=0.8 (por racimo). Proveedor Cartago: indice de calidad μ₂=7.2, σ₂=1.1 (por racimo). Cada paquete de platanitos usa platano de AMBOS proveedores mezclado (50/50). Calidad del paquete final = promedio de ambos.",
+        "concept": "Combinacion lineal de variables aleatorias — las varianzas se suman",
+        "options": {
+          "A": {
+            "label": "Separar lotes por proveedor, no mezclar",
+            "detail": "Dejas de mezclar platano. Cada lote usa un solo proveedor. Alternas entre proveedores por dia.",
+            "effects": {
+              "cash": -5000000,
+              "market_share": 0,
+              "quality": 8,
+              "climate": 2,
+              "efficiency": -3,
+              "reputation": 3
+            },
+            "risk": [-5000000, 8000000],
+            "narrative": "Separaste los lotes y la calidad se volvio mas predecible. Los dias de Pereira la calidad era consistentemente buena (σ=0.8). Los dias de Cartago, mas variable (σ=1.1) pero manejable. El jefe de produccion por fin podia anticipar: 'Hoy es dia Cartago, ojo con las freidoras'. Los paquetes de Pereira se convirtieron en la linea premium.",
+            "stats_insight": "Cuando mezclas 50/50, la calidad del paquete es Y = 0.5*X₁ + 0.5*X₂. E[Y] = 0.5*7.5 + 0.5*7.2 = 7.35. Var(Y) = 0.5²*σ₁² + 0.5²*σ₂² = 0.25*0.64 + 0.25*1.21 = 0.16 + 0.3025 = 0.4625. σ_Y = 0.68. PERO esto asume independencia. Si mezclar introduce variabilidad adicional (lotes no homogeneos), la varianza REAL es mayor. Al separar, tienes dos distribuciones claras: Pereira N(7.5, 0.8) y Cartago N(7.2, 1.1). Cada una es mas facil de controlar que la mezcla. Las varianzas se SUMAN al combinar — separar las reduce."
+          },
+          "B": {
+            "label": "Exigir a Cartago que iguale la calidad de Pereira",
+            "detail": "Le pones ultimatum al proveedor de Cartago: baje su variabilidad a σ≤0.8 o pierde el contrato.",
+            "effects": {
+              "cash": -3000000,
+              "market_share": 0,
+              "quality": 5,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 1
+            },
+            "risk": [-8000000, 5000000],
+            "narrative": "Cartago hizo esfuerzos y bajo su σ a 0.95 — mejor pero no llego a 0.8. La variabilidad de la mezcla bajo notablemente. El proveedor invirtio en mejor seleccion de platano y la relacion comercial se fortalecio. No fue perfecto pero fue progreso medible.",
+            "stats_insight": "Si Cartago baja σ₂ de 1.1 a 0.8 (igualando Pereira), la varianza de la mezcla seria: Var(Y) = 0.25*0.64 + 0.25*0.64 = 0.32, σ_Y = 0.566. Comparado con el original σ_Y=0.68, es una reduccion del 17% en desviacion estandar. Pero si solo llega a σ₂=0.95: Var(Y) = 0.25*0.64 + 0.25*0.9025 = 0.3856, σ_Y = 0.621. Reduccion del 8.7%. La contribucion de cada proveedor a la varianza total es proporcional a σ². Cartago (σ²=1.21) aporta 65% de la varianza total. Reducir la varianza del componente MAS variable tiene el mayor impacto."
+          },
+          "C": {
+            "label": "Cambiar mezcla a 70% Pereira, 30% Cartago",
+            "detail": "Usas mas del proveedor consistente y menos del variable. Reduces variabilidad sin perder el segundo proveedor.",
+            "effects": {
+              "cash": -2000000,
+              "market_share": 0,
+              "quality": 6,
+              "climate": 0,
+              "efficiency": 2,
+              "reputation": 2
+            },
+            "risk": [-3000000, 5000000],
+            "narrative": "Ajustaste la mezcla a 70/30. La calidad promedio subio levemente (de 7.35 a 7.41) y la variabilidad bajo notablemente. Cartago acepto el menor volumen porque mantenia el contrato. Produccion quedo mas estable y el jefe de calidad reporto 30% menos rechazos por inconsistencia.",
+            "stats_insight": "Con mezcla 70/30: E[Y] = 0.7*7.5 + 0.3*7.2 = 5.25 + 2.16 = 7.41. Var(Y) = 0.7²*0.64 + 0.3²*1.21 = 0.3136 + 0.1089 = 0.4225. σ_Y = 0.65. Comparando: mezcla 50/50 σ=0.68, mezcla 70/30 σ=0.65. Reduccion modesta (4.4%) en variabilidad. Pero la media sube de 7.35 a 7.41. La MEJOR combinacion minimizando varianza seria 100% Pereira (σ=0.8), pero pierdes el segundo proveedor. La mezcla 70/30 es un compromiso: mantiene diversificacion de proveedores con menor varianza que 50/50. La formula clave: Var(aX+bY) = a²Var(X) + b²Var(Y) cuando X,Y son independientes."
+          },
+          "D": {
+            "label": "Agregar un tercer proveedor para diversificar",
+            "detail": "Si dos proveedores dan variabilidad, tres la reducen mas. Buscas proveedor en Armenia.",
+            "effects": {
+              "cash": -10000000,
+              "market_share": 0,
+              "quality": 2,
+              "climate": -2,
+              "efficiency": -5,
+              "reputation": 0
+            },
+            "risk": [-8000000, 5000000],
+            "narrative": "Encontraste un proveedor en Armenia: μ₃=7.0, σ₃=1.3. Mas variable que Cartago. La mezcla de 3 proveedores fue un caos logistico: tres entregas, tres calidades, tres negociaciones. La variabilidad total no bajo porque agregaste un proveedor MAS variable. Mas proveedores no es mejor si la calidad individual no es buena.",
+            "stats_insight": "Con 3 proveedores en partes iguales (1/3 cada uno): E[Y] = (7.5+7.2+7.0)/3 = 7.233. Var(Y) = (1/3)²*(0.64+1.21+1.69) = (1/9)*3.54 = 0.393. σ_Y = 0.627. Comparado con 50/50 de Pereira y Cartago (σ=0.68), SI baja la varianza. Pero solo porque (1/3)² < (1/2)². La formula Var(Y) = Σ(wᵢ²σᵢ²) muestra que agregar mas variables SIEMPRE reduce varianza si los pesos bajan (efecto portafolio). Pero el proveedor de Armenia (σ=1.3) aporta mas varianza por unidad. La mezcla 70/30 de Pereira-Cartago (σ=0.65) es MEJOR que la mezcla de 3 (σ=0.627) considerando la complejidad logística adicional."
+          }
+        },
+        "recommended": "C",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "analyst-05",
+        "month": 5,
+        "title": "La junta quiere una pagina, no un Excel",
+        "situation": "La junta directiva te pide un informe ejecutivo de los KPIs del semestre. Tienes 15 minutos de presentacion. Los miembros de la junta son: un abogado, un contador, una ingeniera y un politico. Ninguno es estadistico. Necesitas que ENTIENDAN los datos.",
+        "data_panel": "KPIs del semestre: Calidad (IC 95%: [96.2%, 98.1%] de paquetes dentro de norma). Satisfaccion empleados (IC 95%: [3.3, 3.7] sobre 5). Participacion de mercado (IC 95%: [28.5%, 33.2%]). Margen operativo (IC 95%: [15.6%, 18.8%]).",
+        "concept": "Interpretacion correcta de intervalos de confianza para audiencias no tecnicas",
+        "options": {
+          "A": {
+            "label": "Presentar con analogias y semaforos",
+            "detail": "Cada KPI tiene un semaforo (verde/amarillo/rojo) y una analogia del mundo real. Cero formulas en la presentacion.",
+            "effects": {
+              "cash": 5000000,
+              "market_share": 2,
+              "quality": 2,
+              "climate": 5,
+              "efficiency": 3,
+              "reputation": 8
+            },
+            "risk": [-2000000, 8000000],
+            "narrative": "Presentaste con semaforos: Calidad VERDE (96-98% es excelente), Satisfaccion AMARILLO (3.3-3.7 necesita atencion), Mercado VERDE (28-33% somos lideres), Margen VERDE (15-18% es saludable). El abogado entendio, el contador pregunto cosas inteligentes, la ingeniera pidio los datos crudos, y el politico dijo: 'Por fin una presentacion que entiendo'. Aprobaron el presupuesto del proximo semestre sin objeciones.",
+            "stats_insight": "La interpretacion CORRECTA de un IC 95% es: 'Si repitieramos el muestreo muchas veces, el 95% de los intervalos calculados contendrian el parametro verdadero'. Pero en la junta, dices: 'Tenemos 95% de confianza en que la calidad real esta entre 96.2% y 98.1%'. Es una simplificacion aceptable para la audiencia. El semaforo traduce el IC a decision: si el IC esta COMPLETAMENTE dentro del rango objetivo → verde. Si lo toca parcialmente → amarillo. Si esta fuera → rojo. Satisfaccion [3.3, 3.7] con meta de 4.0 es amarillo porque el limite superior (3.7) no llega a la meta."
+          },
+          "B": {
+            "label": "Mostrar toda la estadistica detallada",
+            "detail": "Presentas las formulas, los IC, los Z-scores y los p-valores. Que vean el rigor tecnico.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": 0,
+              "climate": -3,
+              "efficiency": -2,
+              "reputation": -3
+            },
+            "risk": [-5000000, 2000000],
+            "narrative": "Slide 3 tenias una formula de Z-score. El abogado saco el celular. Slide 5 hablabas de 'distribucion muestral'. El contador bostezo. Slide 8 la ingeniera interrumpio: 'Y en resumen, estamos bien o estamos mal?'. No terminaste la presentacion. La junta no tomo decisiones porque nadie entendio los datos. Pedieron que 'alguien lo traduzca a espanol'.",
+            "stats_insight": "El IC [15.6%, 18.8%] para el margen operativo CONTIENE toda la informacion necesaria. Decir 'Z = (17.2-15)/(4.8/√36) = 2.75, p = 0.003' a una junta es como hablarle en latin al tendero de la esquina. La estadistica es una HERRAMIENTA, no el producto final. El producto es la DECISION. El IC se interpreta para la junta como: 'Con alta confianza, nuestro margen esta entre 15.6% y 18.8% — por encima del minimo de 15% del banco'. ESO es lo que necesitan saber. Las formulas van en el anexo."
+          },
+          "C": {
+            "label": "Solo mostrar promedios sin intervalos",
+            "detail": "Calidad: 97.1%. Satisfaccion: 3.5. Mercado: 30.8%. Margen: 17.2%. Limpio y directo.",
+            "effects": {
+              "cash": 2000000,
+              "market_share": 0,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": -2
+            },
+            "risk": [-8000000, 3000000],
+            "narrative": "Presentaste solo promedios. La junta pregunto: 'El margen es 17.2% EXACTO? Porque Bancolombia necesita minimo 15%'. Tu dijiste: 'Bueno, es un estimado...'. El contador pregunto: 'Estimado con que precision?'. No tenias la respuesta lista. Perdiste la oportunidad de mostrar que 17.2% es robusto (IC no baja de 15.6%). La junta quedo con dudas innecesarias.",
+            "stats_insight": "Presentar X̄=17.2% sin IC es como decir 'la temperatura es 25°C' sin decir si el termometro tiene precision de +/-0.5°C o +/-5°C. El IC [15.6%, 18.8%] no es un 'detalle tecnico' — es la INFORMACION mas valiosa. Dice: 'Estamos SEGUROS de que el margen real supera 15.6%'. Sin el IC, la junta no puede evaluar riesgo. Es la diferencia entre 'creemos que estamos bien' y 'tenemos 95% de confianza en que estamos bien'. La incertidumbre cuantificada es mas valiosa que una falsa precision."
+          },
+          "D": {
+            "label": "Dejar que el CFO presente los numeros",
+            "detail": "El CFO tiene mas credibilidad con la junta. Le pasas los datos y el los presenta a su manera.",
+            "effects": {
+              "cash": 0,
+              "market_share": 0,
+              "quality": 0,
+              "climate": -3,
+              "efficiency": 0,
+              "reputation": -5
+            },
+            "risk": [-3000000, 3000000],
+            "narrative": "El CFO presento los numeros pero solo los financieros. Ignoro calidad y satisfaccion porque 'no eran su area'. La junta vio una foto incompleta. Ademas, cuando preguntaron por la metodologia, el CFO no supo responder. Quedo evidente que el analista deberia haber estado ahi. Tu valor como analista quedo en duda.",
+            "stats_insight": "Delegar la presentacion es perder la oportunidad de INTERPRETAR. Un IC no se presenta solo — necesita contexto. El IC de satisfaccion [3.3, 3.7] REQUIERE explicar: 'El limite superior no alcanza nuestra meta de 4.0, lo que confirma lo que vimos en la encuesta de clima'. El IC de mercado [28.5%, 33.2%] requiere: 'El rival reporta 35%, pero con este IC somos competitivos'. Sin el analista que entiende los SUPUESTOS detras de cada IC, los numeros pierden significado."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "C"]
+      },
+      {
+        "id": "analyst-06",
+        "month": 6,
+        "title": "El modelo que decide el futuro",
+        "situation": "Ultimo mes del semestre. La junta quiere una prediccion: si la empresa sigue al ritmo actual, cual sera el EBITDA del proximo semestre? Tu prediccion determinara si consiguen inversionista, si amplian la planta y si abren mercado en el Valle del Cauca. Toda la estrategia 2027 depende de tu numero.",
+        "data_panel": "EBITDA mensual (6 meses): $85M, $92M, $78M, $95M, $88M, $91M. Promedio: $88.17M, σ = $6.08M. Ventas mensuales: tendencia creciente de 3% mensual. Calidad: estable en 97%. Mercado: IC [28.5%, 33.2%]. Costo de materia prima: inflacion de 0.5% mensual.",
+        "concept": "Integracion de todos los conceptos estadisticos del semestre",
+        "options": {
+          "A": {
+            "label": "Modelo conservador con IC y escenarios",
+            "detail": "Presentas 3 escenarios (pesimista, base, optimista) basados en IC al 95% del EBITDA, ajustados por tendencias.",
+            "effects": {
+              "cash": 20000000,
+              "market_share": 3,
+              "quality": 3,
+              "climate": 5,
+              "efficiency": 5,
+              "reputation": 10
+            },
+            "risk": [-5000000, 15000000],
+            "narrative": "Presentaste: Escenario pesimista $82M/mes, base $90M/mes, optimista $98M/mes. La junta por primera vez vio un rango de posibilidades con probabilidades asociadas. El inversionista de Bogota quedo impresionado: 'Esta empresa toma decisiones con datos, no con corazonadas'. Ofrecio los $200M para el 30% al dia siguiente. Tu modelo fue el argumento que cerro el trato.",
+            "stats_insight": "Integracion de todo el semestre: (1) EBITDA promedio $88.17M con IC 95%: [81.79M, 94.55M] (distribucion muestral, mes 1). (2) Tendencia de +3%/mes en ventas (pronostico, mes 2). (3) Calidad estable al 97% IC [96.2%, 98.1%] (proporcion, mes 3). (4) Inflacion de costos 0.5%/mes. Escenario base: EBITDA mes 7 = 88.17 * (1.03)^crecimiento * (1-0.005)^inflacion ≈ $90.5M. Pesimista: usa limite inferior del IC ($81.79) con crecimiento 0% = $81.4M. Optimista: limite superior ($94.55) con crecimiento 5% = $99.3M. Cada escenario tiene una probabilidad asociada basada en los ICs. ESTO es estadistica aplicada al negocio: no un numero magico sino un rango con confianza cuantificada."
+          },
+          "B": {
+            "label": "Proyeccion lineal simple del EBITDA",
+            "detail": "Tomas el promedio de $88.17M y lo proyectas plano para los proximos 6 meses. Simple y defensible.",
+            "effects": {
+              "cash": 10000000,
+              "market_share": 1,
+              "quality": 0,
+              "climate": 2,
+              "efficiency": 2,
+              "reputation": 3
+            },
+            "risk": [-10000000, 5000000],
+            "narrative": "Proyectaste $88M/mes plano. El inversionista dijo: 'Eso es asumir que no crecen. No es muy ambicioso, verdad?'. La junta estaba dividida: el contador decia 'es realista', la ingeniera decia 'no refleja nuestro crecimiento'. Ofrecieron la inversion pero a una valoracion 15% menor porque tu proyeccion no mostraba crecimiento.",
+            "stats_insight": "Usar solo X̄=$88.17M ignora dos cosas: (1) La TENDENCIA: los datos muestran crecimiento de ventas del 3%/mes, lo cual deberia reflejarse en EBITDA creciente. (2) La INCERTIDUMBRE: sin IC, la junta no sabe si $88M es un dato solido (σ=$2M) o fragil (σ=$20M). Con σ=$6.08M y n=6, el SE=$2.48M es considerable — hay incertidumbre real. Un numero plano sin tendencia ni rango es una foto estatica de una pelicula en movimiento. Pierde informacion que los datos SI contienen."
+          },
+          "C": {
+            "label": "Modelo agresivo asumiendo todo sale bien",
+            "detail": "Proyectas con el crecimiento del 3%, la calidad al 98%, y sin aumento de costos. EBITDA de $105M/mes.",
+            "effects": {
+              "cash": 15000000,
+              "market_share": 2,
+              "quality": 0,
+              "climate": 3,
+              "efficiency": 0,
+              "reputation": -5
+            },
+            "risk": [-20000000, 10000000],
+            "narrative": "Proyectaste $105M/mes. El inversionista estaba emocionado pero su equipo financiero hizo due diligence y encontro que usaste los escenarios mas optimistas de cada variable simultaneamente. Preguntaron: 'Cual es la probabilidad de que TODO salga bien al mismo tiempo?'. No tenias respuesta. La confianza en tus numeros se desplomo.",
+            "stats_insight": "Usar el mejor escenario de cada variable simultaneamente es un error de PROBABILIDAD CONJUNTA. Si P(crecimiento 3%+) = 0.60, P(calidad 98%+) = 0.70, P(costos estables) = 0.40, y son independientes: P(todo junto) = 0.60 * 0.70 * 0.40 = 0.168 = 16.8%. Estas presentando como 'proyeccion' algo que solo tiene 17% de probabilidad. Los ICs individuales son del 95% cada uno, pero la probabilidad de que TODOS esten en su limite optimista simultaneamente es mucho menor. Es como apostar a que llueve Y hace sol Y hay viento — cada uno es posible, los tres juntos son improbables."
+          },
+          "D": {
+            "label": "Simular 1,000 escenarios con Monte Carlo",
+            "detail": "Programas una simulacion que genera 1,000 combinaciones aleatorias de las variables y muestra la distribucion de EBITDA resultante.",
+            "effects": {
+              "cash": -8000000,
+              "market_share": 2,
+              "quality": 2,
+              "climate": 2,
+              "efficiency": 3,
+              "reputation": 7
+            },
+            "risk": [-5000000, 10000000],
+            "narrative": "La simulacion de Monte Carlo genero una distribucion de EBITDA con media $91M y percentiles: P10=$79M, P50=$90M, P90=$103M. Presentaste un histograma bonito que la junta entendio como 'hay 80% de probabilidad de estar entre $79M y $103M'. El inversionista quedo fascinado — nunca habia visto una empresa de platanitos con ese nivel de analisis. Cerraron el trato con valoracion premium.",
+            "stats_insight": "Monte Carlo es la integracion MAXIMA de los conceptos del semestre: (1) Usas las distribuciones de cada variable (normal para EBITDA, proporcion para calidad, estimadores para tendencias). (2) En cada iteracion, generas valores aleatorios de cada variable DENTRO de su distribucion estimada. (3) Calculas el EBITDA resultante. (4) Repites 1,000 veces para obtener la DISTRIBUCION del EBITDA futuro. Es el Teorema Central del Limite en accion: la combinacion de muchas variables aleatorias converge a una distribucion predecible. Y los IC de cada variable alimentan los parametros de la simulacion. Todo lo del semestre — muestreo, estimacion, IC, distribuciones, error estandar — converge en este modelo."
+          }
+        },
+        "recommended": "A",
+        "common_sense": ["A", "D"]
+      }
+    ]
+  },
+  "comodines": [
+    {
+      "id": "comodin-01",
+      "name": "Acaparamiento de Platano",
+      "icon": "🍌",
+      "description": "Comprar toda la materia prima de la central de abastos de Pereira. Tu rival se queda sin platano verde por 1 mes.",
+      "cost": 30000000,
+      "effects_attacker": { "cash": -30000000, "efficiency": 5 },
+      "effects_victim": { "cash": -50000000, "efficiency": -12, "quality": -5 },
+      "narrative_attacker": "Compraste todo el platano verde de la galeria de Pereira y la central de Dosquebradas. Tu produccion fluye sin problema y el proveedor de Cartago te mando un cargamento extra. Mientras tanto, el rival anda buscando platano en Cartago y Chinchina a precio de oro.",
+      "narrative_victim": "Tu rival acaparo toda la materia prima en la central de abastos! Toco mandar un camion hasta Armenia y otro hasta Cartago para conseguir platano, pero llego mas maduro de lo ideal. La produccion bajo 30% esta semana y los costos se fueron por las nubes.",
+      "legal_basis": "Legal en Colombia: libre competencia en compra de insumos no regulados (Art. 333 Constitucion, libertad economica). No es acaparamiento ilegal porque el platano verde no es bien de primera necesidad regulado por la Superintendencia de Industria y Comercio.",
+      "cooldown": 3
+    },
+    {
+      "id": "comodin-02",
+      "name": "Cazatalentos: Robar al Mejor Tecnico",
+      "icon": "🎯",
+      "description": "Le ofreces 50% mas de salario al mejor tecnico de freidoras de tu rival. Si acepta, te llevas su know-how.",
+      "cost": 25000000,
+      "effects_attacker": { "cash": -25000000, "quality": 8, "efficiency": 5, "climate": 3 },
+      "effects_victim": { "cash": -10000000, "quality": -8, "efficiency": -8, "climate": -10 },
+      "narrative_attacker": "Don Carlos, el mejor tecnico de freidoras del Eje Cafetero, ahora trabaja contigo. Trajo 15 anos de experiencia y los secretos de temperatura y tiempo que hacian buenos los platanitos del rival. Tu calidad subio inmediatamente y el equipo esta motivado con el nuevo companero.",
+      "narrative_victim": "Don Carlos, tu tecnico estrella, renuncio de un dia para otro! Se fue a la competencia por el doble de plata. El nuevo tecnico no sabe calibrar las freidoras y los platanitos salen quemados o crudos. La produccion esta en caos y la moral del equipo por el piso — si a Don Carlos lo compraron, a cualquiera le puede pasar.",
+      "legal_basis": "Legal en Colombia: libertad de trabajo y libre competencia laboral (Art. 26 Constitucion). No existe clausula de no competencia ejecutable en contratos laborales colombianos, salvo pactos de exclusividad remunerados especificamente (Art. 44 CST). El trabajador puede renunciar con 30 dias de preaviso.",
+      "cooldown": 4
+    },
+    {
+      "id": "comodin-03",
+      "name": "Publicidad Comparativa",
+      "icon": "📺",
+      "description": "Lanzas campana publicitaria comparando tus platanitos con los del rival: 'Mas sabor, mas crunch, mas Eje Cafetero'. Sin mentir, pero provocando.",
+      "cost": 20000000,
+      "effects_attacker": { "cash": -20000000, "market_share": 5, "reputation": 4 },
+      "effects_victim": { "cash": -5000000, "market_share": -3, "reputation": -5 },
+      "narrative_attacker": "La campana 'Compara y Decide' salio en redes sociales, radio local y hasta en un mural en la Circunvalar de Pereira. La gente empezo a comparar en los supermercados y tu marca salio ganando en sabor (segun tu encuesta, claro). Las ventas subieron 12% en la primera semana.",
+      "narrative_victim": "Tu rival lanzo una campana comparativa que basicamente dice que tus platanitos son insipidos! Los comentarios en redes se llenaron de memes comparando ambas marcas. Aunque la campana no dice mentiras (solo insinua), la percepcion del consumidor se movio. Tus ventas en tiendas de barrio bajaron 8%.",
+      "legal_basis": "Legal en Colombia bajo la Ley 256 de 1996 (Competencia Desleal), Art. 13: la publicidad comparativa es permitida siempre que sea veraz, no sea enganosa y compare caracteristicas objetivas. La SIC ha ratificado que comparar productos con datos reales no constituye competencia desleal. Solo es ilegal si contiene afirmaciones falsas o denigrantes.",
+      "cooldown": 3
+    },
+    {
+      "id": "comodin-04",
+      "name": "Espionaje de Precios",
+      "icon": "🕵️",
+      "description": "Envias 'mystery shoppers' a todos los puntos de venta del rival para conocer sus precios reales, promociones, exhibicion y rotacion exacta.",
+      "cost": 8000000,
+      "effects_attacker": { "cash": -8000000, "market_share": 3, "efficiency": 3 },
+      "effects_victim": { "cash": 0, "market_share": -2, "efficiency": 0 },
+      "narrative_attacker": "Tus 10 mystery shoppers visitaron 80 tiendas en Pereira, Dosquebradas, Armenia y Manizales. Ahora tienes un mapa completo: sabes que el rival tiene descuento del 10% en D1 los viernes, que en Exito su exhibicion es mejor en la zona de cajas, y que en tiendas de barrio su precio es $200 mas caro que el tuyo. Con esta inteligencia, ajustaste tu estrategia punto por punto.",
+      "narrative_victim": "No te enteraste de nada directamente, pero de pronto la competencia empezo a igualar tus promociones, a mejorar su exhibicion exactamente donde tu eras fuerte, y a bajar precios justo donde tu tenias margen. Algo raro esta pasando... tus ventajas competitivas de punto de venta se estan evaporando una por una.",
+      "legal_basis": "Legal en Colombia y en todo el mundo: el mystery shopping es una practica estandar de investigacion de mercados. Los precios en punto de venta son informacion publica visible para cualquier consumidor. No requiere acceso ilegal ni violacion de secretos comerciales. La SIC lo reconoce como parte de la inteligencia competitiva legitima.",
+      "cooldown": 2
+    },
+    {
+      "id": "comodin-05",
+      "name": "Dumping Temporal: Guerra de Precios",
+      "icon": "💣",
+      "description": "Vendes a precio de costo durante 1 mes en todas las tiendas de barrio. Pierdes margen pero ahorcas al rival que no puede igualar.",
+      "cost": 45000000,
+      "effects_attacker": { "cash": -45000000, "market_share": 8, "reputation": -3, "quality": -2 },
+      "effects_victim": { "cash": -35000000, "market_share": -6, "reputation": -2, "climate": -5 },
+      "narrative_attacker": "Bajaste los platanitos a $1,800 el paquete — precio de costo. Los tenderos no lo podian creer y te compraron el triple de lo normal. Tu rival tuvo que igualar y perdio mas plata que tu porque su costo de produccion es mayor. Despues de 1 mes subiste a $3,000 y muchos consumidores ya estaban enganchados con tu marca.",
+      "narrative_victim": "Tu rival esta vendiendo a precio de costo! Los tenderos te llaman: 'Igualen o no les compro'. Tocó bajar precios y el margen desaparecio. El equipo de produccion esta estresado porque hay que producir mas con menos. El CFO esta arrancandose los pelos. Este mes vamos a operar en rojo.",
+      "legal_basis": "Legal en Colombia con precaucion: la venta a precio de costo no es 'venta a perdida' (que si puede ser competencia desleal bajo Art. 18 Ley 256/1996). Mientras el precio cubra el costo total de produccion, es legal. La SIC solo sanciona precios predatorios cuando se demuestra intencion de eliminar al competidor y posicion dominante de mercado. Una empresa de platanitos regional no tiene posicion dominante.",
+      "cooldown": 4
+    },
+    {
+      "id": "comodin-06",
+      "name": "Registro de Marca Similar",
+      "icon": "™️",
+      "description": "Registras en la Superintendencia una marca con nombre y empaque similar al del rival para confundir al consumidor en el punto de venta.",
+      "cost": 15000000,
+      "effects_attacker": { "cash": -15000000, "market_share": 4, "reputation": -6 },
+      "effects_victim": { "cash": -20000000, "market_share": -4, "reputation": -3 },
+      "narrative_attacker": "Registraste 'PlataniKing' (el rival se llama 'PlataniGold'). Empaque con colores similares y tipografia parecida. En la gondola, el consumidor despistado agarra el tuyo pensando que es del rival. Las ventas subieron 15% el primer mes. Pero empezaron los reclamos: 'Esto no sabe como siempre'. La confusion funciona... hasta que no.",
+      "narrative_victim": "Aparecio en las gondolas una marca llamada 'PlataniKing' con un empaque sospechosamente parecido al tuyo! Los tenderos estan confundidos, los consumidores tambien. Tus ventas bajaron porque la gente compra el otro creyendo que eres tu. Tu abogado ya esta preparando la demanda ante la SIC pero el proceso toma 6-12 meses.",
+      "legal_basis": "En zona gris legal en Colombia: la Ley 256/1996 (Art. 10 y 14) prohibe actos de confusion y de imitacion que induzcan a error sobre el origen del producto. La SIC puede ordenar el cese del uso de la marca similar. Sin embargo, el proceso toma meses y mientras tanto el dano ya esta hecho. El registro en si es legal — la impugnacion viene despues. Riesgo: si la SIC falla en contra, hay sancion economica + dano reputacional.",
+      "cooldown": 5
+    }
+  ]
+}

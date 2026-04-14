@@ -23,7 +23,7 @@ window.TREE_ANALYST = {
           label: "Muestreo estratificado proporcional por sede",
           description: "Dividimos las 150 muestras proporcionalmente: 98 en Pereira (65%), 37 en Dosquebradas (25%), 15 en Armenia (10%). Cada sede es un estrato.",
           cost: 8000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 10, bsc_customer: 5, bsc_financial: -1, bsc_learning: 12 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: 3 }, narrative: "El diagnostico por sede permite identificar problemas especificos en cada planta." }
@@ -37,7 +37,7 @@ window.TREE_ANALYST = {
           label: "Muestreo aleatorio simple de toda la produccion",
           description: "Juntamos la produccion de las 3 sedes en una lista, generamos 150 numeros aleatorios y muestreamos sin importar la sede de origen.",
           cost: 6000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 4, bsc_customer: 2, bsc_financial: 1, bsc_learning: 5 },
           crossEffects: [],
           tags: ["simple", "suboptimal"],
@@ -49,7 +49,7 @@ window.TREE_ANALYST = {
           label: "Hacerle caso al gerente: 150 muestras en Pereira",
           description: "Pereira es la planta mas grande y la mas importante. Concentramos todo el esfuerzo ahi y ahorramos los viaticos a las otras sedes.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -8, bsc_customer: -4, bsc_financial: 2, bsc_learning: -10 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -5 }, narrative: "Los problemas de calidad en Dosquebradas y Armenia siguen sin detectarse durante semanas." }
@@ -63,7 +63,7 @@ window.TREE_ANALYST = {
           label: "Muestreo sistematico: cada k-esimo paquete en todas las sedes",
           description: "Calculamos k = N/n y tomamos cada paquete numero k de la linea de produccion de cada sede. Eficiente y mecanico.",
           cost: 7000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 5, bsc_customer: 3, bsc_financial: 0, bsc_learning: 7 },
           crossEffects: [],
           tags: ["systematic", "moderate"],
@@ -88,7 +88,7 @@ window.TREE_ANALYST = {
           label: "Presupuesto basado en intervalo de confianza del promedio trimestral",
           description: "Calculamos el error estandar para n=3 meses, construimos IC al 95% y usamos el limite inferior como presupuesto conservador.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 8, bsc_customer: 3, bsc_financial: 10, bsc_learning: 12 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: 5 }, narrative: "Bancolombia aprueba la linea de credito al ver una proyeccion fundamentada con intervalos de confianza." }
@@ -102,7 +102,7 @@ window.TREE_ANALYST = {
           label: "Usar el promedio historico directo: $180M",
           description: "El promedio de 36 meses es $180M. Es el mejor estimador puntual. Se lo damos a Bancolombia sin mas vueltas.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 2, bsc_customer: 0, bsc_financial: -3, bsc_learning: -5 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -3 }, narrative: "Bancolombia cuestiona la proyeccion por falta de margen de error. Pide informacion adicional." }
@@ -116,7 +116,7 @@ window.TREE_ANALYST = {
           label: "Proyeccion basada en el peor trimestre historico",
           description: "Buscamos el peor trimestre de los ultimos 3 anos y usamos ese como base. Mejor ser pesimista que quedarnos sin plata.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 3, bsc_customer: 0, bsc_financial: -6, bsc_learning: -2 },
           crossEffects: [
             { area: "hr", bsc: { bsc_learning: -2 }, narrative: "El presupuesto pesimista lleva a congelar contrataciones y capacitaciones." }
@@ -130,7 +130,7 @@ window.TREE_ANALYST = {
           label: "Modelo de regresion con tendencia y estacionalidad",
           description: "Con 36 meses de datos, ajustamos un modelo con tendencia lineal + efecto estacional. Mas sofisticado, mas preciso.",
           cost: 15000000,
-          revenue: 5000000,
+          revenue: 12000000,
           bsc: { bsc_internal: 6, bsc_customer: 2, bsc_financial: 1, bsc_learning: 8 },
           crossEffects: [],
           tags: ["advanced", "time-consuming"],
@@ -155,7 +155,7 @@ window.TREE_ANALYST = {
           label: "Auditoria interna profunda con equipo forense",
           description: "Contratas un equipo de auditoria forense que revise TODAS las transacciones del ultimo semestre. Si hay fraude, lo encuentran antes que la DIAN.",
           cost: 45000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 12, bsc_customer: 3, bsc_financial: -5, bsc_learning: 10 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: 4 }, narrative: "La auditoria preventiva permite corregir irregularidades antes de la visita de la DIAN, evitando multas millonarias." }
@@ -169,7 +169,7 @@ window.TREE_ANALYST = {
           label: "No hacer nada - el jefe de ventas tiene experiencia",
           description: "El jefe de ventas lleva 12 anos en la empresa. Dice que siempre hay errores y que no pasa nada. Le crees y esperas la visita de la DIAN tranquilo.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -15, bsc_customer: -5, bsc_financial: -10, bsc_learning: -8 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -15 }, narrative: "La DIAN encuentra irregularidades sistematicas y aplica sancion por $200M mas intereses moratorios." },
@@ -184,7 +184,7 @@ window.TREE_ANALYST = {
           label: "Revisar solo las 8 transacciones sospechosas",
           description: "Investigamos las 8 transacciones puntuales. Si tienen justificacion, todo bien. Si no, actuamos solo sobre esas.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 1, bsc_customer: 0, bsc_financial: 0, bsc_learning: 3 },
           crossEffects: [],
           tags: ["partial", "reactive"],
@@ -196,7 +196,7 @@ window.TREE_ANALYST = {
           label: "Ampliar la muestra a 500 transacciones antes de decidir",
           description: "200 transacciones puede ser poco. Ampliamos a 500 para tener mas certeza antes de gastar $45M en auditoria forense.",
           cost: 8000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 4, bsc_customer: 1, bsc_financial: -2, bsc_learning: 6 },
           crossEffects: [],
           tags: ["cautious", "analytical"],
@@ -221,7 +221,7 @@ window.TREE_ANALYST = {
           label: "Corregir al CFO: las varianzas se SUMAN, no se restan",
           description: "Explicas respetuosamente que Var(A-B) = Var(A) + Var(B) cuando son independientes. La varianza correcta es 9 + 49 = 58, no 40.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 10, bsc_customer: 2, bsc_financial: 5, bsc_learning: 15 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: 3 }, narrative: "El CFO agradece la correccion y ajusta los modelos financieros de costos de insumos." }
@@ -235,7 +235,7 @@ window.TREE_ANALYST = {
           label: "Darle la razon al CFO frente a la junta",
           description: "El CFO es tu jefe. No lo vas a contradecir frente a toda la junta directiva. Asientes con la cabeza y sigues.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -12, bsc_customer: -3, bsc_financial: -8, bsc_learning: -15 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -5 }, narrative: "Las decisiones de proveedores se basan en calculos erroneos. Los contratos firmados no reflejan la variabilidad real." }
@@ -249,7 +249,7 @@ window.TREE_ANALYST = {
           label: "Pedir mas datos antes de concluir cualquier cosa",
           description: "Sugieres que con 60 y 45 muestras no es suficiente para decidir. Propones un estudio mas grande antes de tomar decisiones.",
           cost: 12000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 2, bsc_customer: 0, bsc_financial: -3, bsc_learning: 4 },
           crossEffects: [],
           tags: ["evasive", "cautious"],
@@ -261,7 +261,7 @@ window.TREE_ANALYST = {
           label: "Proponer estandarizar con Agroandes porque tiene media mas alta",
           description: "Agroandes da platanos de 99g en promedio vs 98g de Don Hernan. Aunque la variabilidad es mayor, el peso promedio es superior. Recomiendas cambiar.",
           cost: 10000000,
-          revenue: 3000000,
+          revenue: 18000000,
           bsc: { bsc_internal: -4, bsc_customer: -2, bsc_financial: -1, bsc_learning: -3 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -4 }, narrative: "La mayor variabilidad de Agroandes (σ=7g vs σ=3g) genera inconsistencia en la linea de produccion." }
@@ -278,7 +278,7 @@ window.TREE_ANALYST = {
        -------------------------------------------------------- */
     "dat-05": {
       id: "dat-05",
-      day: 16,
+      day: 12,
       title: "Reporte de KPIs a la junta directiva",
       context: "Llego el dia de la presentacion trimestral a la junta directiva de PlataniCracks. Tu equipo analizo los margenes de ganancia con una muestra representativa de operaciones del trimestre.\n\n📊 RESULTADOS DEL ANALISIS:\n• Muestra: 80 operaciones del trimestre\n• Margen de ganancia promedio muestral: X̄ = 21%\n• Desviacion estandar muestral: s = 6%\n• IC al 95%: X̄ ± Z × (s/√n) = 21 ± 1.96 × (6/√80) = 21 ± 1.32 = [19.68%, 22.32%]\n• Meta de la empresa: margen >= 20%\n\nEl gerente general revisa la presentacion antes de entrar a la sala de juntas. Lee el IC y dice:\n'Perfecto, hay un 95% de probabilidad de que nuestro margen real sea mayor al 19.68%. La meta de 20% esta asegurada. Escribe eso en la diapositiva.'\n\n¿Que haces?",
       type: "choice",
@@ -288,7 +288,7 @@ window.TREE_ANALYST = {
           label: "Corregir la interpretacion del gerente antes de la presentacion",
           description: "Le explicas al gerente que la interpretacion del IC no es asi. El 95% se refiere al PROCEDIMIENTO de construccion del intervalo, no a la probabilidad de que el parametro este ahi.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: 3, bsc_learning: 15 },
           crossEffects: [],
           tags: ["rigorous", "brave"],
@@ -300,7 +300,7 @@ window.TREE_ANALYST = {
           label: "Poner la frase del gerente en la diapositiva tal cual",
           description: "El gerente es el jefe. Si quiere que la diapositiva diga '95% de probabilidad', asi se pone. No es momento de dar clases de estadistica.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -10, bsc_customer: -5, bsc_financial: -3, bsc_learning: -12 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -5 }, narrative: "La junta directiva toma decisiones de inversion basadas en una interpretacion incorrecta del intervalo de confianza." }
@@ -314,7 +314,7 @@ window.TREE_ANALYST = {
           label: "Reformular con IC mas amplio al 99% para mas seguridad",
           description: "Propones usar IC al 99% para que la junta tenga aun mas confianza. Si el 95% no convence, el 99% si.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: 0, bsc_learning: 5 },
           crossEffects: [],
           tags: ["cautious", "misguided"],
@@ -326,7 +326,7 @@ window.TREE_ANALYST = {
           label: "Presentar solo el promedio muestral sin intervalo de confianza",
           description: "Para evitar confusiones, quitas el IC de la presentacion y solo pones 'Margen de ganancia: 21%'. Limpio y simple.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -5, bsc_customer: -1, bsc_financial: -2, bsc_learning: -8 },
           crossEffects: [],
           tags: ["simplistic", "hiding-uncertainty"],
@@ -341,7 +341,7 @@ window.TREE_ANALYST = {
        -------------------------------------------------------- */
     "dat-06": {
       id: "dat-06",
-      day: 21,
+      day: 14,
       title: "Modelo de prediccion para el cierre anual",
       context: "Faltan 2 semanas para el cierre fiscal y la junta directiva necesita la proyeccion final de PlataniCracks. El gerente te pide integrar TODO lo que has analizado este mes en un modelo de prediccion unificado.\n\nTienes datos de 4 areas criticas:\n\n📊 DATOS CONSOLIDADOS:\n\n1. CALIDAD (Proporcion de defectos):\n   • Muestra: 500 paquetes, 18 defectuosos\n   • p̂ = 18/500 = 0.036 (3.6%)\n   • IC 95%: [2.0%, 5.2%]\n\n2. VENTAS (Media mensual):\n   • Muestra: 12 meses, X̄ = $185M, s = $35M\n   • SE = 35/√12 = $10.1M\n   • IC 95%: [$164.8M, $205.2M]\n\n3. COSTOS (Diferencia entre turnos dia vs noche):\n   • Turno dia: X̄₁ = $45M, s₁ = $8M, n₁ = 30\n   • Turno noche: X̄₂ = $52M, s₂ = $12M, n₂ = 30\n   • Diferencia: $7M mas caro el turno noche\n   • SE(dif) = √(64/30 + 144/30) = √(2.13 + 4.80) = √6.93 = $2.63M\n\n4. SATISFACCION DEL CLIENTE:\n   • Muestra: 300 clientes, 234 satisfechos\n   • p̂ = 234/300 = 0.78 (78%)\n   • IC 95%: [73.3%, 82.7%]\n\nEl gerente quiere UNA sola diapositiva con la proyeccion. ¿Que enfoque usas?",
       type: "choice",
@@ -351,7 +351,7 @@ window.TREE_ANALYST = {
           label: "Dashboard integrado con IC para cada KPI y analisis cruzado",
           description: "Presentas los 4 KPIs con sus intervalos de confianza, cruzas las implicaciones entre areas, y proyectas 3 escenarios (conservador, esperado, optimista).",
           cost: 15000000,
-          revenue: 10000000,
+          revenue: 22000000,
           bsc: { bsc_internal: 12, bsc_customer: 8, bsc_financial: 10, bsc_learning: 15 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: 5 }, narrative: "El dashboard integrado revela que la diferencia de costos entre turnos se correlaciona con la tasa de defectos del turno noche." },
@@ -367,7 +367,7 @@ window.TREE_ANALYST = {
           label: "Solo promedios puntuales en una tabla limpia",
           description: "Pones los 4 KPIs como numeros limpios: defectos 3.6%, ventas $185M, diferencia de costos $7M, satisfaccion 78%. Sin intervalos ni complicaciones.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -3, bsc_customer: 0, bsc_financial: -5, bsc_learning: -10 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -4 }, narrative: "La junta toma decisiones asumiendo que los numeros son exactos, sin considerar margenes de error ni riesgo." }
@@ -381,7 +381,7 @@ window.TREE_ANALYST = {
           label: "Enfocarse solo en ventas porque es lo que le importa a la junta",
           description: "A la junta le importa la plata. Presentas un analisis profundo SOLO de ventas con proyeccion anual, IC, escenarios y TCL. Los otros KPIs los dejas como bullet points.",
           cost: 8000000,
-          revenue: 5000000,
+          revenue: 12000000,
           bsc: { bsc_internal: 2, bsc_customer: -2, bsc_financial: 3, bsc_learning: 0 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -3 }, narrative: "Los problemas de calidad y la diferencia de costos entre turnos quedan sin atencion por falta de visibilidad en la junta." }
@@ -395,7 +395,7 @@ window.TREE_ANALYST = {
           label: "Modelo predictivo de machine learning con los datos historicos",
           description: "Entrenas un modelo de regresion multiple con 36 meses de datos para predecir ventas, costos y margen del proximo trimestre. Le metes Random Forest y Neural Networks.",
           cost: 50000000,
-          revenue: 15000000,
+          revenue: 50000000,
           bsc: { bsc_internal: 4, bsc_customer: 2, bsc_financial: -8, bsc_learning: 6 },
           crossEffects: [
             { area: "hr", bsc: { bsc_learning: 3 }, narrative: "El equipo de datos aprende herramientas de ML, pero el modelo no es interpretable para la junta." }

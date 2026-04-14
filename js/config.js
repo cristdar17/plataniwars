@@ -30,6 +30,9 @@ const CONFIG = {
 
   MAX_PER_AREA: 2,
 
+  // --- Días de Junta Directiva (votación de TODA la empresa) ---
+  JUNTA_DAYS: [13, 16, 19, 22, 25],
+
   // --- Presupuesto inicial ---
   INITIAL_CASH: 500000000,  // $500M COP
 

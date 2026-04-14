@@ -23,7 +23,7 @@ window.TREE_OPERATIONS = {
           label: "Parar produccion y calibrar la maquina",
           description: "Detenemos la linea 4 horas, el tecnico recalibra el dosificador. Costo de parada + mano de obra.",
           cost: 15000000,
-          revenue: 3000000,
+          revenue: 18000000,
           bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: -2, bsc_learning: 3 },
           crossEffects: [],
           tags: ["quality", "proactive"],
@@ -35,7 +35,7 @@ window.TREE_OPERATIONS = {
           label: "Seguir produciendo y monitorear la proxima semana",
           description: "El tecnico dice que es variacion normal. Seguimos y revisamos la proxima semana.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -10, bsc_customer: -8, bsc_financial: 2, bsc_learning: -5 },
           crossEffects: [
             { area: "marketing", bsc: { bsc_customer: -3 }, narrative: "Mas quejas de clientes por paquetes livianos afectan la reputacion de marca en redes sociales." }
@@ -49,7 +49,7 @@ window.TREE_OPERATIONS = {
           label: "Reducir velocidad de la maquina un 20%",
           description: "Baja la velocidad para mejorar precision sin parar del todo. Menos produccion pero seguimos.",
           cost: 8000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: -3, bsc_learning: 1 },
           crossEffects: [],
           tags: ["moderate"],
@@ -61,7 +61,7 @@ window.TREE_OPERATIONS = {
           label: "Comprar maquina empacadora nueva",
           description: "Inversion grande: maquina automatizada de ultima generacion con sensor de peso integrado.",
           cost: 120000000,
-          revenue: 15000000,
+          revenue: 50000000,
           bsc: { bsc_internal: 15, bsc_customer: 8, bsc_financial: -10, bsc_learning: 10 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -5 }, narrative: "La inversion en maquinaria impacta el flujo de caja del trimestre." }
@@ -88,7 +88,7 @@ window.TREE_OPERATIONS = {
           label: "Rechazar al proveedor - los datos no cuadran",
           description: "Le dices al proveedor que sus platanos no cumplen el estandar. Seguis con el proveedor actual.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 5, bsc_customer: 3, bsc_financial: 0, bsc_learning: 5 },
           crossEffects: [],
           tags: ["data-driven", "conservative"],
@@ -114,7 +114,7 @@ window.TREE_OPERATIONS = {
           label: "Pedir otra muestra mas grande para estar seguro",
           description: "40 platanos es poquito. Pedile al proveedor que mande 200 para evaluar mejor.",
           cost: 2000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 2, bsc_customer: 0, bsc_financial: -1, bsc_learning: 8 },
           crossEffects: [],
           tags: ["cautious", "analytical"],
@@ -151,7 +151,7 @@ window.TREE_OPERATIONS = {
           label: "No enviar - reprocesar el lote completo",
           description: "Sacamos todo, revisamos paquete por paquete, reemplazamos defectuosos. Cuesta tiempo y plata pero entregamos calidad.",
           cost: 25000000,
-          revenue: 10000000,
+          revenue: 22000000,
           bsc: { bsc_internal: 8, bsc_customer: 10, bsc_financial: -3, bsc_learning: 4 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -2 }, narrative: "El reproceso del lote de exportacion genera costos adicionales no presupuestados." }
@@ -179,7 +179,7 @@ window.TREE_OPERATIONS = {
           label: "Inspeccionar una segunda muestra para confirmar",
           description: "Tomar otra muestra de 200 paquetes. Si esta sale mejor, enviamos.",
           cost: 5000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: -2, bsc_learning: 6 },
           crossEffects: [],
           tags: ["cautious"],
@@ -216,7 +216,7 @@ window.TREE_OPERATIONS = {
           label: "La planta aguanta - no contratar turno extra",
           description: "Con capacidad de 8,000 y demanda promedio de 7,200, hay 800 paquetes de colchon. Suficiente.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -5, bsc_customer: -6, bsc_financial: 4, bsc_learning: -2 },
           crossEffects: [
             { area: "hr", bsc: { bsc_internal: -2 }, narrative: "Los operarios existentes terminan haciendo horas extras agotadores sin planificacion." }
@@ -230,7 +230,7 @@ window.TREE_OPERATIONS = {
           label: "Contratar turno extra completo (capacidad +4,000/dia)",
           description: "Turno nocturno de 8 horas. Capacidad sube a 12,000 paquetes/dia. Costo alto pero cero riesgo.",
           cost: 35000000,
-          revenue: 15000000,
+          revenue: 50000000,
           bsc: { bsc_internal: 5, bsc_customer: 8, bsc_financial: -5, bsc_learning: 3 },
           crossEffects: [
             { area: "hr", bsc: { bsc_learning: 3 }, narrative: "Talento Humano gana experiencia gestionando turnos rotativos y contratacion temporal." }
@@ -244,7 +244,7 @@ window.TREE_OPERATIONS = {
           label: "Turno extra parcial: subir capacidad a 9,500/dia",
           description: "Medio turno nocturno. Capacidad sube de 8,000 a 9,500 paquetes/dia. Balance entre costo y cobertura.",
           cost: 18000000,
-          revenue: 10000000,
+          revenue: 22000000,
           bsc: { bsc_internal: 8, bsc_customer: 7, bsc_financial: 1, bsc_learning: 5 },
           crossEffects: [],
           tags: ["balanced", "data-driven"],
@@ -256,7 +256,7 @@ window.TREE_OPERATIONS = {
           label: "Producir inventario extra esta semana para cubrir la temporada",
           description: "En vez de contratar gente, producir mas esta semana y almacenar. 1,000 paquetes extra por dia durante 5 dias = 5,000 en inventario.",
           cost: 8000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 4, bsc_customer: 3, bsc_financial: 0, bsc_learning: 2 },
           crossEffects: [],
           tags: ["creative", "moderate"],
@@ -271,7 +271,7 @@ window.TREE_OPERATIONS = {
        -------------------------------------------------------- */
     "ops-05": {
       id: "ops-05",
-      day: 16,
+      day: 12,
       title: "Turno de la manana vs turno de la noche",
       context: "El supervisor reporta que el turno de la noche 'produce menos y con mas errores'. El coordinador nocturno dice que no es cierto, que es percepcion del supervisor que nunca esta de noche.\n\nDecidiste resolver con datos. Tomaste muestras de produccion de ambos turnos:\n\n📊 DATOS:\nTurno manana (n₁ = 30 dias):\n• Produccion promedio: 7,450 paquetes/dia\n• Desviacion estandar: 320 paquetes/dia\n\nTurno noche (n₂ = 30 dias):\n• Produccion promedio: 7,180 paquetes/dia\n• Desviacion estandar: 410 paquetes/dia\n\nDiferencia observada: 270 paquetes/dia a favor del turno de manana.\n\n¿Es evidencia suficiente para tomar accion?",
       type: "choice",
@@ -281,7 +281,7 @@ window.TREE_OPERATIONS = {
           label: "Investigar causas de la diferencia nocturna",
           description: "Hay una diferencia real y significativa. Antes de sancionar, investigar: ¿iluminacion?, ¿fatiga?, ¿supervision?",
           cost: 5000000,
-          revenue: 8000000,
+          revenue: 18000000,
           bsc: { bsc_internal: 10, bsc_customer: 3, bsc_financial: 1, bsc_learning: 8 },
           crossEffects: [
             { area: "hr", bsc: { bsc_learning: 3 }, narrative: "La investigacion revela oportunidades de mejora en condiciones laborales nocturnas." }
@@ -295,7 +295,7 @@ window.TREE_OPERATIONS = {
           label: "Cambiar al coordinador nocturno",
           description: "Si el turno de noche produce menos, es culpa de quien lo lidera. Poner un coordinador nuevo.",
           cost: 8000000,
-          revenue: 5000000,
+          revenue: 12000000,
           bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: -2, bsc_learning: -3 },
           crossEffects: [
             { area: "hr", bsc: { bsc_internal: -4 }, narrative: "Despedir al coordinador sin investigar genera malestar y desconfianza en los demas empleados." }
@@ -309,7 +309,7 @@ window.TREE_OPERATIONS = {
           label: "No es significativo - 270 paquetes es poca diferencia",
           description: "De 7,400 paquetes, 270 es apenas el 3.6%. No vale la pena hacer cambios por eso.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 1, bsc_learning: -6 },
           crossEffects: [],
           tags: ["dismissive"],
@@ -321,7 +321,7 @@ window.TREE_OPERATIONS = {
           label: "Eliminar el turno nocturno y producir todo de dia",
           description: "Si el turno de noche es peor, para que tenerlo. Concentrar produccion en un super-turno de dia de 12 horas.",
           cost: 10000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -3, bsc_customer: -5, bsc_financial: -4, bsc_learning: -2 },
           crossEffects: [
             { area: "hr", bsc: { bsc_internal: -5, bsc_customer: -2 }, narrative: "Eliminar turno nocturno implica despidos o reasignaciones que generan conflicto laboral." }
@@ -338,7 +338,7 @@ window.TREE_OPERATIONS = {
        -------------------------------------------------------- */
     "ops-06": {
       id: "ops-06",
-      day: 21,
+      day: 14,
       title: "Automatizacion de la linea de empaque",
       context: "La junta directiva te pide una recomendacion: ¿automatizar la linea de empaque? La inversion es de $180M COP. El proveedor promete reducir desperdicios y aumentar velocidad.\n\nPara justificar la inversion, necesitas estimar el ahorro mensual. Tu equipo recogio datos de desperdicios actuales:\n\n📊 DATOS ACTUALES (manual):\n• Muestra: 60 dias de produccion\n• Desperdicio promedio: 4.2% de la produccion\n• Desviacion estandar: 1.1%\n• Produccion mensual: 200,000 paquetes\n• Costo por paquete: $2,500\n\n📊 DATOS DEL PROVEEDOR (automatizado):\n• Desperdicio promedio en otras plantas: 1.8%\n• Desviacion estandar: 0.6%\n\n¿Recomiendas la inversion a la junta?",
       type: "choice",
@@ -363,7 +363,7 @@ window.TREE_OPERATIONS = {
           label: "Rechazar - la inversion es muy alta y riesgosa",
           description: "$180 millones es mucha plata. Mejor seguir como estamos y controlar desperdicios manualmente.",
           cost: 0,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 3, bsc_learning: -5 },
           crossEffects: [],
           tags: ["conservative", "risk-averse"],
@@ -375,7 +375,7 @@ window.TREE_OPERATIONS = {
           label: "Pedir al proveedor una prueba piloto de 3 meses",
           description: "Que instale la maquina en prueba. Si los numeros se confirman en nuestra planta, compramos.",
           cost: 30000000,
-          revenue: 0,
+          revenue: 12000000,
           bsc: { bsc_internal: 5, bsc_customer: 2, bsc_financial: -1, bsc_learning: 12 },
           crossEffects: [],
           tags: ["cautious", "analytical"],
@@ -387,7 +387,7 @@ window.TREE_OPERATIONS = {
           label: "Automatizar solo la mitad de la linea",
           description: "Invertir $95M en automatizar la mitad. Comparar linea manual vs automatizada en paralelo.",
           cost: 95000000,
-          revenue: 30000000,
+          revenue: 50000000,
           bsc: { bsc_internal: 7, bsc_customer: 4, bsc_financial: -3, bsc_learning: 8 },
           crossEffects: [],
           tags: ["moderate", "experimental"],
