@@ -678,8 +678,31 @@
             </div>
           ` : ''}
 
-          <div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">
-            Esperando el siguiente día para tu próxima decisión...
+          ${getMissionHtml(decision.day)}
+        </div>
+      `;
+    }
+
+    // Genera HTML de misión para cualquier pantalla de espera
+    function getMissionHtml(day) {
+      if (day < 15 || !window.MISSIONS) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">Esperando el siguiente día...</div>';
+      const deptMissions = window.MISSIONS[session.area] || [];
+      const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
+      const available = deptMissions.filter(m => !completed.includes(m.id + '_' + day));
+      if (available.length === 0) return '<div style="text-align:center;margin-top:20px;color:var(--text-tertiary);font-size:0.85rem">✅ Misiones del día completadas. Esperando siguiente día...</div>';
+      const m = available[0];
+      return `
+        <div class="glass card" style="margin-top:20px;text-align:left;border:2px solid var(--color-warning)">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+            <span style="font-size:1.5rem">⚡</span>
+            <span style="font-weight:800;color:var(--color-warning)">MISIÓN SECUNDARIA</span>
+            <span style="font-size:0.72rem;color:var(--text-tertiary);margin-left:auto">+💰 bonus</span>
+          </div>
+          <h3 style="font-size:1.05rem;margin-bottom:8px">${m.title}</h3>
+          <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px">${m.desc}</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <button class="btn btn-success" onclick="completeMission('${m.id}', ${day}, 'A')" style="padding:14px">${m.optA}</button>
+            <button class="btn btn-primary" onclick="completeMission('${m.id}', ${day}, 'B')" style="padding:14px">${m.optB}</button>
           </div>
         </div>
       `;
@@ -701,31 +724,6 @@
 
       const nextDay = nextNode ? nextNode.day : '?';
 
-      // Misiones secundarias disponibles desde día 18
-      let missionHtml = '';
-      if (day >= 18 && window.MISSIONS) {
-        const deptMissions = window.MISSIONS[session.area] || [];
-        const completed = JSON.parse(localStorage.getItem('plataniwars_missions') || '[]');
-        const available = deptMissions.filter(m => !completed.includes(m.id + '_' + day));
-        if (available.length > 0) {
-          const m = available[Math.floor(Math.random() * available.length)];
-          missionHtml = `
-            <div class="glass card" style="margin-top:20px;text-align:left;border:2px solid var(--color-warning)">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-                <span style="font-size:1.5rem">⚡</span>
-                <span style="font-weight:800;color:var(--color-warning)">MISIÓN SECUNDARIA</span>
-              </div>
-              <h3 style="font-size:1.05rem;margin-bottom:8px">${m.title}</h3>
-              <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px">${m.desc}</p>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                <button class="btn btn-success" onclick="completeMission('${m.id}', ${day}, 'A')" style="padding:14px">${m.optA}</button>
-                <button class="btn btn-primary" onclick="completeMission('${m.id}', ${day}, 'B')" style="padding:14px">${m.optB}</button>
-              </div>
-            </div>
-          `;
-        }
-      }
-
       document.getElementById('mainArea').innerHTML = `
         <div class="glass card slide-up" style="text-align:center;padding:40px 20px">
           <div style="font-size:3rem">☕</div>
@@ -733,7 +731,7 @@
           <p style="color:var(--text-secondary)">
             ${nextNode ? `Próxima decisión: <strong>día ${nextDay}</strong>.` : '¡Completaste todas tus decisiones de área!'}
           </p>
-          ${missionHtml || '<p style="color:var(--text-tertiary);font-size:0.85rem;margin-top:16px">Revisa KPIs, asesora a otros departamentos o planifica un comodín ⚡</p>'}
+          ${getMissionHtml(day)}
         </div>
       `;
     }
@@ -772,21 +770,20 @@
     }
 
     function renderWaitingForPartner(decisionMaker, node) {
-      const key = `partner|${node.id}`;
+      const day = parseInt(serverData?.state?.day) || 0;
+      const key = `partner|${node.id}|${getMissionKey(day)}`;
       if (key === lastRenderKey) return;
       lastRenderKey = key;
 
       document.getElementById('mainArea').innerHTML = `
-        <div class="glass card slide-up" style="text-align:center;padding:50px 20px">
-          <div style="font-size:4rem">🤝</div>
+        <div class="glass card slide-up" style="text-align:center;padding:40px 20px">
+          <div style="font-size:3rem">🤝</div>
           <h2 style="margin:12px 0">${escapeHtml(decisionMaker?.name || 'Tu compañero/a')} decide hoy</h2>
           <p style="color:var(--text-secondary)">
-            Es el turno de tu compañero/a de departamento para la decisión:<br>
-            <strong>"${escapeHtml(node.title)}"</strong>
+            Es el turno de tu compañero/a para: <strong>"${escapeHtml(node.title)}"</strong><br>
+            <span style="font-size:0.85rem">Asesórale con tu análisis de los datos.</span>
           </p>
-          <p style="color:var(--text-tertiary);font-size:0.85rem;margin-top:16px">
-            Puedes asesorarle con tu análisis de los datos. ¡Discutan juntos!
-          </p>
+          ${getMissionHtml(day)}
         </div>
       `;
     }

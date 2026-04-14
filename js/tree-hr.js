@@ -154,14 +154,14 @@ window.TREE_HR = {
         },
         {
           id: "B",
-          label: "No publicar - la muestra no es representativa",
-          description: "29% de respuesta es muy bajo. Los que no respondieron pueden ser los insatisfechos. El dato esta sesgado.",
-          cost: 0,
+          label: "Hacer la encuesta obligatoria y presencial",
+          description: "Todo el mundo a la sala de reuniones. Encuesta en papel, ahi mismo. 100% de respuesta.",
+          cost: 3000000,
           revenue: 12000000,
-          bsc: {"bsc_internal":8,"bsc_customer":2,"bsc_financial":0,"bsc_learning":10},
+          bsc: {"bsc_internal":-3,"bsc_customer":0,"bsc_financial":-1,"bsc_learning":3},
           crossEffects: [],
-          tags: ["data-driven","honest"],
-          feedback: "✅ DECISION ACERTADA\n\nEl 7.8 NO representa a la empresa. Solo el 29.2% respondio. El sesgo de no-respuesta es el elefante en la sala:\n\n¿Quienes NO responden encuestas de satisfaccion?\n• Los insatisfechos (no les importa, o temen represalias)\n• Los muy ocupados (sobrecargados de trabajo)\n• Los desconectados (bajo compromiso)\n\n¿Quienes SI responden?\n• Los satisfechos (quieren que se sepa)\n• Los muy comprometidos\n• Los que quieren complacer a RRHH\n\nSi los 85 que no respondieron tienen satisfaccion promedio de 5.5:\nμ_real = (35 × 7.8 + 85 × 5.5) / 120 = (273 + 467.5) / 120 = 6.17\n\n¡De 7.8 a 6.17! El sesgo de no-respuesta puede distorsionar ENORMEMENTE.\n\n📚 Concepto: Sesgo de no-respuesta. Cuando la tasa de respuesta es baja (< 60%), los resultados estan sesgados porque los que responden son SISTEMATICAMENTE diferentes de los que no.",
+          tags: ["authoritarian"],
+          feedback: "⚠️ 100% RESPUESTA PERO NUEVO SESGO\n\nLogras N = 120 respuestas (censo). Pero introduces sesgo de deseabilidad social:\n\n• En presencial, la gente califica mas alto por miedo a represalias\n• El anonimato se percibe como ficticio ('seguro saben quien soy')\n• Presion de grupo: nadie quiere ser el unico poniendo 3/10 mientras todos ponen 8\n\nEl resultado podria subir de 7.8 a 8.5... siendo MENOS preciso que antes.\n\n📚 Concepto: Sesgo de deseabilidad social. Forzar la respuesta no elimina el sesgo — lo cambia de tipo. Ahora tienes sesgo por presion social en vez de sesgo por no-respuesta. Lo ideal: encuesta voluntaria, anonima, con incentivo y alta tasa de respuesta.",
           next: "hr-04"
         },
         {
@@ -178,14 +178,14 @@ window.TREE_HR = {
         },
         {
           id: "D",
-          label: "Hacer la encuesta obligatoria y presencial",
-          description: "Todo el mundo a la sala de reuniones. Encuesta en papel, ahi mismo. 100% de respuesta.",
-          cost: 3000000,
+          label: "No publicar - la muestra no es representativa",
+          description: "29% de respuesta es muy bajo. Los que no respondieron pueden ser los insatisfechos. El dato esta sesgado.",
+          cost: 0,
           revenue: 12000000,
-          bsc: {"bsc_internal":-3,"bsc_customer":0,"bsc_financial":-1,"bsc_learning":3},
+          bsc: {"bsc_internal":8,"bsc_customer":2,"bsc_financial":0,"bsc_learning":10},
           crossEffects: [],
-          tags: ["authoritarian"],
-          feedback: "⚠️ 100% RESPUESTA PERO NUEVO SESGO\n\nLogras N = 120 respuestas (censo). Pero introduces sesgo de deseabilidad social:\n\n• En presencial, la gente califica mas alto por miedo a represalias\n• El anonimato se percibe como ficticio ('seguro saben quien soy')\n• Presion de grupo: nadie quiere ser el unico poniendo 3/10 mientras todos ponen 8\n\nEl resultado podria subir de 7.8 a 8.5... siendo MENOS preciso que antes.\n\n📚 Concepto: Sesgo de deseabilidad social. Forzar la respuesta no elimina el sesgo — lo cambia de tipo. Ahora tienes sesgo por presion social en vez de sesgo por no-respuesta. Lo ideal: encuesta voluntaria, anonima, con incentivo y alta tasa de respuesta.",
+          tags: ["data-driven","honest"],
+          feedback: "✅ DECISION ACERTADA\n\nEl 7.8 NO representa a la empresa. Solo el 29.2% respondio. El sesgo de no-respuesta es el elefante en la sala:\n\n¿Quienes NO responden encuestas de satisfaccion?\n• Los insatisfechos (no les importa, o temen represalias)\n• Los muy ocupados (sobrecargados de trabajo)\n• Los desconectados (bajo compromiso)\n\n¿Quienes SI responden?\n• Los satisfechos (quieren que se sepa)\n• Los muy comprometidos\n• Los que quieren complacer a RRHH\n\nSi los 85 que no respondieron tienen satisfaccion promedio de 5.5:\nμ_real = (35 × 7.8 + 85 × 5.5) / 120 = (273 + 467.5) / 120 = 6.17\n\n¡De 7.8 a 6.17! El sesgo de no-respuesta puede distorsionar ENORMEMENTE.\n\n📚 Concepto: Sesgo de no-respuesta. Cuando la tasa de respuesta es baja (< 60%), los resultados estan sesgados porque los que responden son SISTEMATICAMENTE diferentes de los que no.",
           next: "hr-04"
         }
       ]
@@ -227,18 +227,6 @@ window.TREE_HR = {
         },
         {
           id: "C",
-          label: "Top 25% (percentil 75) - produccion >= 1,201 piezas",
-          description: "El cuartil superior. Bonificar al 25% mas productivo, que serian 30 operarios (justo el presupuesto).",
-          cost: 15000000,
-          revenue: 36000000,
-          bsc: {"bsc_internal":11,"bsc_customer":6,"bsc_financial":0,"bsc_learning":10},
-          crossEffects: [],
-          tags: ["data-driven","balanced"],
-          feedback: "✅ DECISION BIEN CALIBRADA\n\nPercentil 75 en distribucion normal:\nP75 = μ + Z₇₅ × σ = 1,100 + 0.6745 × 150 = 1,100 + 101.2 = 1,201 piezas\n\nOperarios con produccion ≥ 1,201: 25% de 120 = 30 operarios\nPresupuesto: 30 × $500,000 = $15,000,000 (ajuste perfecto)\n\nEste criterio:\n• Es objetivo (basado en datos, no en opinion del supervisor)\n• Es transparente (todos saben el umbral)\n• Es alcanzable (1 de cada 4 lo logra)\n• Cabe en el presupuesto\n\n📚 Concepto: Percentiles en la distribucion normal. P = μ + Z_p × σ. El Z para P75 es 0.6745. La distribucion normal te permite convertir percentiles en puntos de corte exactos.",
-          next: "hr-05"
-        },
-        {
-          id: "D",
           label: "Que el supervisor elija a los 30 mejores",
           description: "El supervisor conoce a su gente. Que el decida quien merece la bonificacion.",
           cost: 15000000,
@@ -247,6 +235,18 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["subjective","biased"],
           feedback: "❌ DECISION SUBJETIVA Y CONFLICTIVA\n\nDejar la decision al supervisor introduce:\n• Sesgo de favoritismo (premia a sus amigos)\n• Sesgo de recencia (solo recuerda el ultimo mes)\n• Percepcion de injusticia (los no seleccionados reclaman)\n• Riesgo legal (discriminacion potencial)\n\nTienes DATOS OBJETIVOS de produccion de cada operario. Usar el percentil 75 (≥ 1,201 piezas) es:\n• Transparente: todos conocen el criterio\n• Verificable: se basa en numeros, no opiniones\n• Justo: el mismo criterio para todos\n• Apelable: si alguien reclama, los datos respaldan\n\n📚 Concepto: La distribucion normal y los percentiles te dan herramientas OBJETIVAS para decisiones que tradicionalmente son subjetivas. Datos > opiniones cuando los datos existen.",
+          next: "hr-05"
+        },
+        {
+          id: "D",
+          label: "Top 25% (percentil 75) - produccion >= 1,201 piezas",
+          description: "El cuartil superior. Bonificar al 25% mas productivo, que serian 30 operarios (justo el presupuesto).",
+          cost: 15000000,
+          revenue: 36000000,
+          bsc: {"bsc_internal":11,"bsc_customer":6,"bsc_financial":0,"bsc_learning":10},
+          crossEffects: [],
+          tags: ["data-driven","balanced"],
+          feedback: "✅ DECISION BIEN CALIBRADA\n\nPercentil 75 en distribucion normal:\nP75 = μ + Z₇₅ × σ = 1,100 + 0.6745 × 150 = 1,100 + 101.2 = 1,201 piezas\n\nOperarios con produccion ≥ 1,201: 25% de 120 = 30 operarios\nPresupuesto: 30 × $500,000 = $15,000,000 (ajuste perfecto)\n\nEste criterio:\n• Es objetivo (basado en datos, no en opinion del supervisor)\n• Es transparente (todos saben el umbral)\n• Es alcanzable (1 de cada 4 lo logra)\n• Cabe en el presupuesto\n\n📚 Concepto: Percentiles en la distribucion normal. P = μ + Z_p × σ. El Z para P75 es 0.6745. La distribucion normal te permite convertir percentiles en puntos de corte exactos.",
           next: "hr-05"
         }
       ]
@@ -288,18 +288,6 @@ window.TREE_HR = {
         },
         {
           id: "C",
-          label: "Calcular un IC para nuestra tasa real y comparar",
-          description: "En vez de solo testear, construir un intervalo para saber en que rango esta nuestra tasa verdadera.",
-          cost: 2000000,
-          revenue: 24000000,
-          bsc: {"bsc_internal":10,"bsc_customer":5,"bsc_financial":-1,"bsc_learning":15},
-          crossEffects: [{"area":"analyst","bsc":{"bsc_learning":6},"narrative":"El enfoque de intervalos de confianza se adopta como estandar para reportes de RRHH."}],
-          tags: ["data-driven","analytical"],
-          feedback: "✅ EXCELENTE ENFOQUE\n\nIC 95% para nuestra tasa de rotacion:\np̂ = 0.2333\nSE = √(0.2333 × 0.7667 / 120) = √(0.001490) = 0.03861\nIC = 0.2333 ± 1.96 × 0.03861\nIC = 0.2333 ± 0.0757\nIC = [15.76%, 30.90%]\n\nEl IC INCLUYE el 18% del sector. Esto es consistente con el test (Z = 1.52, no significativo al 5%).\n\nPero ojo: el IC tambien incluye valores de hasta 31%. En el peor caso, nuestra rotacion podria ser casi el doble del sector.\n\nEl IC te da MAS informacion que el test: no solo 'si o no', sino el RANGO plausible de tu tasa real.\n\n📚 Concepto: IC vs test de hipotesis. El IC da informacion sobre magnitud (¿cuanto?), no solo direccion (¿si o no?). Un IC que incluye el valor de referencia es equivalente a no rechazar H₀.",
-          next: "hr-06"
-        },
-        {
-          id: "D",
           label: "Comparar con otras empresas de platanitos, no con todo el sector",
           description: "El sector de alimentos incluye desde Alpina hasta tiendas de barrio. No es comparable. Buscar empresas similares.",
           cost: 5000000,
@@ -308,6 +296,18 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["strategic","contextual"],
           feedback: "💡 EXCELENTE PUNTO SOBRE COMPARABILIDAD\n\nEl 18% del sector incluye empresas de todos los tamanos y subsectores. Tu empresa de 120 empleados no es comparable con Alpina (10,000+ empleados).\n\nFactores que afectan la comparacion:\n• Tamano de empresa (pymes vs grandes)\n• Tipo de producto (snacks vs lacteos vs carnicos)\n• Ubicacion (Eje Cafetero vs Bogota)\n• Tipo de empleado (operarios vs administrativos)\n\nSin embargo, el dato del sector (18%) es lo MEJOR que tienes. Comparar con un grupo mas especifico requiere datos que probablemente no existen.\n\nLo ideal: comparar p̂ = 23.33% vs el 18% del sector PERO interpretar con cautela.\n\n📚 Concepto: Representatividad de la referencia. La prueba de proporcion compara tu dato vs una referencia. Si la referencia no es comparable, la conclusion puede ser invalida aunque la estadistica sea correcta.",
+          next: "hr-06"
+        },
+        {
+          id: "D",
+          label: "Calcular un IC para nuestra tasa real y comparar",
+          description: "En vez de solo testear, construir un intervalo para saber en que rango esta nuestra tasa verdadera.",
+          cost: 2000000,
+          revenue: 24000000,
+          bsc: {"bsc_internal":10,"bsc_customer":5,"bsc_financial":-1,"bsc_learning":15},
+          crossEffects: [{"area":"analyst","bsc":{"bsc_learning":6},"narrative":"El enfoque de intervalos de confianza se adopta como estandar para reportes de RRHH."}],
+          tags: ["data-driven","analytical"],
+          feedback: "✅ EXCELENTE ENFOQUE\n\nIC 95% para nuestra tasa de rotacion:\np̂ = 0.2333\nSE = √(0.2333 × 0.7667 / 120) = √(0.001490) = 0.03861\nIC = 0.2333 ± 1.96 × 0.03861\nIC = 0.2333 ± 0.0757\nIC = [15.76%, 30.90%]\n\nEl IC INCLUYE el 18% del sector. Esto es consistente con el test (Z = 1.52, no significativo al 5%).\n\nPero ojo: el IC tambien incluye valores de hasta 31%. En el peor caso, nuestra rotacion podria ser casi el doble del sector.\n\nEl IC te da MAS informacion que el test: no solo 'si o no', sino el RANGO plausible de tu tasa real.\n\n📚 Concepto: IC vs test de hipotesis. El IC da informacion sobre magnitud (¿cuanto?), no solo direccion (¿si o no?). Un IC que incluye el valor de referencia es equivalente a no rechazar H₀.",
           next: "hr-06"
         }
       ]
@@ -325,18 +325,6 @@ window.TREE_HR = {
       options: [
         {
           id: "A",
-          label: "50/50 - tratar a todos por igual",
-          description: "Equidad: el mismo presupuesto por persona, sin importar el cargo.",
-          cost: 40000000,
-          revenue: 44000000,
-          bsc: {"bsc_internal":5,"bsc_customer":5,"bsc_financial":-2,"bsc_learning":-3},
-          crossEffects: [],
-          tags: ["egalitarian","inefficient"],
-          feedback: "⚠️ DECISION EQUITATIVA PERO INEFICIENTE\n\nDistribuir 50/50 ignora que los grupos tienen riesgos MUY diferentes:\n\nIC operarios: [21.2%, 43.5%] de intencion de renuncia\nIC administrativos: [4.5%, 28.9%] de intencion de renuncia\n\nIncluso en el MEJOR escenario, los operarios (21.2%) tienen mas riesgo que el promedio de los administrativos (16.7%).\n\nGastar $20M en retener administrativos que ya tienen baja intencion de renuncia es ineficiente. Ese dinero tendria mas impacto en operarios.\n\nCosto de rotacion de 1 operario: ~$4M\nCosto de rotacion de 1 administrativo: ~$8M\n\nAun con mayor costo unitario de admin, el VOLUMEN de riesgo esta en operarios.\n\n📚 Concepto: Eficiencia en asignacion de recursos basada en IC. Los intervalos de confianza por grupo te dicen DONDE esta el mayor riesgo. Asignar proporcionalmente al riesgo es mas eficiente que distribuir uniformemente.",
-          next: "hr-07"
-        },
-        {
-          id: "B",
           label: "80% a operarios, 20% a administrativos",
           description: "Los operarios tienen el doble de intencion de renuncia. Enfocar recursos donde esta el problema.",
           cost: 40000000,
@@ -345,6 +333,18 @@ window.TREE_HR = {
           crossEffects: [{"area":"operations","bsc":{"bsc_internal":8},"narrative":"El plan de retencion enfocado en operarios estabiliza la linea de produccion."}],
           tags: ["data-driven","focused"],
           feedback: "✅ DECISION BIEN FUNDAMENTADA\n\nIC 95% para operarios:\np̂ = 0.3235, SE = √(0.3235 × 0.6765 / 68) = 0.0567\nIC = [0.2124, 0.4346] = [21.2%, 43.5%]\n\nIC 95% para administrativos:\np̂ = 0.1667, SE = √(0.1667 × 0.8333 / 36) = 0.0622\nIC = [0.0448, 0.2886] = [4.5%, 28.9%]\n\nDiferencia de proporciones:\np̂₁ - p̂₂ = 0.3235 - 0.1667 = 0.1568\nSE_diff = √(0.0567² + 0.0622²) = √(0.003213 + 0.003869) = 0.0841\nZ = 0.1568 / 0.0841 = 1.864\nIC diff = [−0.008, 0.322]\n\nLa diferencia es marginalmente significativa (p ≈ 0.031 unilateral). Los operarios PROBABLEMENTE tienen mayor intencion de renuncia.\n\nEnfocar 80/20 esta alineado con la evidencia.\n\n📚 Concepto: IC para proporcion por grupos. Comparar intervalos te permite priorizar recursos donde el problema es mayor. El IC te da el rango de la proporcion real para cada grupo.",
+          next: "hr-07"
+        },
+        {
+          id: "B",
+          label: "50/50 - tratar a todos por igual",
+          description: "Equidad: el mismo presupuesto por persona, sin importar el cargo.",
+          cost: 40000000,
+          revenue: 44000000,
+          bsc: {"bsc_internal":5,"bsc_customer":5,"bsc_financial":-2,"bsc_learning":-3},
+          crossEffects: [],
+          tags: ["egalitarian","inefficient"],
+          feedback: "⚠️ DECISION EQUITATIVA PERO INEFICIENTE\n\nDistribuir 50/50 ignora que los grupos tienen riesgos MUY diferentes:\n\nIC operarios: [21.2%, 43.5%] de intencion de renuncia\nIC administrativos: [4.5%, 28.9%] de intencion de renuncia\n\nIncluso en el MEJOR escenario, los operarios (21.2%) tienen mas riesgo que el promedio de los administrativos (16.7%).\n\nGastar $20M en retener administrativos que ya tienen baja intencion de renuncia es ineficiente. Ese dinero tendria mas impacto en operarios.\n\nCosto de rotacion de 1 operario: ~$4M\nCosto de rotacion de 1 administrativo: ~$8M\n\nAun con mayor costo unitario de admin, el VOLUMEN de riesgo esta en operarios.\n\n📚 Concepto: Eficiencia en asignacion de recursos basada en IC. Los intervalos de confianza por grupo te dicen DONDE esta el mayor riesgo. Asignar proporcionalmente al riesgo es mas eficiente que distribuir uniformemente.",
           next: "hr-07"
         },
         {
@@ -398,18 +398,6 @@ window.TREE_HR = {
         },
         {
           id: "B",
-          label: "Subir a $2,050,000 (promedio del sector)",
-          description: "Igualar el mercado. Ni mas ni menos de lo que el sector paga.",
-          cost: 5000000,
-          revenue: 20000000,
-          bsc: {"bsc_financial":5,"bsc_customer":4,"bsc_internal":8,"bsc_learning":6},
-          crossEffects: [],
-          tags: ["data-driven"],
-          feedback: "✅ Si μ del sector = $2.05M y tu pagas $1.75M, estas 1 desviacion estandar por debajo. Eso explica la rotacion.\n📚 Concepto: Z = (X-μ)/σ = (1.75-2.05)/0.3 = -1.0. Tu empresa paga en el percentil 16 del sector. Bajo!",
-          next: "hr-08"
-        },
-        {
-          id: "C",
           label: "Negar el aumento - no hay presupuesto",
           description: "Si le subo a uno, todos van a pedir. No podemos abrir esa puerta.",
           cost: 0,
@@ -418,6 +406,18 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["stingy"],
           feedback: "❌ Costo de reemplazo: $8-12M (reclutamiento + capacitacion). El aumento costaba $4.8M/ano. Mas barato retener.\n📚 Concepto: E(costo de rotacion) > costo de aumento cuando el empleado es clave.",
+          next: "hr-08"
+        },
+        {
+          id: "C",
+          label: "Subir a $2,050,000 (promedio del sector)",
+          description: "Igualar el mercado. Ni mas ni menos de lo que el sector paga.",
+          cost: 5000000,
+          revenue: 20000000,
+          bsc: {"bsc_financial":5,"bsc_customer":4,"bsc_internal":8,"bsc_learning":6},
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "✅ Si μ del sector = $2.05M y tu pagas $1.75M, estas 1 desviacion estandar por debajo. Eso explica la rotacion.\n📚 Concepto: Z = (X-μ)/σ = (1.75-2.05)/0.3 = -1.0. Tu empresa paga en el percentil 16 del sector. Bajo!",
           next: "hr-08"
         },
         {
@@ -459,18 +459,6 @@ window.TREE_HR = {
         },
         {
           id: "B",
-          label: "Es normal - epoca de gripe",
-          description: "Es invierno, la gente se enferma. No exagerar.",
-          cost: 0,
-          revenue: 8000000,
-          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":-4,"bsc_learning":3},
-          crossEffects: [],
-          tags: ["dismissive"],
-          feedback: "❌ Z=2.10 dice que NO es normal. Aunque la gripe sea la causa, actuar previene que empeore.\n📚 Concepto: 'Es epoca de gripe' explica la causa pero no elimina el problema. Significativo = actua.",
-          next: "hr-09"
-        },
-        {
-          id: "C",
           label: "Implementar protocolo de salud preventivo",
           description: "Gel, tapabocas, ventilacion. Prevenir es mas barato que curar.",
           cost: 2000000,
@@ -479,6 +467,18 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["preventive"],
           feedback: "✅ Accion preventiva basada en la senal estadistica. Si p sigue subiendo la proxima semana, escalar medidas.\n📚 Concepto: No esperes a que el problema crezca. Una proporcion anormal temprana es una alerta.",
+          next: "hr-09"
+        },
+        {
+          id: "C",
+          label: "Es normal - epoca de gripe",
+          description: "Es invierno, la gente se enferma. No exagerar.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":-4,"bsc_learning":3},
+          crossEffects: [],
+          tags: ["dismissive"],
+          feedback: "❌ Z=2.10 dice que NO es normal. Aunque la gripe sea la causa, actuar previene que empeore.\n📚 Concepto: 'Es epoca de gripe' explica la causa pero no elimina el problema. Significativo = actua.",
           next: "hr-09"
         },
         {
@@ -508,6 +508,18 @@ window.TREE_HR = {
       options: [
         {
           id: "A",
+          label: "Rechazar - los practicantes mas estorban que ayudan",
+          description: "Hay que ensernarles todo. Los supervisores pierden tiempo.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":3,"bsc_learning":-5},
+          crossEffects: [],
+          tags: ["skeptical"],
+          feedback: "⚠️ Con X̄=70% y σ=15%, P(productividad < 50%) = P(Z < -1.33) = 9%. Solo 9% de chance de que sean malos.\n📚 Concepto: Usa los datos para decidir, no la intuicion. 6 cohortes dicen que funcionan en promedio.",
+          next: "hr-10"
+        },
+        {
+          id: "B",
           label: "Aceptar pero con KPIs claros desde el dia 1",
           description: "Contrato con metas: producir al menos 60% de un operario regular o se van.",
           cost: 4000000,
@@ -519,7 +531,7 @@ window.TREE_HR = {
           next: "hr-10"
         },
         {
-          id: "B",
+          id: "C",
           label: "Aceptar 2 como prueba",
           description: "Empezar con 2, si funcionan, pedir mas el proximo semestre.",
           cost: 1600000,
@@ -528,18 +540,6 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["cautious"],
           feedback: "✅ Reduces riesgo. Si estos 2 rinden bien, datos propios refuerzan la decision de ampliar.\n📚 Concepto: Muestra piloto. Recoges datos de TU contexto antes de escalar.",
-          next: "hr-10"
-        },
-        {
-          id: "C",
-          label: "Rechazar - los practicantes mas estorban que ayudan",
-          description: "Hay que ensernarles todo. Los supervisores pierden tiempo.",
-          cost: 0,
-          revenue: 5000000,
-          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":3,"bsc_learning":-5},
-          crossEffects: [],
-          tags: ["skeptical"],
-          feedback: "⚠️ Con X̄=70% y σ=15%, P(productividad < 50%) = P(Z < -1.33) = 9%. Solo 9% de chance de que sean malos.\n📚 Concepto: Usa los datos para decidir, no la intuicion. 6 cohortes dicen que funcionan en promedio.",
           next: "hr-10"
         },
         {
@@ -569,14 +569,14 @@ window.TREE_HR = {
       options: [
         {
           id: "A",
-          label: "Rotar los equipos y medir de nuevo",
-          description: "Que A supervise al equipo de B y viceversa. Si el patron se repite, es el supervisor.",
-          cost: 3000000,
-          revenue: 18000000,
-          bsc: {"bsc_financial":4,"bsc_customer":4,"bsc_internal":6,"bsc_learning":10},
+          label: "No es significativo - 130 piezas es poco",
+          description: "De 1,100 piezas, 130 es solo 12%. No vale la pena el conflicto.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":-5,"bsc_learning":-3},
           crossEffects: [],
-          tags: ["experimental"],
-          feedback: "✅ Diseno experimental perfecto! Controlas la variable 'equipo' y aislas el efecto 'supervisor'.\n📚 Concepto: Experimento controlado. Rotar elimina variables confusoras y establece causalidad.",
+          tags: ["dismissive"],
+          feedback: "❌ Z=2.36, p=0.009. ES significativo. 130 piezas × 22 dias × $2,500 = $7.15M/mes de diferencia. Nada despreciable.\n📚 Concepto: No confundas porcentaje con significancia. El SE determina si la diferencia es real, no tu intuicion.",
           next: "hr-11"
         },
         {
@@ -605,14 +605,14 @@ window.TREE_HR = {
         },
         {
           id: "D",
-          label: "No es significativo - 130 piezas es poco",
-          description: "De 1,100 piezas, 130 es solo 12%. No vale la pena el conflicto.",
-          cost: 0,
-          revenue: 8000000,
-          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":-5,"bsc_learning":-3},
+          label: "Rotar los equipos y medir de nuevo",
+          description: "Que A supervise al equipo de B y viceversa. Si el patron se repite, es el supervisor.",
+          cost: 3000000,
+          revenue: 18000000,
+          bsc: {"bsc_financial":4,"bsc_customer":4,"bsc_internal":6,"bsc_learning":10},
           crossEffects: [],
-          tags: ["dismissive"],
-          feedback: "❌ Z=2.36, p=0.009. ES significativo. 130 piezas × 22 dias × $2,500 = $7.15M/mes de diferencia. Nada despreciable.\n📚 Concepto: No confundas porcentaje con significancia. El SE determina si la diferencia es real, no tu intuicion.",
+          tags: ["experimental"],
+          feedback: "✅ Diseno experimental perfecto! Controlas la variable 'equipo' y aislas el efecto 'supervisor'.\n📚 Concepto: Experimento controlado. Rotar elimina variables confusoras y establece causalidad.",
           next: "hr-11"
         }
       ]
@@ -630,30 +630,6 @@ window.TREE_HR = {
       options: [
         {
           id: "A",
-          label: "Promedio simple de las 3 metricas (estandarizadas)",
-          description: "Convertir a Z-scores y promediar. Todas pesan igual.",
-          cost: 2000000,
-          revenue: 18000000,
-          bsc: {"bsc_financial":4,"bsc_customer":4,"bsc_internal":7,"bsc_learning":8},
-          crossEffects: [],
-          tags: ["fair"],
-          feedback: "✅ Z-score estandariza: Zi = (Xi-μi)/σi. Pone todas las metricas en la misma escala.\n📚 Concepto: Z-score permite comparar metricas en diferentes unidades. Promedio de Z = nota integrada.",
-          next: "hr-12"
-        },
-        {
-          id: "B",
-          label: "Ponderado: 50% produccion, 30% calidad, 20% puntualidad",
-          description: "Produccion es lo que genera plata. Debe pesar mas.",
-          cost: 3000000,
-          revenue: 22000000,
-          bsc: {"bsc_financial":6,"bsc_customer":4,"bsc_internal":8,"bsc_learning":6},
-          crossEffects: [],
-          tags: ["strategic"],
-          feedback: "✅ Promedio ponderado: Nota = 0.5×Zprod + 0.3×Zcal + 0.2×Zpunt. Refleja prioridades del negocio.\n📚 Concepto: Promedios ponderados. Los pesos deben reflejar la importancia relativa de cada metrica.",
-          next: "hr-12"
-        },
-        {
-          id: "C",
           label: "Solo produccion - lo demas es subjetivo",
           description: "Piezas producidas es objetivo y medible. Lo unico que cuenta.",
           cost: 1000000,
@@ -665,7 +641,7 @@ window.TREE_HR = {
           next: "hr-12"
         },
         {
-          id: "D",
+          id: "B",
           label: "Que el supervisor evalue cualitativamente",
           description: "Los numeros no capturan todo. El supervisor conoce a su gente.",
           cost: 1000000,
@@ -674,6 +650,30 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["subjective"],
           feedback: "❌ Tienes datos OBJETIVOS y propones evaluacion subjetiva. Sesgo garantizado.\n📚 Concepto: Datos cuantitativos > opinion cuando los datos existen. Estandariza con Z y pondera.",
+          next: "hr-12"
+        },
+        {
+          id: "C",
+          label: "Ponderado: 50% produccion, 30% calidad, 20% puntualidad",
+          description: "Produccion es lo que genera plata. Debe pesar mas.",
+          cost: 3000000,
+          revenue: 22000000,
+          bsc: {"bsc_financial":6,"bsc_customer":4,"bsc_internal":8,"bsc_learning":6},
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "✅ Promedio ponderado: Nota = 0.5×Zprod + 0.3×Zcal + 0.2×Zpunt. Refleja prioridades del negocio.\n📚 Concepto: Promedios ponderados. Los pesos deben reflejar la importancia relativa de cada metrica.",
+          next: "hr-12"
+        },
+        {
+          id: "D",
+          label: "Promedio simple de las 3 metricas (estandarizadas)",
+          description: "Convertir a Z-scores y promediar. Todas pesan igual.",
+          cost: 2000000,
+          revenue: 18000000,
+          bsc: {"bsc_financial":4,"bsc_customer":4,"bsc_internal":7,"bsc_learning":8},
+          crossEffects: [],
+          tags: ["fair"],
+          feedback: "✅ Z-score estandariza: Zi = (Xi-μi)/σi. Pone todas las metricas en la misma escala.\n📚 Concepto: Z-score permite comparar metricas en diferentes unidades. Promedio de Z = nota integrada.",
           next: "hr-12"
         }
       ]
@@ -691,6 +691,18 @@ window.TREE_HR = {
       options: [
         {
           id: "A",
+          label: "Bono para todos los que superen la media",
+          description: "Premiar a la mitad superior. $833K por persona.",
+          cost: 20000000,
+          revenue: 22000000,
+          bsc: {"bsc_financial":3,"bsc_customer":4,"bsc_internal":5,"bsc_learning":4},
+          crossEffects: [],
+          tags: ["generous"],
+          feedback: "⚠️ 24 operarios × $833K. El monto individual es bajo y no se siente como premio. Diluyes el incentivo.\n📚 Concepto: El 50% siempre esta arriba del promedio en una normal. 'Superar la media' no es excepcional.",
+          next: null
+        },
+        {
+          id: "B",
           label: "Bono escalonado: bronce (P60), plata (P75), oro (P90)",
           description: "3 niveles de bono. Mas operarios motivados a distintos niveles.",
           cost: 20000000,
@@ -702,7 +714,7 @@ window.TREE_HR = {
           next: null
         },
         {
-          id: "B",
+          id: "C",
           label: "Bono al top 25% (P75 = 1,201 piezas)",
           description: "12 operarios reciben bono de $1.67M cada uno. Alcanzable y motivador.",
           cost: 20000000,
@@ -711,18 +723,6 @@ window.TREE_HR = {
           crossEffects: [],
           tags: ["balanced"],
           feedback: "✅ P75 = μ + 0.6745σ = 1,201. 25% del equipo lo alcanza. Buen equilibrio motivacion/presupuesto.\n📚 Concepto: Percentiles para fijar umbrales. P75 es alcanzable para 1 de cada 4. Suficiente para motivar.",
-          next: null
-        },
-        {
-          id: "C",
-          label: "Bono para todos los que superen la media",
-          description: "Premiar a la mitad superior. $833K por persona.",
-          cost: 20000000,
-          revenue: 22000000,
-          bsc: {"bsc_financial":3,"bsc_customer":4,"bsc_internal":5,"bsc_learning":4},
-          crossEffects: [],
-          tags: ["generous"],
-          feedback: "⚠️ 24 operarios × $833K. El monto individual es bajo y no se siente como premio. Diluyes el incentivo.\n📚 Concepto: El 50% siempre esta arriba del promedio en una normal. 'Superar la media' no es excepcional.",
           next: null
         },
         {

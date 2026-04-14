@@ -20,6 +20,18 @@ window.TREE_ANALYST = {
       options: [
         {
           id: "A",
+          label: "Muestreo estratificado proporcional por sede",
+          description: "Dividimos las 150 muestras proporcionalmente: 98 en Pereira (65%), 37 en Dosquebradas (25%), 15 en Armenia (10%). Cada sede es un estrato.",
+          cost: 8000000,
+          revenue: 12000000,
+          bsc: {"bsc_internal":10,"bsc_customer":5,"bsc_financial":-1,"bsc_learning":12},
+          crossEffects: [{"area":"operations","bsc":{"bsc_internal":3},"narrative":"El diagnostico por sede permite identificar problemas especificos en cada planta."}],
+          tags: ["data-driven","rigorous"],
+          feedback: "✅ DECISION ACERTADA\n\nEl muestreo estratificado es la tecnica correcta cuando la poblacion tiene subgrupos (estratos) con caracteristicas diferentes.\n\nDistribucion optima proporcional:\n• Pereira: 150 × 0.65 = 98 muestras\n• Dosquebradas: 150 × 0.25 = 37 muestras\n• Armenia: 150 × 0.10 = 15 muestras\n\nVentajas sobre aleatorio simple:\n1. Garantiza representacion de TODAS las sedes\n2. Reduce el error estandar del estimador global\n3. Permite comparar calidad ENTRE sedes\n4. Si Armenia tiene problemas graves, los detectas con 15 muestras dedicadas\n\nCon aleatorio simple de 150, podrias terminar con 0 muestras de Armenia por puro azar.\n\n📚 Concepto: Muestreo estratificado. Se usa cuando la poblacion tiene subgrupos heterogeneos entre si pero homogeneos internamente. Los estratos se definen ANTES de muestrear (no despues). La asignacion proporcional al tamano del estrato es la mas comun: nk = n × (Nk/N).",
+          next: "dat-02"
+        },
+        {
+          id: "B",
           label: "Hacerle caso al gerente: 150 muestras en Pereira",
           description: "Pereira es la planta mas grande y la mas importante. Concentramos todo el esfuerzo ahi y ahorramos los viaticos a las otras sedes.",
           cost: 5000000,
@@ -31,7 +43,7 @@ window.TREE_ANALYST = {
           next: "dat-02"
         },
         {
-          id: "B",
+          id: "C",
           label: "Muestreo aleatorio simple de toda la produccion",
           description: "Juntamos la produccion de las 3 sedes en una lista, generamos 150 numeros aleatorios y muestreamos sin importar la sede de origen.",
           cost: 6000000,
@@ -40,18 +52,6 @@ window.TREE_ANALYST = {
           crossEffects: [],
           tags: ["simple","suboptimal"],
           feedback: "⚠️ DECISION FUNCIONAL PERO SUBOPTIMA\n\nEl muestreo aleatorio simple (MAS) es valido pero tiene limitaciones aqui:\n\nProblema 1 — Representacion desigual:\nCon n=150 y Armenia = 10% de produccion, esperarias ~15 muestras de Armenia. Pero por azar podrias obtener entre 5 y 25. Si salen solo 5, Armenia queda sub-representada.\n\nProblema 2 — No puedes comparar sedes:\nSin estratificacion, las comparaciones entre sedes tienen tamanos muestrales inciertos.\n\nProblema 3 — Mayor varianza:\nVar(MAS) >= Var(Estratificado) siempre que los estratos sean diferentes entre si.\n\nEl MAS funciona bien cuando la poblacion es HOMOGENEA. Aqui no lo es: maquinas diferentes, operarios diferentes, climas diferentes.\n\n📚 Concepto: Muestreo aleatorio simple. Cada elemento tiene la misma probabilidad de ser seleccionado: P = n/N. Es el baseline pero no siempre es el mejor. Cuando hay heterogeneidad conocida, el estratificado es superior.",
-          next: "dat-02"
-        },
-        {
-          id: "C",
-          label: "Muestreo estratificado proporcional por sede",
-          description: "Dividimos las 150 muestras proporcionalmente: 98 en Pereira (65%), 37 en Dosquebradas (25%), 15 en Armenia (10%). Cada sede es un estrato.",
-          cost: 8000000,
-          revenue: 12000000,
-          bsc: {"bsc_internal":10,"bsc_customer":5,"bsc_financial":-1,"bsc_learning":12},
-          crossEffects: [{"area":"operations","bsc":{"bsc_internal":3},"narrative":"El diagnostico por sede permite identificar problemas especificos en cada planta."}],
-          tags: ["data-driven","rigorous"],
-          feedback: "✅ DECISION ACERTADA\n\nEl muestreo estratificado es la tecnica correcta cuando la poblacion tiene subgrupos (estratos) con caracteristicas diferentes.\n\nDistribucion optima proporcional:\n• Pereira: 150 × 0.65 = 98 muestras\n• Dosquebradas: 150 × 0.25 = 37 muestras\n• Armenia: 150 × 0.10 = 15 muestras\n\nVentajas sobre aleatorio simple:\n1. Garantiza representacion de TODAS las sedes\n2. Reduce el error estandar del estimador global\n3. Permite comparar calidad ENTRE sedes\n4. Si Armenia tiene problemas graves, los detectas con 15 muestras dedicadas\n\nCon aleatorio simple de 150, podrias terminar con 0 muestras de Armenia por puro azar.\n\n📚 Concepto: Muestreo estratificado. Se usa cuando la poblacion tiene subgrupos heterogeneos entre si pero homogeneos internamente. Los estratos se definen ANTES de muestrear (no despues). La asignacion proporcional al tamano del estrato es la mas comun: nk = n × (Nk/N).",
           next: "dat-02"
         },
         {
@@ -337,18 +337,6 @@ window.TREE_ANALYST = {
         },
         {
           id: "B",
-          label: "Dashboard integrado con IC para cada KPI y analisis cruzado",
-          description: "Presentas los 4 KPIs con sus intervalos de confianza, cruzas las implicaciones entre areas, y proyectas 3 escenarios (conservador, esperado, optimista).",
-          cost: 15000000,
-          revenue: 44000000,
-          bsc: {"bsc_internal":15,"bsc_customer":11,"bsc_financial":13,"bsc_learning":18},
-          crossEffects: [{"area":"operations","bsc":{"bsc_internal":8},"narrative":"El dashboard integrado revela que la diferencia de costos entre turnos se correlaciona con la tasa de defectos del turno noche."},{"area":"marketing","bsc":{"bsc_customer":7},"narrative":"Los datos de satisfaccion del cliente permiten al equipo de marketing ajustar la estrategia de retencion con evidencia solida."},{"area":"finance","bsc":{"bsc_financial":8},"narrative":"El modelo con IC permite al CFO presentar rangos creibles a Bancolombia y la DIAN."}],
-          tags: ["data-driven","holistic","rigorous"],
-          feedback: "✅ DECISION ACERTADA\n\nEste es el trabajo del analista de datos en su maxima expresion. Integremos:\n\n1. CALIDAD — Proporcion de defectos:\np̂ = 0.036, IC 95%: [0.020, 0.052]\nSE = √(0.036 × 0.964 / 500) = 0.0083\nEsta dentro del estandar INVIMA (max 5%), pero el limite superior (5.2%) esta al filo.\n\n2. VENTAS — Media mensual con TCL:\nX̄ = $185M, SE = $10.1M\nIC 95%: [$165.2M, $204.8M]\nProyeccion anual: IC × 12 = [$1,982M, $2,458M]\n\n3. COSTOS — Diferencia entre turnos:\nDif = $7M, SE = $2.63M\nIC 95%: [7 ± 1.96 × 2.63] = [$1.8M, $12.2M]\nZ = 7/2.63 = 2.66, P = 0.008 → La diferencia es significativa\nVar(dif) = Var(dia) + Var(noche) = 64 + 144 = 208 (se SUMAN!)\n\n4. SATISFACCION — Proporcion:\np̂ = 0.78, SE = √(0.78 × 0.22 / 300) = 0.024\nIC 95%: [0.733, 0.827]\nMeta 80%: esta dentro del IC → no se puede confirmar que lleguemos.\n\nESCENARIOS:\n• Conservador: Ventas $165M/mes, defectos 5.2%, satisfaccion 73% → Margen neto ~14%\n• Esperado: Ventas $185M/mes, defectos 3.6%, satisfaccion 78% → Margen neto ~21%\n• Optimista: Ventas $205M/mes, defectos 2.0%, satisfaccion 83% → Margen neto ~27%\n\n📚 Concepto: Integracion estadistica. Cada KPI tiene su propio IC y SE. La proyeccion integrada combina estimaciones puntuales para el escenario esperado y usa los limites de IC para los escenarios extremos. Las varianzas de diferencias se SUMAN (costos turno), las proporciones usan la formula p̂(1-p̂)/n, y las medias usan s/√n. Todo lo del curso en una sola presentacion.",
-          next: "dat-07"
-        },
-        {
-          id: "C",
           label: "Enfocarse solo en ventas porque es lo que le importa a la junta",
           description: "A la junta le importa la plata. Presentas un analisis profundo SOLO de ventas con proyeccion anual, IC, escenarios y TCL. Los otros KPIs los dejas como bullet points.",
           cost: 8000000,
@@ -360,7 +348,7 @@ window.TREE_ANALYST = {
           next: "dat-07"
         },
         {
-          id: "D",
+          id: "C",
           label: "Modelo predictivo de machine learning con los datos historicos",
           description: "Entrenas un modelo de regresion multiple con 36 meses de datos para predecir ventas, costos y margen del proximo trimestre. Le metes Random Forest y Neural Networks.",
           cost: 50000000,
@@ -369,6 +357,18 @@ window.TREE_ANALYST = {
           crossEffects: [{"area":"hr","bsc":{"bsc_learning":6},"narrative":"El equipo de datos aprende herramientas de ML, pero el modelo no es interpretable para la junta."}],
           tags: ["overengineered","advanced"],
           feedback: "💡 DECISION EXCESIVA PARA EL CONTEXTO\n\nMachine Learning con 36 datos mensuales es como usar un Formula 1 para ir a la tienda:\n\n1. Tamano muestral insuficiente:\n• Random Forest necesita minimo cientos de observaciones\n• Neural Networks necesita miles\n• Con n=36, sobreajuste garantizado (memoriza los datos en vez de aprender patrones)\n\n2. No es interpretable:\n• La junta pregunta '¿por que el modelo dice $190M?' y tu respuesta es 'los pesos de las neuronas...' — NO sirve\n• Los IC y pruebas de hipotesis SON interpretables: 'Con 95% de confianza, las ventas estaran entre $165M y $205M'\n\n3. Costo desproporcionado:\n• $50M en consultoria de ML vs $15M en un buen analisis estadistico clasico\n• El ROI no justifica la complejidad\n\nEstadistica clasica (TCL, IC, pruebas de hipotesis) es MAS que suficiente para este problema. No todo necesita ML.\n\n📚 Concepto: Parsimonia. El mejor modelo no es el mas complejo, sino el mas simple que resuelve el problema. Con n=36, los metodos clasicos (IC, pruebas de hipotesis, SE) son robustos, interpretables y baratos. ML requiere muchos mas datos para ser util y confiable. Navaja de Occam aplicada a la estadistica.",
+          next: "dat-07"
+        },
+        {
+          id: "D",
+          label: "Dashboard integrado con IC para cada KPI y analisis cruzado",
+          description: "Presentas los 4 KPIs con sus intervalos de confianza, cruzas las implicaciones entre areas, y proyectas 3 escenarios (conservador, esperado, optimista).",
+          cost: 15000000,
+          revenue: 44000000,
+          bsc: {"bsc_internal":15,"bsc_customer":11,"bsc_financial":13,"bsc_learning":18},
+          crossEffects: [{"area":"operations","bsc":{"bsc_internal":8},"narrative":"El dashboard integrado revela que la diferencia de costos entre turnos se correlaciona con la tasa de defectos del turno noche."},{"area":"marketing","bsc":{"bsc_customer":7},"narrative":"Los datos de satisfaccion del cliente permiten al equipo de marketing ajustar la estrategia de retencion con evidencia solida."},{"area":"finance","bsc":{"bsc_financial":8},"narrative":"El modelo con IC permite al CFO presentar rangos creibles a Bancolombia y la DIAN."}],
+          tags: ["data-driven","holistic","rigorous"],
+          feedback: "✅ DECISION ACERTADA\n\nEste es el trabajo del analista de datos en su maxima expresion. Integremos:\n\n1. CALIDAD — Proporcion de defectos:\np̂ = 0.036, IC 95%: [0.020, 0.052]\nSE = √(0.036 × 0.964 / 500) = 0.0083\nEsta dentro del estandar INVIMA (max 5%), pero el limite superior (5.2%) esta al filo.\n\n2. VENTAS — Media mensual con TCL:\nX̄ = $185M, SE = $10.1M\nIC 95%: [$165.2M, $204.8M]\nProyeccion anual: IC × 12 = [$1,982M, $2,458M]\n\n3. COSTOS — Diferencia entre turnos:\nDif = $7M, SE = $2.63M\nIC 95%: [7 ± 1.96 × 2.63] = [$1.8M, $12.2M]\nZ = 7/2.63 = 2.66, P = 0.008 → La diferencia es significativa\nVar(dif) = Var(dia) + Var(noche) = 64 + 144 = 208 (se SUMAN!)\n\n4. SATISFACCION — Proporcion:\np̂ = 0.78, SE = √(0.78 × 0.22 / 300) = 0.024\nIC 95%: [0.733, 0.827]\nMeta 80%: esta dentro del IC → no se puede confirmar que lleguemos.\n\nESCENARIOS:\n• Conservador: Ventas $165M/mes, defectos 5.2%, satisfaccion 73% → Margen neto ~14%\n• Esperado: Ventas $185M/mes, defectos 3.6%, satisfaccion 78% → Margen neto ~21%\n• Optimista: Ventas $205M/mes, defectos 2.0%, satisfaccion 83% → Margen neto ~27%\n\n📚 Concepto: Integracion estadistica. Cada KPI tiene su propio IC y SE. La proyeccion integrada combina estimaciones puntuales para el escenario esperado y usa los limites de IC para los escenarios extremos. Las varianzas de diferencias se SUMAN (costos turno), las proporciones usan la formula p̂(1-p̂)/n, y las medias usan s/√n. Todo lo del curso en una sola presentacion.",
           next: "dat-07"
         }
       ]
@@ -447,18 +447,6 @@ window.TREE_ANALYST = {
       options: [
         {
           id: "A",
-          label: "Proyectar con tendencia: $170M para enero 2027",
-          description: "La tendencia sube $10M/ano. 2026 fue $160M, asi que 2027 = $170M.",
-          cost: 3000000,
-          revenue: 25000000,
-          bsc: {"bsc_financial":6,"bsc_customer":5,"bsc_internal":6,"bsc_learning":7},
-          crossEffects: [],
-          tags: ["trend-based"],
-          feedback: "✅ Proyeccion con tendencia lineal. Pero con solo n=5, la incertidumbre es alta. SE de la pendiente es grande.\n📚 Concepto: Estimacion de tendencia. Con n pequeno, la tendencia es estimacion burda. Acompanar con IC.",
-          next: "dat-09"
-        },
-        {
-          id: "B",
           label: "Usar el promedio historico: $142M",
           description: "Mejor no extrapolar. El promedio de 5 anos es mas seguro.",
           cost: 2000000,
@@ -467,6 +455,18 @@ window.TREE_ANALYST = {
           crossEffects: [],
           tags: ["conservative"],
           feedback: "⚠️ Ignoras la tendencia creciente. Con 5 datos consecutivos al alza, el promedio SUBESTIMA el futuro.\n📚 Concepto: El promedio simple ignora tendencia. Si hay patron temporal, la media no es buen predictor.",
+          next: "dat-09"
+        },
+        {
+          id: "B",
+          label: "Proyectar con tendencia: $170M para enero 2027",
+          description: "La tendencia sube $10M/ano. 2026 fue $160M, asi que 2027 = $170M.",
+          cost: 3000000,
+          revenue: 25000000,
+          bsc: {"bsc_financial":6,"bsc_customer":5,"bsc_internal":6,"bsc_learning":7},
+          crossEffects: [],
+          tags: ["trend-based"],
+          feedback: "✅ Proyeccion con tendencia lineal. Pero con solo n=5, la incertidumbre es alta. SE de la pendiente es grande.\n📚 Concepto: Estimacion de tendencia. Con n pequeno, la tendencia es estimacion burda. Acompanar con IC.",
           next: "dat-09"
         },
         {
@@ -520,18 +520,6 @@ window.TREE_ANALYST = {
         },
         {
           id: "B",
-          label: "Firmar garantia de <2% - estamos en 1.8%",
-          description: "1.8% < 2%. Cumplimos. Firmar.",
-          cost: 5000000,
-          revenue: 35000000,
-          bsc: {"bsc_financial":-3,"bsc_customer":5,"bsc_internal":3,"bsc_learning":4},
-          crossEffects: [],
-          tags: ["risky"],
-          feedback: "❌ El IC unilateral dice que p real podria ser hasta 2.77%. Firmaste garantia que probablemente incumples.\n📚 Concepto: IC unilateral. El limite superior al 95% es 2.77% > 2%. No puedes garantizar <2% con estos datos.",
-          next: "dat-10"
-        },
-        {
-          id: "C",
           label: "Firmar garantia de <3% en vez de <2%",
           description: "Negociar un limite mas realista. 3% es alcanzable con confianza.",
           cost: 3000000,
@@ -543,7 +531,7 @@ window.TREE_ANALYST = {
           next: "dat-10"
         },
         {
-          id: "D",
+          id: "C",
           label: "No firmar hasta mejorar el proceso",
           description: "1.8% esta cerca del 2%. Primero bajar a 1% y luego firmar con confianza.",
           cost: 10000000,
@@ -552,6 +540,18 @@ window.TREE_ANALYST = {
           crossEffects: [],
           tags: ["prudent"],
           feedback: "✅ Con p̂=1.0% y n=500, IC unilateral = 1.0% + 1.645×0.45% = 1.74% < 2%. Ahora SI puedes garantizar.\n📚 Concepto: Para garantizar un umbral, el IC unilateral debe estar por debajo. Mejora p antes de prometer.",
+          next: "dat-10"
+        },
+        {
+          id: "D",
+          label: "Firmar garantia de <2% - estamos en 1.8%",
+          description: "1.8% < 2%. Cumplimos. Firmar.",
+          cost: 5000000,
+          revenue: 35000000,
+          bsc: {"bsc_financial":-3,"bsc_customer":5,"bsc_internal":3,"bsc_learning":4},
+          crossEffects: [],
+          tags: ["risky"],
+          feedback: "❌ El IC unilateral dice que p real podria ser hasta 2.77%. Firmaste garantia que probablemente incumples.\n📚 Concepto: IC unilateral. El limite superior al 95% es 2.77% > 2%. No puedes garantizar <2% con estos datos.",
           next: "dat-10"
         }
       ]
@@ -581,18 +581,6 @@ window.TREE_ANALYST = {
         },
         {
           id: "B",
-          label: "Las dos miden cosas diferentes - no son comparables",
-          description: "Presencial vs online captura poblaciones distintas. Ambas son validas en su contexto.",
-          cost: 2000000,
-          revenue: 20000000,
-          bsc: {"bsc_financial":5,"bsc_customer":5,"bsc_internal":6,"bsc_learning":10},
-          crossEffects: [],
-          tags: ["analytical"],
-          feedback: "✅ Correcto! Diferentes metodos = diferentes sesgos = diferentes estimaciones. p̂ depende del COMO se mide.\n📚 Concepto: Variabilidad entre estudios ≠ error. Diferentes muestras pueden estimar parametros DIFERENTES.",
-          next: "dat-11"
-        },
-        {
-          id: "C",
           label: "Promediar: (90%+76%)/2 = 83%",
           description: "Promedio de las dos. La verdad esta en el medio.",
           cost: 1000000,
@@ -601,6 +589,18 @@ window.TREE_ANALYST = {
           crossEffects: [],
           tags: ["simplistic"],
           feedback: "⚠️ Promediar sin ponderar por precision ni ajustar por sesgo mezcla manzanas con naranjas.\n📚 Concepto: Promedio ponderado por inverso de varianza es mejor. Y si hay sesgo, primero corregirlo.",
+          next: "dat-11"
+        },
+        {
+          id: "C",
+          label: "Las dos miden cosas diferentes - no son comparables",
+          description: "Presencial vs online captura poblaciones distintas. Ambas son validas en su contexto.",
+          cost: 2000000,
+          revenue: 20000000,
+          bsc: {"bsc_financial":5,"bsc_customer":5,"bsc_internal":6,"bsc_learning":10},
+          crossEffects: [],
+          tags: ["analytical"],
+          feedback: "✅ Correcto! Diferentes metodos = diferentes sesgos = diferentes estimaciones. p̂ depende del COMO se mide.\n📚 Concepto: Variabilidad entre estudios ≠ error. Diferentes muestras pueden estimar parametros DIFERENTES.",
           next: "dat-11"
         },
         {
@@ -703,18 +703,6 @@ window.TREE_ANALYST = {
         },
         {
           id: "B",
-          label: "Solo los numeros headline sin intervalos",
-          description: "Ventas $285M, defectos 1.8%, satisfaccion 78%, crecimiento 8%. Limpio y directo.",
-          cost: 3000000,
-          revenue: 20000000,
-          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":3,"bsc_learning":-5},
-          crossEffects: [],
-          tags: ["simplistic"],
-          feedback: "❌ Un inversionista serio preguntara '¿con que confianza?' y '¿cual es el peor escenario?'. Sin IC no hay respuesta.\n📚 Concepto: Estimacion sin incertidumbre es incompleta. El inversionista necesita el rango, no solo el punto.",
-          next: null
-        },
-        {
-          id: "C",
           label: "Reporte con IC para cada KPI y analisis integrado",
           description: "Cada metrica con su intervalo de confianza, escenarios y proyecciones.",
           cost: 10000000,
@@ -723,6 +711,18 @@ window.TREE_ANALYST = {
           crossEffects: [],
           tags: ["professional"],
           feedback: "✅ IC ventas: [$258M, $312M]. IC defectos: [0.6%, 3.0%]. IC satisfaccion: [73%, 83%]. Cada KPI con su precision.\n📚 Concepto: Sintesis estadistica. Todo lo del semestre en un reporte: IC, proporciones, diferencias, estimaciones.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Solo los numeros headline sin intervalos",
+          description: "Ventas $285M, defectos 1.8%, satisfaccion 78%, crecimiento 8%. Limpio y directo.",
+          cost: 3000000,
+          revenue: 20000000,
+          bsc: {"bsc_financial":3,"bsc_customer":3,"bsc_internal":3,"bsc_learning":-5},
+          crossEffects: [],
+          tags: ["simplistic"],
+          feedback: "❌ Un inversionista serio preguntara '¿con que confianza?' y '¿cual es el peor escenario?'. Sin IC no hay respuesta.\n📚 Concepto: Estimacion sin incertidumbre es incompleta. El inversionista necesita el rango, no solo el punto.",
           next: null
         },
         {

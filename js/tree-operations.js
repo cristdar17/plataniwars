@@ -81,6 +81,18 @@ window.TREE_OPERATIONS = {
       options: [
         {
           id: "A",
+          label: "Rechazar al proveedor - los datos no cuadran",
+          description: "Le dices al proveedor que sus platanos no cumplen el estandar. Seguis con el proveedor actual.",
+          cost: 0,
+          revenue: 12000000,
+          bsc: {"bsc_internal":5,"bsc_customer":3,"bsc_financial":0,"bsc_learning":5},
+          crossEffects: [],
+          tags: ["data-driven","conservative"],
+          feedback: "✅ DECISION ACERTADA\n\nIntervalo de confianza al 95% para la media:\nIC = X̄ ± t₀.₀₂₅,₃₉ × (s/√n)\nIC = 243 ± 2.023 × (18/√40)\nIC = 243 ± 2.023 × 2.846\nIC = 243 ± 5.76\nIC = [237.24g, 248.76g]\n\nEl intervalo entero esta por debajo de 250g. Con 95% de confianza, el peso promedio real de los platanos de Cartago esta entre 237g y 249g. No cumplen tu estandar.\n\n📚 Concepto: Intervalo de confianza para la media. Si el IC no incluye el valor minimo (250g), tenemos evidencia estadistica fuerte de que el proveedor no cumple. No es cuestion de 'probar un poco mas'.",
+          next: "ops-03"
+        },
+        {
+          id: "B",
           label: "Pedir otra muestra mas grande para estar seguro",
           description: "40 platanos es poquito. Pedile al proveedor que mande 200 para evaluar mejor.",
           cost: 2000000,
@@ -92,7 +104,7 @@ window.TREE_OPERATIONS = {
           next: "ops-03"
         },
         {
-          id: "B",
+          id: "C",
           label: "Firmar contrato - el ahorro vale la pena",
           description: "A $800/kg menos, con 500kg diarios, son $400.000 de ahorro al dia. En un mes son $12 millones.",
           cost: 0,
@@ -101,18 +113,6 @@ window.TREE_OPERATIONS = {
           crossEffects: [{"area":"marketing","bsc":{"bsc_customer":-4},"narrative":"Los platanitos salen mas delgados y disparejos. Los consumidores notan la diferencia."}],
           tags: ["risky","cost-focused"],
           feedback: "❌ DECISION RIESGOSA\n\nEl IC al 95% es [237.24g, 248.76g]. El limite superior (248.76g) ni siquiera alcanza los 250g minimos. Esto significa:\n• Tus tajadas van a salir mas delgadas e irregulares\n• El producto pierde consistencia visual\n• Los $12M de ahorro se pierden en reprocesos y quejas\n\n📚 Concepto: Intervalo de confianza para la media. IC = X̄ ± t × (s/√n). Cuando TODO el intervalo esta por debajo del estandar, no es una cuestion de mala suerte en la muestra — el proveedor simplemente no cumple.",
-          next: "ops-03"
-        },
-        {
-          id: "C",
-          label: "Rechazar al proveedor - los datos no cuadran",
-          description: "Le dices al proveedor que sus platanos no cumplen el estandar. Seguis con el proveedor actual.",
-          cost: 0,
-          revenue: 12000000,
-          bsc: {"bsc_internal":5,"bsc_customer":3,"bsc_financial":0,"bsc_learning":5},
-          crossEffects: [],
-          tags: ["data-driven","conservative"],
-          feedback: "✅ DECISION ACERTADA\n\nIntervalo de confianza al 95% para la media:\nIC = X̄ ± t₀.₀₂₅,₃₉ × (s/√n)\nIC = 243 ± 2.023 × (18/√40)\nIC = 243 ± 2.023 × 2.846\nIC = 243 ± 5.76\nIC = [237.24g, 248.76g]\n\nEl intervalo entero esta por debajo de 250g. Con 95% de confianza, el peso promedio real de los platanos de Cartago esta entre 237g y 249g. No cumplen tu estandar.\n\n📚 Concepto: Intervalo de confianza para la media. Si el IC no incluye el valor minimo (250g), tenemos evidencia estadistica fuerte de que el proveedor no cumple. No es cuestion de 'probar un poco mas'.",
           next: "ops-03"
         },
         {
@@ -349,18 +349,6 @@ window.TREE_OPERATIONS = {
         },
         {
           id: "C",
-          label: "Recomendar la inversion con analisis estadistico completo",
-          description: "Presentar a la junta el analisis de ahorro esperado con intervalos de confianza y periodo de retorno.",
-          cost: 180000000,
-          revenue: 120000000,
-          bsc: {"bsc_internal":15,"bsc_customer":9,"bsc_financial":-5,"bsc_learning":13},
-          crossEffects: [{"area":"finance","bsc":{"bsc_financial":8},"narrative":"El analisis estadistico solido facilita la aprobacion del credito bancario para la inversion."},{"area":"analyst","bsc":{"bsc_learning":6},"narrative":"El caso de automatizacion se convierte en referencia para futuros analisis de inversion."}],
-          tags: ["data-driven","investment"],
-          feedback: "✅ DECISION ACERTADA CON FUNDAMENTO\n\nEstimacion del ahorro mensual:\nDesperdicio actual: IC 95% = 4.2% ± 1.96 × (1.1/√60) = 4.2% ± 0.278% = [3.92%, 4.48%]\nDesperdicio automatizado: 1.8% (dato del proveedor)\n\nReduccion estimada: 4.2% - 1.8% = 2.4 puntos porcentuales\nSE de la diferencia: √((1.1²/60) + (0.6²/60)) = √(0.02017 + 0.006) = 0.162%\n\nPaquetes salvados/mes: 200,000 × 0.024 = 4,800\nAhorro mensual: 4,800 × $2,500 = $12,000,000\n\nIC 95% del ahorro: $12M ± 1.96 × (200,000 × 0.00162 × $2,500)\n= $12M ± $1.59M = [$10.41M, $13.59M]\n\nRetorno de inversion: $180M / $12M = 15 meses\nEscenario pesimista: $180M / $10.41M = 17.3 meses\n\n📚 Concepto: Estimacion con error estandar para decisiones de inversion. El IC te permite presentar escenarios (optimista, esperado, pesimista) con fundamento estadistico.",
-          next: "ops-07"
-        },
-        {
-          id: "D",
           label: "Pedir al proveedor una prueba piloto de 3 meses",
           description: "Que instale la maquina en prueba. Si los numeros se confirman en nuestra planta, compramos.",
           cost: 30000000,
@@ -369,6 +357,18 @@ window.TREE_OPERATIONS = {
           crossEffects: [],
           tags: ["cautious","analytical"],
           feedback: "💡 DECISION INTELIGENTE\n\nUna prueba piloto te permite recoger DATOS PROPIOS en vez de confiar solo en los del proveedor.\n\nCon 3 meses (≈90 dias) de datos de tu planta:\nSE = 0.6/√90 = 0.063%\nIC 95% = desperdicio_real ± 0.124%\n\nTendrias un intervalo muy preciso del desperdicio REAL en tu planta. Si confirma que baja a ~1.8%, la decision de compra se justifica con tus propios datos.\n\nRiesgo: el proveedor puede no aceptar una prueba de 3 meses. Y el costo de $30M es plata que no recuperas si decides no comprar.\n\n📚 Concepto: Datos propios vs datos del proveedor. El proveedor reporta condiciones ideales. Tu planta tiene sus particularidades. Recoger muestra propia reduce la incertidumbre.",
+          next: "ops-07"
+        },
+        {
+          id: "D",
+          label: "Recomendar la inversion con analisis estadistico completo",
+          description: "Presentar a la junta el analisis de ahorro esperado con intervalos de confianza y periodo de retorno.",
+          cost: 180000000,
+          revenue: 120000000,
+          bsc: {"bsc_internal":15,"bsc_customer":9,"bsc_financial":-5,"bsc_learning":13},
+          crossEffects: [{"area":"finance","bsc":{"bsc_financial":8},"narrative":"El analisis estadistico solido facilita la aprobacion del credito bancario para la inversion."},{"area":"analyst","bsc":{"bsc_learning":6},"narrative":"El caso de automatizacion se convierte en referencia para futuros analisis de inversion."}],
+          tags: ["data-driven","investment"],
+          feedback: "✅ DECISION ACERTADA CON FUNDAMENTO\n\nEstimacion del ahorro mensual:\nDesperdicio actual: IC 95% = 4.2% ± 1.96 × (1.1/√60) = 4.2% ± 0.278% = [3.92%, 4.48%]\nDesperdicio automatizado: 1.8% (dato del proveedor)\n\nReduccion estimada: 4.2% - 1.8% = 2.4 puntos porcentuales\nSE de la diferencia: √((1.1²/60) + (0.6²/60)) = √(0.02017 + 0.006) = 0.162%\n\nPaquetes salvados/mes: 200,000 × 0.024 = 4,800\nAhorro mensual: 4,800 × $2,500 = $12,000,000\n\nIC 95% del ahorro: $12M ± 1.96 × (200,000 × 0.00162 × $2,500)\n= $12M ± $1.59M = [$10.41M, $13.59M]\n\nRetorno de inversion: $180M / $12M = 15 meses\nEscenario pesimista: $180M / $10.41M = 17.3 meses\n\n📚 Concepto: Estimacion con error estandar para decisiones de inversion. El IC te permite presentar escenarios (optimista, esperado, pesimista) con fundamento estadistico.",
           next: "ops-07"
         }
       ]
@@ -447,18 +447,6 @@ window.TREE_OPERATIONS = {
       options: [
         {
           id: "A",
-          label: "Programar mantenimiento para el fin de semana",
-          description: "No parar produccion hoy. Reparar sabado cuando no se produce.",
-          cost: 10000000,
-          revenue: 28000000,
-          bsc: {"bsc_financial":5,"bsc_customer":6,"bsc_internal":7,"bsc_learning":4},
-          crossEffects: [],
-          tags: ["strategic"],
-          feedback: "✅ Reparas sin perder produccion. Cuesta $2M mas (fin de semana) pero E(valor) sigue positivo.\n📚 Optimizar CUANDO reparar tambien es una decision bajo incertidumbre.",
-          next: "ops-09"
-        },
-        {
-          id: "B",
           label: "Esperar y rezar",
           description: "70% de que NO falle. Me la juego.",
           cost: 0,
@@ -470,7 +458,7 @@ window.TREE_OPERATIONS = {
           next: "ops-09"
         },
         {
-          id: "C",
+          id: "B",
           label: "Reducir velocidad al 50% mientras monitoreas",
           description: "Menos produccion pero menos estres en la maquina. Reduce P(falla) a 10%.",
           cost: 5000000,
@@ -479,6 +467,18 @@ window.TREE_OPERATIONS = {
           crossEffects: [],
           tags: ["moderate"],
           feedback: "💡 E(costo) ahora = 0.10 × $40M = $4M. Mas los $5M de produccion perdida = $9M total. Casi empata con reparar ($8M).\n📚 Comparar valores esperados de multiples opciones es la clave.",
+          next: "ops-09"
+        },
+        {
+          id: "C",
+          label: "Programar mantenimiento para el fin de semana",
+          description: "No parar produccion hoy. Reparar sabado cuando no se produce.",
+          cost: 10000000,
+          revenue: 28000000,
+          bsc: {"bsc_financial":5,"bsc_customer":6,"bsc_internal":7,"bsc_learning":4},
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "✅ Reparas sin perder produccion. Cuesta $2M mas (fin de semana) pero E(valor) sigue positivo.\n📚 Optimizar CUANDO reparar tambien es una decision bajo incertidumbre.",
           next: "ops-09"
         },
         {
@@ -569,14 +569,14 @@ window.TREE_OPERATIONS = {
       options: [
         {
           id: "A",
-          label: "Parar y corregir ANTES de la visita",
-          description: "Recalibrar todo, hacer limpieza profunda, revisar protocolos. 2 dias de parada.",
-          cost: 15000000,
-          revenue: 30000000,
-          bsc: {"bsc_financial":6,"bsc_customer":8,"bsc_internal":10,"bsc_learning":5},
+          label: "Preparar la documentacion y capacitar al equipo",
+          description: "INVIMA revisa procesos, no solo producto. Tener todo en orden puede compensar.",
+          cost: 5000000,
+          revenue: 18000000,
+          bsc: {"bsc_financial":4,"bsc_customer":5,"bsc_internal":6,"bsc_learning":8},
           crossEffects: [],
-          tags: ["proactive"],
-          feedback: "✅ Con p̂=5.5% y limite 5%, IC 95% = [2.3%, 8.7%]. El 5% esta DENTRO del IC, asi que podrias estar OK... o no.\n📚 Concepto: IC para proporcion. Mejor prevenir cuando tu estimado supera el limite aunque no sea significativo.",
+          tags: ["strategic"],
+          feedback: "💡 INVIMA valora procesos documentados. Pero si la muestra sale mal, la documentacion no salva de la multa.\n📚 Concepto: La proporcion muestral es lo que miden. Complementa con evidencia de procesos pero no ignores los datos.",
           next: "ops-11"
         },
         {
@@ -605,14 +605,14 @@ window.TREE_OPERATIONS = {
         },
         {
           id: "D",
-          label: "Preparar la documentacion y capacitar al equipo",
-          description: "INVIMA revisa procesos, no solo producto. Tener todo en orden puede compensar.",
-          cost: 5000000,
-          revenue: 18000000,
-          bsc: {"bsc_financial":4,"bsc_customer":5,"bsc_internal":6,"bsc_learning":8},
+          label: "Parar y corregir ANTES de la visita",
+          description: "Recalibrar todo, hacer limpieza profunda, revisar protocolos. 2 dias de parada.",
+          cost: 15000000,
+          revenue: 30000000,
+          bsc: {"bsc_financial":6,"bsc_customer":8,"bsc_internal":10,"bsc_learning":5},
           crossEffects: [],
-          tags: ["strategic"],
-          feedback: "💡 INVIMA valora procesos documentados. Pero si la muestra sale mal, la documentacion no salva de la multa.\n📚 Concepto: La proporcion muestral es lo que miden. Complementa con evidencia de procesos pero no ignores los datos.",
+          tags: ["proactive"],
+          feedback: "✅ Con p̂=5.5% y limite 5%, IC 95% = [2.3%, 8.7%]. El 5% esta DENTRO del IC, asi que podrias estar OK... o no.\n📚 Concepto: IC para proporcion. Mejor prevenir cuando tu estimado supera el limite aunque no sea significativo.",
           next: "ops-11"
         }
       ]
@@ -691,18 +691,6 @@ window.TREE_OPERATIONS = {
       options: [
         {
           id: "A",
-          label: "Ampliar la muestra a 200 personas antes de decidir",
-          description: "40 personas es poco. Necesitamos mas datos para una inversion de $25M.",
-          cost: 8000000,
-          revenue: 35000000,
-          bsc: {"bsc_financial":6,"bsc_customer":8,"bsc_internal":6,"bsc_learning":10},
-          crossEffects: [],
-          tags: ["data-driven"],
-          feedback: "✅ Con n=200, SE = √(0.7×0.3/200) = 3.2%. IC = 70% ± 6.3%. Mucho mas preciso para decidir.\n📚 Concepto: El tamano de muestra importa. SE = √(pq/n). Cuadruplicar n reduce SE a la mitad.",
-          next: null
-        },
-        {
-          id: "B",
           label: "Descartar - el mercado de limon es nicho",
           description: "70% en focus group pero eso no se traduce al mercado. Muy arriesgado.",
           cost: 0,
@@ -714,7 +702,7 @@ window.TREE_OPERATIONS = {
           next: null
         },
         {
-          id: "C",
+          id: "B",
           label: "Lanzar - 70% de aceptacion es excelente",
           description: "28 de 40 es contundente. A producir platanitos con limon!",
           cost: 25000000,
@@ -723,6 +711,18 @@ window.TREE_OPERATIONS = {
           crossEffects: [],
           tags: ["aggressive"],
           feedback: "⚠️ IC 95% con n=40: 70% ± 14.2% = [55.8%, 84.2%]. El limite inferior esta DEBAJO de tu meta de 60%.\n📚 Concepto: Con n=40, el margen de error es grande. La muestra es pequena para una decision de $25M.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Ampliar la muestra a 200 personas antes de decidir",
+          description: "40 personas es poco. Necesitamos mas datos para una inversion de $25M.",
+          cost: 8000000,
+          revenue: 35000000,
+          bsc: {"bsc_financial":6,"bsc_customer":8,"bsc_internal":6,"bsc_learning":10},
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "✅ Con n=200, SE = √(0.7×0.3/200) = 3.2%. IC = 70% ± 6.3%. Mucho mas preciso para decidir.\n📚 Concepto: El tamano de muestra importa. SE = √(pq/n). Cuadruplicar n reduce SE a la mitad.",
           next: null
         },
         {
