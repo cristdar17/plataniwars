@@ -214,10 +214,10 @@ window.TREE_FINANCE = {
           label: "Fijar precio basado en Estudio 2 ($3,200)",
           description: "Muestra mas grande, error estandar mas bajo, mayor precision. Los datos hablan.",
           cost: 0,
-          revenue: 40000000,
-          bsc: { bsc_internal: 5, bsc_customer: 6, bsc_financial: 4, bsc_learning: 7 },
+          revenue: 80000000,
+          bsc: { bsc_internal: 8, bsc_customer: 9, bsc_financial: 7, bsc_learning: 10 },
           crossEffects: [
-            { area: "marketing", bsc: { bsc_customer: 3 }, narrative: "El precio accesible basado en datos del mercado amplio facilita la estrategia de penetracion." }
+            { area: "marketing", bsc: { bsc_customer: 6 }, narrative: "El precio accesible basado en datos del mercado amplio facilita la estrategia de penetracion." }
           ],
           tags: ["data-driven"],
           feedback: "✅ DECISION ACERTADA\n\nComparacion de precision:\nEstudio 1: SE = $240 → IC 95%: $3,800 ± $470 = [$3,330, $4,270]\nEstudio 2: SE = $73.5 → IC 95%: $3,200 ± $144 = [$3,056, $3,344]\n\nEl Estudio 2 tiene un IC de amplitud $288 vs $940 del Estudio 1. Es 3.3 veces mas PRECISO.\n\n¿Por que? Dos razones:\n1. n mas grande (150 vs 25): SE ∝ 1/√n\n2. σ mas baja ($900 vs $1,200): SE ∝ σ\n\nAdemas, el Estudio 2 cubre todo el Eje Cafetero, no solo Pereira. Mas representativo.\n\n📚 Concepto: Error estandar como medida de precision. SE = σ/√n. El SE determina que tan 'confiable' es tu estimacion. Menor SE = mayor precision = mejor base para decisiones.",
@@ -228,8 +228,8 @@ window.TREE_FINANCE = {
           label: "Fijar precio basado en Estudio 1 ($3,800)",
           description: "Las tiendas de barrio son nuestro canal principal. Esos datos son mas relevantes para nuestro negocio.",
           cost: 0,
-          revenue: 18000000,
-          bsc: { bsc_internal: 2, bsc_customer: -3, bsc_financial: 2, bsc_learning: -2 },
+          revenue: 36000000,
+          bsc: { bsc_internal: 5, bsc_customer: -3, bsc_financial: 5, bsc_learning: -2 },
           crossEffects: [],
           tags: ["biased", "practical"],
           feedback: "⚠️ DECISION CON BUEN ARGUMENTO PERO MALA PRECISION\n\nEl argumento de 'relevancia del canal' es valido, PERO la precision del estudio es baja:\nSE = $240, IC 95% = [$3,330, $4,270]\n\nUn rango de $940 es ENORME para fijar un precio. Podrias estar cobrando $3,330 (competitivo) o $4,270 (caro). Son estrategias de precio totalmente diferentes.\n\nSi el canal tienda de barrio es importante, la solucion es hacer un estudio MAS GRANDE en tiendas de barrio (n = 150), no confiar en un n = 25.\n\n📚 Concepto: El error estandar mide precision, no representatividad. Una muestra relevante pero imprecisa (n=25, SE=$240) puede llevar a decisiones erradas. Necesitas AMBAS cosas: representatividad Y precision.",
@@ -240,8 +240,8 @@ window.TREE_FINANCE = {
           label: "Promediar ambos: ($3,800 + $3,200) / 2 = $3,500",
           description: "Combinamos la informacion de ambos estudios. Promedio simple como punto medio.",
           cost: 0,
-          revenue: 35000000,
-          bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: 3, bsc_learning: 3 },
+          revenue: 70000000,
+          bsc: { bsc_internal: 6, bsc_customer: 5, bsc_financial: 6, bsc_learning: 6 },
           crossEffects: [],
           tags: ["moderate"],
           feedback: "💡 BUENA IDEA, MALA EJECUCION\n\nPromediar simple ignora la diferencia de precision. El Estudio 2 (SE=$73.5) es 3.3x mas preciso que el Estudio 1 (SE=$240). Darles el mismo peso es un desperdicio.\n\nPromedio ponderado por precision (inverso de varianza):\nw₁ = 1/240² = 0.0000174\nw₂ = 1/73.5² = 0.0001851\n\nPrecio ponderado = (0.0000174 × 3800 + 0.0001851 × 3200) / (0.0000174 + 0.0001851)\n= (0.0661 + 0.5923) / 0.0002025\n= $3,252\n\nEl precio ponderado ($3,252) esta mucho mas cerca del Estudio 2, porque merece mas peso.\n\n📚 Concepto: Promedio ponderado por inverso de varianza. Cuando combinas estimaciones, dale mas peso a la mas precisa (menor SE). No promedies como si todas tuvieran la misma calidad.",
@@ -252,8 +252,8 @@ window.TREE_FINANCE = {
           label: "Hacer un tercer estudio mas grande antes de decidir",
           description: "Los dos estudios se contradicen. Mejor hacer uno nuevo con n = 400 para estar seguros.",
           cost: 12000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 2, bsc_customer: 0, bsc_financial: -4, bsc_learning: 5 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 5, bsc_customer: 0, bsc_financial: -4, bsc_learning: 8 },
           crossEffects: [],
           tags: ["cautious", "expensive"],
           feedback: "⚠️ DECISION VALIDA PERO COSTOSA Y LENTA\n\nYa tienes 175 observaciones en total. Gastar $12M mas para n=400 reduciria el SE pero ¿cuanto?\n\nSE con n=400 (asumiendo σ=$900): 900/√400 = $45\nIC 95%: ±$88.2, amplitud = $176.4\n\nVs el Estudio 2 actual:\nSE con n=150: $73.5\nIC 95%: ±$144, amplitud = $288\n\nMejora de amplitud: de $288 a $176. ¿Vale $12M esa mejora en precision?\n\nAdemas, el mercado no espera. Mientras tu investigas, la competencia puede lanzar su producto.\n\n📚 Concepto: Rendimientos decrecientes del tamano de muestra. SE = σ/√n. Para reducir el SE a la mitad, necesitas 4x mas muestra. En algun punto, el costo de mas datos supera el beneficio de mas precision.",
@@ -277,8 +277,8 @@ window.TREE_FINANCE = {
           label: "Mover recursos de supermercados a tiendas de barrio",
           description: "$260,000 mas por tienda es significativo. Meter mas vendedores al canal tradicional.",
           cost: 8000000,
-          revenue: 50000000,
-          bsc: { bsc_internal: 2, bsc_customer: -3, bsc_financial: 3, bsc_learning: -2 },
+          revenue: 100000000,
+          bsc: { bsc_internal: 5, bsc_customer: -3, bsc_financial: 6, bsc_learning: -2 },
           crossEffects: [
             { area: "marketing", bsc: { bsc_customer: -4 }, narrative: "Reducir presencia en supermercados afecta la visibilidad de marca ante consumidores urbanos." }
           ],
@@ -291,8 +291,8 @@ window.TREE_FINANCE = {
           label: "Mantener ambos canales como estan",
           description: "La diferencia de $260,000 no justifica cambios grandes. Ambos canales son necesarios.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: 3, bsc_customer: 3, bsc_financial: 2, bsc_learning: 2 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 6, bsc_customer: 6, bsc_financial: 5, bsc_learning: 5 },
           crossEffects: [],
           tags: ["prudent"],
           feedback: "✅ DECISION RAZONABLE\n\nCon Z = 1.686 (p = 0.046), la significancia es marginal. El IC al 95% para la diferencia:\n\n260,000 ± 1.96 × 154,259 = 260,000 ± 302,348\nIC = [-$42,348, $562,348]\n\nEl IC INCLUYE el cero. Esto significa que no podemos descartar que la diferencia real entre canales sea CERO (o incluso negativa).\n\nMantener ambos canales es la decision mas segura cuando la evidencia no es concluyente.\n\n📚 Concepto: IC para diferencia de medias. Si el IC incluye el 0, no hay evidencia suficiente de que exista una diferencia real. Actuar sobre una diferencia que podria no existir es arriesgado.",
@@ -303,8 +303,8 @@ window.TREE_FINANCE = {
           label: "Ampliar la muestra de supermercados para decidir mejor",
           description: "Solo 20 supermercados es poco. Analizar mas puntos del canal moderno para tener datos mas solidos.",
           cost: 4000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 4, bsc_customer: 0, bsc_financial: -1, bsc_learning: 8 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 7, bsc_customer: 0, bsc_financial: -1, bsc_learning: 11 },
           crossEffects: [],
           tags: ["analytical", "cautious"],
           feedback: "💡 DECISION INTELIGENTE\n\nCon n₂ = 20, el SE del canal moderno es alto: 520,000/√20 = $116,276\n\nSi subieras a n₂ = 50:\nSE_nuevo = √(680,000²/45 + 520,000²/50) = √(10,275,556 + 5,408,000) × 1000\n= √(10,275,556 + 5,408,000) ≈ $125,215 (por 1000)\n\nEl IC se estrecharia y la conclusion seria mas clara.\n\nEl n desbalanceado (45 vs 20) afecta la potencia del test. Equilibrar las muestras mejora la capacidad de detectar diferencias reales.\n\n📚 Concepto: Potencia estadistica y tamano de muestra. Con n pequeno, puedes 'no detectar' una diferencia que SI existe (error Tipo II). Ampliar la muestra reduce ese riesgo.",
@@ -315,10 +315,10 @@ window.TREE_FINANCE = {
           label: "Invertir fuerte en supermercados - ahi esta el crecimiento",
           description: "Aunque la rentabilidad unitaria sea menor, los supermercados dan volumen y visibilidad. Estrategia de largo plazo.",
           cost: 20000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 2, bsc_customer: 5, bsc_financial: -3, bsc_learning: 3 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 5, bsc_customer: 8, bsc_financial: -3, bsc_learning: 6 },
           crossEffects: [
-            { area: "marketing", bsc: { bsc_customer: 4 }, narrative: "Mayor presencia en cadenas como Exito y D1 aumenta el reconocimiento de marca." }
+            { area: "marketing", bsc: { bsc_customer: 7 }, narrative: "Mayor presencia en cadenas como Exito y D1 aumenta el reconocimiento de marca." }
           ],
           tags: ["strategic", "growth"],
           feedback: "⚠️ DECISION ESTRATEGICA SIN SOPORTE ESTADISTICO\n\nEl argumento cualitativo (volumen, visibilidad, crecimiento) puede ser valido, pero estas ignorando los datos.\n\nCon Z = 1.686, la diferencia de $260,000/punto NO es concluyente. Pero esto no significa que los supermercados sean MEJORES — tampoco hay evidencia de eso.\n\nPara justificar $20M de inversion, necesitas datos de volumen total por canal, no solo rentabilidad por punto.\n\nSi 20 supermercados mueven $37.8M total y 45 tiendas mueven $96.75M total, el canal tradicional mueve 2.6x mas con mayor rentabilidad unitaria.\n\n📚 Concepto: Significancia practica. Antes de invertir, mira el TAMANO DEL EFECTO, no solo la significancia estadistica. Y complementa con datos de volumen total, no solo promedios por punto.",
@@ -342,49 +342,415 @@ window.TREE_FINANCE = {
           label: "Calcular IC para la valoracion integrando la incertidumbre",
           description: "Usar los intervalos de confianza de ventas y margen para construir un rango de valoracion.",
           cost: 5000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: 10, bsc_learning: 12 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 11, bsc_customer: 8, bsc_financial: 13, bsc_learning: 15 },
           crossEffects: [
-            { area: "analyst", bsc: { bsc_learning: 5 }, narrative: "El modelo de valoracion con intervalos de confianza se convierte en referencia para futuras negociaciones." }
+            { area: "analyst", bsc: { bsc_learning: 8 }, narrative: "El modelo de valoracion con intervalos de confianza se convierte en referencia para futuras negociaciones." }
           ],
           tags: ["data-driven", "sophisticated"],
           feedback: "✅ DECISION PROFESIONAL\n\nIC 95% para ventas mensuales:\nSE_ventas = 42/√24 = $8.57M\nIC_ventas = 285 ± 2.069 × 8.57 = 285 ± 17.73\nIC_ventas = [$267.27M, $302.73M]\n\nIC 95% para margen:\nSE_margen = 2.8/√24 = 0.571%\nIC_margen = 13.5% ± 2.069 × 0.571% = 13.5% ± 1.182%\nIC_margen = [12.32%, 14.68%]\n\nValoración (Escenario pesimista):\n$267.27M × 12 × 12.32% × 5 = $1,976M\n\nValoración (Escenario optimista):\n$302.73M × 12 × 14.68% × 5 = $2,667M\n\nRango de valoracion: [$1,976M, $2,667M]\nPunto central: $2,308M\n\nEl 30% vale entre $593M y $800M.\n\n📚 Concepto: Integracion de estimaciones. Cada componente (ventas, margen) tiene su propia incertidumbre. La incertidumbre total es la combinacion de ambas. El IC final te da poder de negociacion: 'mi empresa vale entre X y Y con 95% de confianza'.",
-          next: null
+          next: "fin-07"
         },
         {
           id: "B",
           label: "Dar solo el punto estimado: $2,308M",
           description: "El inversionista quiere un numero, no un rango. Darle $2,308M y negociar de ahi.",
           cost: 0,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -3, bsc_customer: -5, bsc_financial: -5, bsc_learning: -5 },
           crossEffects: [],
           tags: ["naive"],
           feedback: "❌ DECISION DEBIL PARA NEGOCIAR\n\nUn punto estimado sin rango es vulnerable:\n• El inversionista va a cuestionar cada supuesto\n• No tienes defensa contra 'ese numero es optimista'\n• Pierdes credibilidad al no mostrar la incertidumbre\n\nCon el IC [$1,976M, $2,667M], puedes decir:\n'Incluso en el escenario PESIMISTA, la empresa vale $1,976M. El 30% no baja de $593M.'\n\nEso es mucho mas poderoso que un simple '$2,308M porque yo lo digo'.\n\n📚 Concepto: El IC es una herramienta de NEGOCIACION, no solo estadistica. Muestra que hiciste la tarea, que conoces la incertidumbre, y que incluso el peor caso respalda tu posicion.",
-          next: null
+          next: "fin-07"
         },
         {
           id: "C",
           label: "Inflar la valoracion 20% para tener margen de negociacion",
           description: "Pedir $2,770M sabiendo que el inversionista va a negociar a la baja. Tactica clasica.",
           cost: 0,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -2, bsc_customer: -5, bsc_financial: 0, bsc_learning: -8 },
           crossEffects: [],
           tags: ["manipulative"],
           feedback: "❌ DECISION RIESGOSA Y POCO PROFESIONAL\n\nInflar 20% da $2,770M. Pero un inversionista serio va a pedir justificacion:\n'¿De donde sale ese numero? Muestreme los datos.'\n\nSi tus datos dan IC = [$1,976M, $2,667M] y pediste $2,770M (por encima del limite superior), el inversionista sabe que estas inflando.\n\nPierdes credibilidad instantaneamente.\n\nMejor estrategia: presenta el IC completo y ancla la negociacion en el escenario optimista ($2,667M). Es alto pero JUSTIFICABLE con datos.\n\n📚 Concepto: Las estimaciones estadisticas son TRANSPARENTES. Inflar un numero mas alla del IC es detectable y destruye confianza. Mejor negociar dentro del IC, desde el escenario optimista.",
-          next: null
+          next: "fin-07"
         },
         {
           id: "D",
           label: "Contratar firma valoradora externa",
           description: "Que una firma como KPMG o BDO haga la valoracion. Mas credibilidad ante el inversionista.",
           cost: 35000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 3, bsc_customer: 3, bsc_financial: -4, bsc_learning: -2 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 6, bsc_customer: 6, bsc_financial: -4, bsc_learning: -2 },
           crossEffects: [],
           tags: ["expensive", "delegating"],
           feedback: "💡 PUEDE SUMAR PERO NO REEMPLAZA TU ANALISIS\n\nUna firma externa da credibilidad, pero tambien va a usar muestras, promedios e intervalos. La estadistica es la misma.\n\nAdemas, la firma valoradora no conoce tu negocio como tu. Van a pedirte exactamente los mismos datos que ya tienes.\n\nCosto-beneficio:\n• Firma: $35M\n• Analisis interno con IC: $5M\n• Diferencia: $30M\n\nLo optimo: haz TU analisis estadistico (IC, escenarios) y SI el inversionista pide validacion externa, entonces contrata la firma.\n\n📚 Concepto: La estadistica es una herramienta universal. No necesitas 'expertos externos' para calcular un IC — necesitas entender los datos de tu propio negocio. La firma hace lo mismo que tu, pero cobra $35M.",
+          next: "fin-07"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       FIN-07 | Dia 15 | Valor esperado con probabilidades
+       -------------------------------------------------------- */
+    "fin-07": {
+      id: "fin-07",
+      day: 15,
+      title: "Cobrar cartera morosa",
+      context: "15 clientes deben $80M en total. El historico dice que la tasa de recuperacion promedio es 60% pero varia mucho segun el cliente.\n\n📊 DATOS:\n• Cartera total: $80M\n• P(recuperacion) historica: 60%\n• Costo de gestion de cobro: $5M\n• Si contratas abogado externo: cuesta $12M pero recupera 75%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Cobro interno intensivo",
+          description: "Tu equipo llama, visita y presiona. $5M de gestion para recuperar el 60%.",
+          cost: 5000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 8, bsc_customer: 4, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["moderate"],
+          feedback: "\u2705 E(recuperacion) = $80M \u00d7 0.60 = $48M. Neto = $48M - $5M = $43M. Buen retorno.\n\ud83d\udcda Concepto: Valor esperado. E(ganancia) = E(ingreso) - costo. Multiplica cada resultado por su probabilidad.",
+          next: "fin-08"
+        },
+        {
+          id: "B",
+          label: "Contratar abogado externo",
+          description: "Mas caro pero mas efectivo. El abogado cobra $12M pero recupera mas.",
+          cost: 12000000,
+          revenue: 38000000,
+          bsc: { bsc_financial: 7, bsc_customer: 3, bsc_internal: 4, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["professional"],
+          feedback: "\u2705 E(recuperacion) = $80M \u00d7 0.75 = $60M. Neto = $60M - $12M = $48M. Mejor que cobro interno!\n\ud83d\udcda Concepto: Compara valores esperados netos. A veces gastar mas genera mas retorno neto.",
+          next: "fin-08"
+        },
+        {
+          id: "C",
+          label: "Vender la cartera a un tercero al 40%",
+          description: "Una firma de cobro compra tu cartera por $32M. Plata segura, sin riesgo.",
+          cost: 0,
+          revenue: 32000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["safe"],
+          feedback: "\ud83d\udca1 $32M seguros vs E(cobro interno) = $43M o E(abogado) = $48M. Menos plata pero cero riesgo e incertidumbre.\n\ud83d\udcda Concepto: Certeza vs valor esperado. Vender cartera es como comprar un seguro: pagas prima por eliminar riesgo.",
+          next: "fin-08"
+        },
+        {
+          id: "D",
+          label: "Castigar la cartera y no cobrar",
+          description: "Perder $80M y seguir adelante. No vale la pena el esfuerzo.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: -8, bsc_customer: 3, bsc_internal: -3, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["passive"],
+          feedback: "\u274c Tiraste $48M a la basura (valor esperado de cobro). Incluso vendida la cartera daba $32M seguros.\n\ud83d\udcda Concepto: No actuar no significa costo cero. El costo de oportunidad perdido es real.",
+          next: "fin-08"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       FIN-08 | Dia 17 | Media vs variabilidad (riesgo-retorno)
+       -------------------------------------------------------- */
+    "fin-08": {
+      id: "fin-08",
+      day: 17,
+      title: "Inversion en CDT vs expandir planta",
+      context: "Tienes $100M para invertir. Dos opciones: CDT seguro o expandir produccion.\n\n📊 OPCION A - CDT Bancolombia:\n• Retorno: 12% anual fijo = $12M\n• Riesgo: cero\n\n📊 OPCION B - Expandir planta:\n• Retorno promedio (3 anos): 28%\n• Desviacion: 15%\n• Podria dar entre 13% y 43% (\u03bc\u00b1\u03c3)",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "CDT seguro al 12%",
+          description: "$12M garantizados. Dormir tranquilo.",
+          cost: 0,
+          revenue: 20000000,
+          bsc: { bsc_financial: 5, bsc_customer: 3, bsc_internal: 3, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f Seguro pero E(expansion) = $28M vs $12M del CDT. La prima por riesgo es $16M.\n\ud83d\udcda Concepto: Trade-off riesgo-retorno. Mayor retorno esperado = mayor variabilidad. \u00bfCuanto riesgo toleras?",
+          next: "fin-09"
+        },
+        {
+          id: "B",
+          label: "Expandir planta",
+          description: "28% promedio historico. El negocio de platanitos esta en auge.",
+          cost: 15000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 8, bsc_customer: 7, bsc_internal: 6, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u2705 E(retorno) = $28M, pero P(retorno < $12M del CDT) = P(Z < (12-28)/15) = P(Z < -1.07) = 14%.\n\ud83d\udcda Concepto: Probabilidad normal para evaluar riesgo. Solo 14% de chance de que la expansion rinda menos que el CDT.",
+          next: "fin-09"
+        },
+        {
+          id: "C",
+          label: "Dividir 50/50",
+          description: "$50M en CDT + $50M en expansion. Diversificar.",
+          cost: 5000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\ud83d\udca1 E(retorno) = 0.5\u00d7$12M + 0.5\u00d7$28M = $20M. \u03c3 = 0.5\u00d7$15M = $7.5M. Mejor ratio retorno/riesgo.\n\ud83d\udcda Concepto: Diversificacion reduce riesgo sin eliminar retorno. La varianza de la mezcla es menor.",
+          next: "fin-09"
+        },
+        {
+          id: "D",
+          label: "Esperar 3 meses por mejores tasas",
+          description: "Las tasas del CDT podrian subir. Esperar y ver.",
+          cost: 0,
+          revenue: 12000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: 3, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["passive"],
+          feedback: "\u26a0\ufe0f Costo de oportunidad: 3 meses sin invertir = 3/12 \u00d7 $12M = $3M perdidos minimo.\n\ud83d\udcda Concepto: El dinero tiene valor en el tiempo. Esperar tambien tiene costo esperado.",
+          next: "fin-09"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       FIN-09 | Dia 18 | Estimacion bajo incertidumbre
+       -------------------------------------------------------- */
+    "fin-09": {
+      id: "fin-09",
+      day: 18,
+      title: "El peso se devaluo",
+      context: "El dolar subio 15% en un mes. Tu materia prima importada (aceite de palma) ahora cuesta 15% mas. \u00bfAbsorbes el costo o subes precios?\n\n📊 DATOS:\n• Costo actual del aceite: $800/paquete\n• Nuevo costo: $920/paquete (+$120)\n• Margen actual por paquete: $600\n• Nuevo margen si no subes precio: $480",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Subir precios 8% para compensar",
+          description: "Trasladar parte del costo al consumidor. No todo, para no espantarlos.",
+          cost: 5000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 7, bsc_customer: -3, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 Subir 8% recupera $96 de los $120 extra. Margen nuevo: $576. Pierdes algo pero sobrevives.\n\ud83d\udcda Concepto: Estimacion de elasticidad. Si demanda cae < 8% por el aumento, ganas mas en total.",
+          next: "fin-10"
+        },
+        {
+          id: "B",
+          label: "Absorber el costo y mantener precios",
+          description: "No perder clientes. El margen baja pero mantienes volumen.",
+          cost: 8000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: -3, bsc_customer: 6, bsc_internal: 3, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["customer-focused"],
+          feedback: "\u26a0\ufe0f Margen cae 20% ($600 \u2192 $480). Si vendes 200K paquetes/mes, pierdes $24M/mes. \u00bfSostenible?\n\ud83d\udcda Concepto: Estimar impacto total. Margen \u00d7 volumen = ganancia. Baja de margen se multiplica por todo el volumen.",
+          next: "fin-10"
+        },
+        {
+          id: "C",
+          label: "Buscar proveedor nacional de aceite",
+          description: "Cambiar a aceite colombiano. Sin impacto cambiario.",
+          cost: 10000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 6, bsc_customer: 4, bsc_internal: 7, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\u2705 Eliminas riesgo cambiario de raiz. El cambio toma 2-3 meses pero protege a largo plazo.\n\ud83d\udcda Concepto: Reducir varianza de costos. Un proveedor en pesos tiene \u03c3=0 en riesgo cambiario.",
+          next: "fin-10"
+        },
+        {
+          id: "D",
+          label: "Comprar dolares ahora como cobertura",
+          description: "Comprar dolares para 6 meses de importaciones al precio actual.",
+          cost: 20000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 4, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["hedging"],
+          feedback: "\ud83d\udca1 Cobertura cambiaria. Fijas el costo por 6 meses. Si el dolar sigue subiendo, ganaste. Si baja, perdiste.\n\ud83d\udcda Concepto: Hedging es comprar certidumbre. Reduces \u03c3 del costo a cambio de un precio fijo.",
+          next: "fin-10"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       FIN-10 | Dia 20 | Confianza en estimaciones
+       -------------------------------------------------------- */
+    "fin-10": {
+      id: "fin-10",
+      day: 20,
+      title: "Renegociar con proveedores",
+      context: "Llevas 2 anos comprando empaques al mismo proveedor. Tus datos de compra muestran oportunidad de negociar.\n\n📊 DATOS DE COMPRA (24 meses):\n• Precio promedio: $1,200/unidad\n• Desviacion: $150\n• SE = 150/\u221a24 = $30.6\n• Competidor cotiza a $1,050/unidad\n• Diferencia: $150/unidad",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Renegociar con datos en mano",
+          description: "Mostrar la cotizacion del competidor y pedir igualar. Tus datos respaldan.",
+          cost: 3000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 10, bsc_customer: 4, bsc_internal: 6, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 IC de tu precio actual: $1,200 \u00b1 $60 = [$1,140, $1,260]. El competidor ($1,050) esta FUERA de tu IC. Evidencia clara de sobreprecio.\n\ud83d\udcda Concepto: El IC como herramienta de negociacion. Si el precio alternativo cae fuera de tu IC, hay diferencia real.",
+          next: "fin-11"
+        },
+        {
+          id: "B",
+          label: "Cambiar directamente al competidor",
+          description: "$150 menos por unidad. A $1,050 ahorro $30M al ano.",
+          cost: 8000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 8, bsc_customer: 4, bsc_internal: 4, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u26a0\ufe0f Cuidado: la cotizacion es un punto, no una garantia. \u00bfCual es la variabilidad del competidor?\n\ud83d\udcda Concepto: Un precio promedio sin desviacion estandar es informacion incompleta.",
+          next: "fin-11"
+        },
+        {
+          id: "C",
+          label: "Pedir muestra al competidor primero",
+          description: "Probar calidad antes de cambiar. 1 mes de prueba en paralelo.",
+          cost: 5000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["prudent"],
+          feedback: "\u2705 Recoger datos propios del competidor te da su \u03bc y \u03c3 reales. Puedes comparar con IC formal.\n\ud83d\udcda Concepto: Antes de comparar, necesitas datos de AMBAS opciones con sus medidas de variabilidad.",
+          next: "fin-11"
+        },
+        {
+          id: "D",
+          label: "Dejar todo como esta - relacion a largo plazo vale",
+          description: "El proveedor actual es confiable. $150 mas no justifica el riesgo de cambiar.",
+          cost: 0,
+          revenue: 10000000,
+          bsc: { bsc_financial: -3, bsc_customer: 3, bsc_internal: 4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u274c $150 \u00d7 200K unidades/ano = $30M anuales que regalas. El IC muestra diferencia significativa.\n\ud83d\udcda Concepto: La lealtad tiene limite. Cuando los datos muestran diferencia clara, actua.",
+          next: "fin-11"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       FIN-11 | Dia 22 | Estimacion por intervalos para planificacion
+       -------------------------------------------------------- */
+    "fin-11": {
+      id: "fin-11",
+      day: 22,
+      title: "Bono navideno para empleados",
+      context: "\u00bfCuanto dar de bono navideno? Necesitas estimar si el Q4 da para ser generoso.\n\n📊 DATOS Q4 (octubre-noviembre):\n• Ventas promedio mensual: $195M\n• Desviacion: $25M, n=8 semanas\n• SE = $25M/\u221a8 = $8.8M\n• Diciembre historicamente sube 20%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Bono de 1 salario completo ($45M total)",
+          description: "Generoso. Los datos de Q4 se ven bien y diciembre siempre sube.",
+          cost: 45000000,
+          revenue: 38000000,
+          bsc: { bsc_financial: 4, bsc_customer: 6, bsc_internal: 10, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["generous"],
+          feedback: "\u26a0\ufe0f IC ventas diciembre: $195M \u00d7 1.2 = $234M \u00b1 $17.3M = [$217M, $251M]. En el peor caso ($217M), \u00bfalcanza para el bono?\n\ud83d\udcda Concepto: Planifica con el limite inferior del IC, no con el promedio. El escenario pesimista debe ser sostenible.",
+          next: "fin-12"
+        },
+        {
+          id: "B",
+          label: "Medio salario ($22M total)",
+          description: "Prudente pero digno. Deja margen para imprevistos.",
+          cost: 22000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 7, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 Con IC pesimista de $217M, medio salario ($22M) es pagable incluso en el peor escenario.\n\ud83d\udcda Concepto: Decision robusta = funciona incluso en el limite inferior del IC.",
+          next: "fin-12"
+        },
+        {
+          id: "C",
+          label: "Bono variable segun ventas reales de diciembre",
+          description: "Prometer % de las ventas de diciembre. Si va bien, buen bono. Si no, bono menor.",
+          cost: 10000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 7, bsc_customer: 6, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Alineas incentivos con resultados. El bono se auto-ajusta al resultado real.\n\ud83d\udcda Concepto: Compartir la incertidumbre. Si el IC es amplio, un bono variable distribuye el riesgo.",
+          next: "fin-12"
+        },
+        {
+          id: "D",
+          label: "Sin bono - la empresa necesita reservas",
+          description: "Guardar la plata para enero que siempre es mes duro.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: 5, bsc_customer: -5, bsc_internal: -8, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["stingy"],
+          feedback: "\u274c Desmoralizas al equipo en plena temporada alta. Perderas mas en productividad y rotacion que lo ahorrado.\n\ud83d\udcda Concepto: El costo de no invertir en personas tiene valor esperado negativo a mediano plazo.",
+          next: "fin-12"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       FIN-12 | Dia 24 | Muestreo para auditoria
+       -------------------------------------------------------- */
+    "fin-12": {
+      id: "fin-12",
+      day: 24,
+      title: "Cierre fiscal y auditoria DIAN",
+      context: "La DIAN anuncia auditoria para febrero. Necesitas verificar que tus gastos estan bien soportados. Tienes 2.400 facturas del ano.\n\n📊 DATOS:\n• Total facturas: 2,400\n• Tiempo para revisar 1 factura: 15 min\n• Revisar TODAS: 600 horas (imposible)\n• Meta: detectar si >3% tienen problemas",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Muestra aleatoria de 300 facturas",
+          description: "n=300 da margen de error de \u00b13% para proporciones. Suficiente para la DIAN.",
+          cost: 8000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 8, bsc_customer: 5, bsc_internal: 8, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Con n=300, E = 1.96\u00d7\u221a(0.03\u00d70.97/300) = \u00b11.9%. Si encuentras \u22643% con problemas, puedes demostrar cumplimiento.\n\ud83d\udcda Concepto: Muestreo para auditoria. n=300 es estandar para proporciones con E\u22642%.",
+          next: null
+        },
+        {
+          id: "B",
+          label: "Revisar solo las facturas grandes (>$5M)",
+          description: "Las facturas grandes son las que la DIAN revisa. Unas 150 facturas.",
+          cost: 5000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["practical"],
+          feedback: "\u26a0\ufe0f Sesgo de seleccion. Si solo revisas las grandes, las chicas pueden tener problemas que no detectas.\n\ud83d\udcda Concepto: Muestra por conveniencia \u2260 muestra aleatoria. La DIAN puede muestrear CUALQUIER factura.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Revisar TODAS las 2,400 facturas",
+          description: "Cero riesgo. Si hay tiempo y plata, revisar todo.",
+          cost: 25000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 3, bsc_customer: 4, bsc_internal: 6, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["perfectionist"],
+          feedback: "\ud83d\udca1 600 horas de revision. \u00bfVale $25M de mano de obra vs $8M de la muestra que da casi la misma confianza?\n\ud83d\udcda Concepto: Muestreo existe para ahorrar recursos. Censo solo se justifica cuando el costo es bajo.",
+          next: null
+        },
+        {
+          id: "D",
+          label: "Muestreo estratificado: 100 grandes + 100 medianas + 100 pequenas",
+          description: "Dividir facturas por monto y muestrear proporcionalmente.",
+          cost: 8000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 7, bsc_customer: 5, bsc_internal: 8, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["sophisticated"],
+          feedback: "\u2705 Muestreo estratificado reduce varianza y garantiza representacion de todos los rangos de montos.\n\ud83d\udcda Concepto: Estratificado > aleatorio simple cuando los estratos son heterogeneos. Mejor precision por el mismo n.",
           next: null
         }
       ]

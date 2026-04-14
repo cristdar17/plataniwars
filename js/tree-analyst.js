@@ -221,10 +221,10 @@ window.TREE_ANALYST = {
           label: "Corregir al CFO: las varianzas se SUMAN, no se restan",
           description: "Explicas respetuosamente que Var(A-B) = Var(A) + Var(B) cuando son independientes. La varianza correcta es 9 + 49 = 58, no 40.",
           cost: 5000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 10, bsc_customer: 2, bsc_financial: 5, bsc_learning: 15 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 13, bsc_customer: 5, bsc_financial: 8, bsc_learning: 18 },
           crossEffects: [
-            { area: "finance", bsc: { bsc_financial: 3 }, narrative: "El CFO agradece la correccion y ajusta los modelos financieros de costos de insumos." }
+            { area: "finance", bsc: { bsc_financial: 6 }, narrative: "El CFO agradece la correccion y ajusta los modelos financieros de costos de insumos." }
           ],
           tags: ["data-driven", "brave"],
           feedback: "✅ DECISION ACERTADA\n\nEl error del CFO es uno de los mas comunes en estadistica:\n\n❌ INCORRECTO: Var(A - B) = Var(A) - Var(B) = 49 - 9 = 40\n✅ CORRECTO: Var(A - B) = Var(A) + Var(B) = 9 + 49 = 58\n\n¿Por que se SUMAN? Porque la incertidumbre SIEMPRE se acumula:\n• Don Hernan varia ±3g (a veces da mas, a veces menos)\n• Agroandes varia ±7g (a veces da mas, a veces menos)\n• La DIFERENCIA puede variar porque CUALQUIERA de los dos se desvie\n\nDesviacion estandar de la diferencia:\nSD(A-B) = √(σa² + σb²) = √(9 + 49) = √58 = 7.62g\n\nError estandar de la diferencia de medias:\nSE(X̄a - X̄b) = √(σa²/na + σb²/nb) = √(9/60 + 49/45) = √(0.15 + 1.089) = √1.239 = 1.11g\n\nIC 95% para la diferencia:\n(-1) ± 1.96 × 1.11 = [-3.18g, 1.18g]\n\nComo el IC incluye 0, NO hay evidencia de diferencia significativa entre proveedores.\n\n📚 Concepto: Varianza de la diferencia. Para variables independientes, Var(X-Y) = Var(X) + Var(Y). La clave es que RESTAR dos variables NO reduce la incertidumbre — la AUMENTA. Piensa en dos dados: la diferencia entre ellos es MAS impredecible que cada dado por separado, no menos.",
@@ -235,7 +235,7 @@ window.TREE_ANALYST = {
           label: "Darle la razon al CFO frente a la junta",
           description: "El CFO es tu jefe. No lo vas a contradecir frente a toda la junta directiva. Asientes con la cabeza y sigues.",
           cost: 0,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -12, bsc_customer: -3, bsc_financial: -8, bsc_learning: -15 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -5 }, narrative: "Las decisiones de proveedores se basan en calculos erroneos. Los contratos firmados no reflejan la variabilidad real." }
@@ -249,8 +249,8 @@ window.TREE_ANALYST = {
           label: "Pedir mas datos antes de concluir cualquier cosa",
           description: "Sugieres que con 60 y 45 muestras no es suficiente para decidir. Propones un estudio mas grande antes de tomar decisiones.",
           cost: 12000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 2, bsc_customer: 0, bsc_financial: -3, bsc_learning: 4 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 5, bsc_customer: 0, bsc_financial: -3, bsc_learning: 7 },
           crossEffects: [],
           tags: ["evasive", "cautious"],
           feedback: "⚠️ DECISION EVASIVA\n\nEl problema principal NO es el tamano muestral. n=60 y n=45 son mas que suficientes para estimar medias y varianzas.\n\nEl problema es que el CFO calculo MAL la varianza:\n❌ Var(A-B) = 49 - 9 = 40\n✅ Var(A-B) = 9 + 49 = 58\n\nPedir mas datos no corrige un error algebraico. Es como decir 'no estoy seguro de que 2+2=4, traigamos mas calculadoras'.\n\nAdemas, evitar la correccion no hace que el error desaparezca — solo pospone las consecuencias.\n\nSE(X̄a - X̄b) = √(9/60 + 49/45) = 1.11g ya es un error estandar razonablemente pequeno.\n\n📚 Concepto: La formula Var(X-Y) = Var(X) + Var(Y) no depende del tamano muestral. Es una propiedad matematica de las variables aleatorias independientes. Mas datos mejoran las ESTIMACIONES de las varianzas individuales, pero no cambian la formula.",
@@ -261,7 +261,7 @@ window.TREE_ANALYST = {
           label: "Proponer estandarizar con Agroandes porque tiene media mas alta",
           description: "Agroandes da platanos de 99g en promedio vs 98g de Don Hernan. Aunque la variabilidad es mayor, el peso promedio es superior. Recomiendas cambiar.",
           cost: 10000000,
-          revenue: 18000000,
+          revenue: 36000000,
           bsc: { bsc_internal: -4, bsc_customer: -2, bsc_financial: -1, bsc_learning: -3 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -4 }, narrative: "La mayor variabilidad de Agroandes (σ=7g vs σ=3g) genera inconsistencia en la linea de produccion." }
@@ -288,8 +288,8 @@ window.TREE_ANALYST = {
           label: "Corregir la interpretacion del gerente antes de la presentacion",
           description: "Le explicas al gerente que la interpretacion del IC no es asi. El 95% se refiere al PROCEDIMIENTO de construccion del intervalo, no a la probabilidad de que el parametro este ahi.",
           cost: 5000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: 3, bsc_learning: 15 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 11, bsc_customer: 8, bsc_financial: 6, bsc_learning: 18 },
           crossEffects: [],
           tags: ["rigorous", "brave"],
           feedback: "✅ DECISION ACERTADA\n\nLa interpretacion del gerente es un error CLASICO:\n\n❌ INCORRECTO: 'Hay un 95% de probabilidad de que μ este entre 19.68% y 22.32%'\n\n✅ CORRECTO: 'Si repetimos este procedimiento de muestreo muchas veces, el 95% de los intervalos construidos contendran el valor real de μ'\n\n¿Por que importa la diferencia?\n\nEl parametro μ (margen real) es un valor FIJO, no aleatorio. No tiene 'probabilidad' de estar en ningun lado. O esta ahi o no esta.\n\nLo que es aleatorio es el INTERVALO. Cada muestra da un IC diferente. El 95% es la tasa de exito del METODO a largo plazo.\n\nAplicado a la meta de 20%:\n• El IC es [19.68%, 22.32%]\n• El 20% esta DENTRO del intervalo\n• NO podemos rechazar que μ >= 20%, pero tampoco podemos asegurar que lo sea\n• Lo correcto es decir: 'Los datos son consistentes con un margen >= 20%, pero tambien con margenes tan bajos como 19.68%'\n\n📚 Concepto: Interpretacion del intervalo de confianza. El IC NO es una declaracion probabilistica sobre el parametro. Es una declaracion sobre el PROCEDIMIENTO. El parametro es fijo; el intervalo es aleatorio. Decir '95% de probabilidad de que μ este aqui' es estadistica bayesiana, no frecuentista.",
@@ -300,7 +300,7 @@ window.TREE_ANALYST = {
           label: "Poner la frase del gerente en la diapositiva tal cual",
           description: "El gerente es el jefe. Si quiere que la diapositiva diga '95% de probabilidad', asi se pone. No es momento de dar clases de estadistica.",
           cost: 0,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -10, bsc_customer: -5, bsc_financial: -3, bsc_learning: -12 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -5 }, narrative: "La junta directiva toma decisiones de inversion basadas en una interpretacion incorrecta del intervalo de confianza." }
@@ -314,8 +314,8 @@ window.TREE_ANALYST = {
           label: "Reformular con IC mas amplio al 99% para mas seguridad",
           description: "Propones usar IC al 99% para que la junta tenga aun mas confianza. Si el 95% no convence, el 99% si.",
           cost: 5000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: 0, bsc_learning: 5 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 6, bsc_customer: 5, bsc_financial: 0, bsc_learning: 8 },
           crossEffects: [],
           tags: ["cautious", "misguided"],
           feedback: "⚠️ DECISION QUE NO RESUELVE EL PROBLEMA\n\nCambiar al 99% no corrige la INTERPRETACION erronea — solo cambia el numero.\n\nIC al 99%:\nIC = 21 ± 2.576 × (6/√80) = 21 ± 1.73 = [19.27%, 22.73%]\n\nEl IC es mas ANCHO (menos preciso) pero el gerente seguira diciendo '99% de probabilidad de que μ este ahi', que sigue siendo incorrecto.\n\nAdemas, un IC mas amplio es MENOS util para la junta, no mas. Decir 'el margen esta entre 19.27% y 22.73%' es menos informativo que 'entre 19.68% y 22.32%'.\n\nEl problema no es el nivel de confianza — es la INTERPRETACION.\n\n📚 Concepto: Aumentar el nivel de confianza (95% → 99%) amplia el intervalo, reduciendo precision. No cambia la naturaleza del IC ni corrige errores de interpretacion. El trade-off es: mas confianza = menos precision. Siempre.",
@@ -326,7 +326,7 @@ window.TREE_ANALYST = {
           label: "Presentar solo el promedio muestral sin intervalo de confianza",
           description: "Para evitar confusiones, quitas el IC de la presentacion y solo pones 'Margen de ganancia: 21%'. Limpio y simple.",
           cost: 0,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -5, bsc_customer: -1, bsc_financial: -2, bsc_learning: -8 },
           crossEffects: [],
           tags: ["simplistic", "hiding-uncertainty"],
@@ -351,61 +351,427 @@ window.TREE_ANALYST = {
           label: "Dashboard integrado con IC para cada KPI y analisis cruzado",
           description: "Presentas los 4 KPIs con sus intervalos de confianza, cruzas las implicaciones entre areas, y proyectas 3 escenarios (conservador, esperado, optimista).",
           cost: 15000000,
-          revenue: 22000000,
-          bsc: { bsc_internal: 12, bsc_customer: 8, bsc_financial: 10, bsc_learning: 15 },
+          revenue: 44000000,
+          bsc: { bsc_internal: 15, bsc_customer: 11, bsc_financial: 13, bsc_learning: 18 },
           crossEffects: [
-            { area: "operations", bsc: { bsc_internal: 5 }, narrative: "El dashboard integrado revela que la diferencia de costos entre turnos se correlaciona con la tasa de defectos del turno noche." },
-            { area: "marketing", bsc: { bsc_customer: 4 }, narrative: "Los datos de satisfaccion del cliente permiten al equipo de marketing ajustar la estrategia de retencion con evidencia solida." },
-            { area: "finance", bsc: { bsc_financial: 5 }, narrative: "El modelo con IC permite al CFO presentar rangos creibles a Bancolombia y la DIAN." }
+            { area: "operations", bsc: { bsc_internal: 8 }, narrative: "El dashboard integrado revela que la diferencia de costos entre turnos se correlaciona con la tasa de defectos del turno noche." },
+            { area: "marketing", bsc: { bsc_customer: 7 }, narrative: "Los datos de satisfaccion del cliente permiten al equipo de marketing ajustar la estrategia de retencion con evidencia solida." },
+            { area: "finance", bsc: { bsc_financial: 8 }, narrative: "El modelo con IC permite al CFO presentar rangos creibles a Bancolombia y la DIAN." }
           ],
           tags: ["data-driven", "holistic", "rigorous"],
           feedback: "✅ DECISION ACERTADA\n\nEste es el trabajo del analista de datos en su maxima expresion. Integremos:\n\n1. CALIDAD — Proporcion de defectos:\np̂ = 0.036, IC 95%: [0.020, 0.052]\nSE = √(0.036 × 0.964 / 500) = 0.0083\nEsta dentro del estandar INVIMA (max 5%), pero el limite superior (5.2%) esta al filo.\n\n2. VENTAS — Media mensual con TCL:\nX̄ = $185M, SE = $10.1M\nIC 95%: [$165.2M, $204.8M]\nProyeccion anual: IC × 12 = [$1,982M, $2,458M]\n\n3. COSTOS — Diferencia entre turnos:\nDif = $7M, SE = $2.63M\nIC 95%: [7 ± 1.96 × 2.63] = [$1.8M, $12.2M]\nZ = 7/2.63 = 2.66, P = 0.008 → La diferencia es significativa\nVar(dif) = Var(dia) + Var(noche) = 64 + 144 = 208 (se SUMAN!)\n\n4. SATISFACCION — Proporcion:\np̂ = 0.78, SE = √(0.78 × 0.22 / 300) = 0.024\nIC 95%: [0.733, 0.827]\nMeta 80%: esta dentro del IC → no se puede confirmar que lleguemos.\n\nESCENARIOS:\n• Conservador: Ventas $165M/mes, defectos 5.2%, satisfaccion 73% → Margen neto ~14%\n• Esperado: Ventas $185M/mes, defectos 3.6%, satisfaccion 78% → Margen neto ~21%\n• Optimista: Ventas $205M/mes, defectos 2.0%, satisfaccion 83% → Margen neto ~27%\n\n📚 Concepto: Integracion estadistica. Cada KPI tiene su propio IC y SE. La proyeccion integrada combina estimaciones puntuales para el escenario esperado y usa los limites de IC para los escenarios extremos. Las varianzas de diferencias se SUMAN (costos turno), las proporciones usan la formula p̂(1-p̂)/n, y las medias usan s/√n. Todo lo del curso en una sola presentacion.",
-          next: null
+          next: "dat-07"
         },
         {
           id: "B",
           label: "Solo promedios puntuales en una tabla limpia",
           description: "Pones los 4 KPIs como numeros limpios: defectos 3.6%, ventas $185M, diferencia de costos $7M, satisfaccion 78%. Sin intervalos ni complicaciones.",
           cost: 5000000,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -3, bsc_customer: 0, bsc_financial: -5, bsc_learning: -10 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -4 }, narrative: "La junta toma decisiones asumiendo que los numeros son exactos, sin considerar margenes de error ni riesgo." }
           ],
           tags: ["simplistic", "incomplete"],
           feedback: "❌ DECISION INCOMPLETA\n\nPresentar solo promedios es como dar el pronostico del clima diciendo 'manana hace 22 grados' sin decir si podria llover o hacer sol.\n\nLos problemas de cada KPI SIN intervalo:\n\n1. Defectos = 3.6%: ¿Pero podria ser 5.2%? SI (limite superior del IC). Eso podria significar multa del INVIMA.\n\n2. Ventas = $185M: ¿Podrian ser $165M? SI. Esa diferencia de $20M/mes ($240M/ano) cambia TOTALMENTE el presupuesto.\n\n3. Diferencia costos = $7M: ¿Es significativa o ruido? Con SE = $2.63M y Z = 2.66, SI es significativa. Pero sin IC, la junta no lo sabe.\n\n4. Satisfaccion = 78%: ¿Llegamos a la meta de 80%? IC dice [73.3%, 82.7%]. NO podemos afirmarlo.\n\nSin IC, la junta NO puede evaluar riesgo. Y si no pueden evaluar riesgo, toman malas decisiones.\n\n📚 Concepto: Toda estimacion puntual es solo la mitad de la historia. El IC completa el cuadro mostrando QUE TAN CONFIABLE es cada estimacion. Un buen analista NUNCA presenta un numero sin su margen de error.",
-          next: null
+          next: "dat-07"
         },
         {
           id: "C",
           label: "Enfocarse solo en ventas porque es lo que le importa a la junta",
           description: "A la junta le importa la plata. Presentas un analisis profundo SOLO de ventas con proyeccion anual, IC, escenarios y TCL. Los otros KPIs los dejas como bullet points.",
           cost: 8000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 2, bsc_customer: -2, bsc_financial: 3, bsc_learning: 0 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 5, bsc_customer: -2, bsc_financial: 6, bsc_learning: 0 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -3 }, narrative: "Los problemas de calidad y la diferencia de costos entre turnos quedan sin atencion por falta de visibilidad en la junta." }
           ],
           tags: ["partial", "finance-focused"],
           feedback: "⚠️ DECISION MIOPE\n\nSolo presentar ventas ignora que los KPIs estan INTERCONECTADOS:\n\n• Si defectos suben de 3.6% a 5.2% → reproceso sube → costos suben → margen baja\n• Si satisfaccion baja de 78% a 73% → ventas del proximo trimestre caen\n• Si turno noche cuesta $7M mas → y no se corrige → 12 meses × $7M = $84M perdidos\n\nLa interconexion se demuestra estadisticamente:\n\nCorrelacion estimada defectos <-> satisfaccion:\nSi p_defectos sube 1%, p_satisfaccion baja ~2-3 puntos\n\nImpacto de costos en margen:\nMargen estimado = Ventas - Costos. Si Var(Costos) = 208 (turnos), esa variabilidad se TRANSMITE al margen.\n\nUn dashboard INTEGRADO muestra estas conexiones. Un reporte solo de ventas las esconde.\n\n📚 Concepto: Pensamiento sistemico en estadistica. Los KPIs no viven aislados. Proporcion de defectos afecta satisfaccion, que afecta ventas, que afecta margen. Un buen modelo integra estimaciones de multiples variables con sus respectivos IC y analiza las dependencias.",
-          next: null
+          next: "dat-07"
         },
         {
           id: "D",
           label: "Modelo predictivo de machine learning con los datos historicos",
           description: "Entrenas un modelo de regresion multiple con 36 meses de datos para predecir ventas, costos y margen del proximo trimestre. Le metes Random Forest y Neural Networks.",
           cost: 50000000,
-          revenue: 50000000,
-          bsc: { bsc_internal: 4, bsc_customer: 2, bsc_financial: -8, bsc_learning: 6 },
+          revenue: 100000000,
+          bsc: { bsc_internal: 7, bsc_customer: 5, bsc_financial: -8, bsc_learning: 9 },
           crossEffects: [
-            { area: "hr", bsc: { bsc_learning: 3 }, narrative: "El equipo de datos aprende herramientas de ML, pero el modelo no es interpretable para la junta." }
+            { area: "hr", bsc: { bsc_learning: 6 }, narrative: "El equipo de datos aprende herramientas de ML, pero el modelo no es interpretable para la junta." }
           ],
           tags: ["overengineered", "advanced"],
           feedback: "💡 DECISION EXCESIVA PARA EL CONTEXTO\n\nMachine Learning con 36 datos mensuales es como usar un Formula 1 para ir a la tienda:\n\n1. Tamano muestral insuficiente:\n• Random Forest necesita minimo cientos de observaciones\n• Neural Networks necesita miles\n• Con n=36, sobreajuste garantizado (memoriza los datos en vez de aprender patrones)\n\n2. No es interpretable:\n• La junta pregunta '¿por que el modelo dice $190M?' y tu respuesta es 'los pesos de las neuronas...' — NO sirve\n• Los IC y pruebas de hipotesis SON interpretables: 'Con 95% de confianza, las ventas estaran entre $165M y $205M'\n\n3. Costo desproporcionado:\n• $50M en consultoria de ML vs $15M en un buen analisis estadistico clasico\n• El ROI no justifica la complejidad\n\nEstadistica clasica (TCL, IC, pruebas de hipotesis) es MAS que suficiente para este problema. No todo necesita ML.\n\n📚 Concepto: Parsimonia. El mejor modelo no es el mas complejo, sino el mas simple que resuelve el problema. Con n=36, los metodos clasicos (IC, pruebas de hipotesis, SE) son robustos, interpretables y baratos. ML requiere muchos mas datos para ser util y confiable. Navaja de Occam aplicada a la estadistica.",
+          next: "dat-07"
+        }
+      ]
+    }
+,
+
+    /* --------------------------------------------------------
+       DAT-07 | Dia 15 | Error estandar como ruido
+       -------------------------------------------------------- */
+    "dat-07": {
+      id: "dat-07",
+      day: 15,
+      title: "Dashboard en tiempo real",
+      context: "La gerencia quiere un dashboard que muestre KPIs en tiempo real. Pero los datos fluctuan mucho hora a hora.\n\n📊 DATOS EJEMPLO (ventas por hora, hoy):\n• 8am: $2.1M | 9am: $4.8M | 10am: $3.2M | 11am: $5.1M\n• Promedio: $3.8M/hora\n• Desviacion: $1.3M\n• SE = $1.3M/\u221a4 = $0.65M",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Mostrar promedios moviles, no datos crudos",
+          description: "Promedio de 4 horas suaviza el ruido. Tendencia real mas visible.",
+          cost: 8000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 8, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 El promedio movil reduce \u03c3 por factor \u221an. Con n=4 horas, SE = $0.65M vs \u03c3 = $1.3M. La mitad de ruido.\n\ud83d\udcda Concepto: Error estandar = ruido de la estimacion. SE = \u03c3/\u221an. Mas observaciones = menos ruido.",
+          next: "dat-08"
+        },
+        {
+          id: "B",
+          label: "Datos en crudo actualizados cada minuto",
+          description: "Tiempo real significa tiempo real. Sin suavizar.",
+          cost: 12000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: 4, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["noisy"],
+          feedback: "\u274c Datos crudos = ruido + senal mezclados. La gerencia vera fluctuaciones y entrara en panico por nada.\n\ud83d\udcda Concepto: Variabilidad natural (\u03c3) \u2260 problema real. Sin filtro, todo parece urgente.",
+          next: "dat-08"
+        },
+        {
+          id: "C",
+          label: "Dashboard con bandas de confianza",
+          description: "Promedio + IC en tiempo real. Si el dato sale de las bandas, alerta.",
+          cost: 15000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 6, bsc_customer: 6, bsc_internal: 8, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["sophisticated"],
+          feedback: "\u2705 Alertas solo cuando el dato sale del IC = deteccion de anomalias reales, no ruido.\n\ud83d\udcda Concepto: Control estadistico de procesos. La banda \u03bc\u00b12\u03c3 captura 95% del ruido normal.",
+          next: "dat-08"
+        },
+        {
+          id: "D",
+          label: "Reporte diario en vez de dashboard en vivo",
+          description: "Un resumen al final del dia es mas util que numeros saltando cada minuto.",
+          cost: 3000000,
+          revenue: 15000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["simple"],
+          feedback: "\ud83d\udca1 n=8 horas da SE = $1.3/\u221a8 = $0.46M. Mucho mas estable que hora a hora. Pero pierdes inmediatez.\n\ud83d\udcda Concepto: Trade-off entre frecuencia y precision. Mas datos por periodo = menor SE = mejor estimacion.",
+          next: "dat-08"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       DAT-08 | Dia 17 | Estimacion de tendencia
+       -------------------------------------------------------- */
+    "dat-08": {
+      id: "dat-08",
+      day: 17,
+      title: "Prediccion de ventas para enero",
+      context: "Enero historicamente es el mes mas flojo. La gerencia quiere saber cuanto esperar.\n\n📊 VENTAS DE ENERO (ultimos 5 anos):\n• 2022: $120M | 2023: $135M | 2024: $142M | 2025: $155M | 2026: $160M\n• Promedio: $142.4M, Desviacion: $15.8M\n• Tendencia: +$10M por ano aprox",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Proyectar con tendencia: $170M para enero 2027",
+          description: "La tendencia sube $10M/ano. 2026 fue $160M, asi que 2027 = $170M.",
+          cost: 3000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 6, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["trend-based"],
+          feedback: "\u2705 Proyeccion con tendencia lineal. Pero con solo n=5, la incertidumbre es alta. SE de la pendiente es grande.\n\ud83d\udcda Concepto: Estimacion de tendencia. Con n pequeno, la tendencia es estimacion burda. Acompanar con IC.",
+          next: "dat-09"
+        },
+        {
+          id: "B",
+          label: "Usar el promedio historico: $142M",
+          description: "Mejor no extrapolar. El promedio de 5 anos es mas seguro.",
+          cost: 2000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 4, bsc_customer: 4, bsc_internal: 5, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f Ignoras la tendencia creciente. Con 5 datos consecutivos al alza, el promedio SUBESTIMA el futuro.\n\ud83d\udcda Concepto: El promedio simple ignora tendencia. Si hay patron temporal, la media no es buen predictor.",
+          next: "dat-09"
+        },
+        {
+          id: "C",
+          label: "Dar rango: entre $155M y $185M",
+          description: "Proyeccion central $170M con margen de \u00b1$15M.",
+          cost: 5000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 7, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 IC informativo. Punto central + rango da mejor informacion que un solo numero.\n\ud83d\udcda Concepto: Toda proyeccion debe tener intervalo. SE con n=5 es grande, el rango lo refleja honestamente.",
+          next: "dat-09"
+        },
+        {
+          id: "D",
+          label: "Pedir datos mensuales de los 5 anos (60 meses) para modelo",
+          description: "5 puntos no alcanzan. Con 60 meses se puede modelar estacionalidad completa.",
+          cost: 8000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["thorough"],
+          feedback: "\u2705 Con n=60 puedes estimar estacionalidad + tendencia + variabilidad por mes. Mucho mas robusto.\n\ud83d\udcda Concepto: Mas datos = mejor modelo. De 5 a 60 observaciones cambia dramaticamente la precision.",
+          next: "dat-09"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       DAT-09 | Dia 18 | Intervalo de confianza unilateral
+       -------------------------------------------------------- */
+    "dat-09": {
+      id: "dat-09",
+      day: 18,
+      title: "Cliente pide garantia de calidad",
+      context: "Exito quiere que garantices <2% de defectos. Tu tasa actual medida en 500 paquetes: 9 defectuosos = 1.8%.\n\n📊 DATOS:\n• n = 500, defectos = 9\n• p\u0302 = 1.8%\n• SE = \u221a(0.018\u00d70.982/500) = 0.59%\n• IC 95% unilateral superior: p\u0302 + 1.645\u00d7SE = 2.77%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Firmar garantia de <2% - estamos en 1.8%",
+          description: "1.8% < 2%. Cumplimos. Firmar.",
+          cost: 5000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: -3, bsc_customer: 5, bsc_internal: 3, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["risky"],
+          feedback: "\u274c El IC unilateral dice que p real podria ser hasta 2.77%. Firmaste garantia que probablemente incumples.\n\ud83d\udcda Concepto: IC unilateral. El limite superior al 95% es 2.77% > 2%. No puedes garantizar <2% con estos datos.",
+          next: "dat-10"
+        },
+        {
+          id: "B",
+          label: "No firmar hasta mejorar el proceso",
+          description: "1.8% esta cerca del 2%. Primero bajar a 1% y luego firmar con confianza.",
+          cost: 10000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 5, bsc_customer: 6, bsc_internal: 8, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["prudent"],
+          feedback: "\u2705 Con p\u0302=1.0% y n=500, IC unilateral = 1.0% + 1.645\u00d70.45% = 1.74% < 2%. Ahora SI puedes garantizar.\n\ud83d\udcda Concepto: Para garantizar un umbral, el IC unilateral debe estar por debajo. Mejora p antes de prometer.",
+          next: "dat-10"
+        },
+        {
+          id: "C",
+          label: "Firmar garantia de <3% en vez de <2%",
+          description: "Negociar un limite mas realista. 3% es alcanzable con confianza.",
+          cost: 3000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 6, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["negotiation"],
+          feedback: "\u2705 IC unilateral al 95% = 2.77% < 3%. Puedes firmar <3% con 95% de confianza.\n\ud83d\udcda Concepto: Negocia el umbral basado en tu IC. Si no puedes garantizar 2%, ofrece lo que tus datos respaldan.",
+          next: "dat-10"
+        },
+        {
+          id: "D",
+          label: "Aumentar muestra a 2,000 paquetes para IC mas estrecho",
+          description: "Con n=2000, el IC se estrecha y puedes responder con mas certeza.",
+          cost: 5000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["analytical"],
+          feedback: "\u2705 Con n=2000, SE = 0.30%. IC unilateral = 1.8% + 1.645\u00d70.30% = 2.29%. Sigue > 2%. Necesitas mejorar p, no solo n.\n\ud83d\udcda Concepto: Mas muestra estrecha IC pero no cambia p\u0302. Si p real es ~1.8%, nunca garantizas <2% solo con mas n.",
+          next: "dat-10"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       DAT-10 | Dia 20 | Variabilidad muestral
+       -------------------------------------------------------- */
+    "dat-10": {
+      id: "dat-10",
+      day: 20,
+      title: "Datos de encuesta contradictorios",
+      context: "Dos encuestas de satisfaccion dan resultados diferentes. \u00bfCual creer?\n\n📊 ENCUESTA A (presencial en tiendas):\n• n = 80, satisfechos = 72, p\u0302 = 90%\n\n📊 ENCUESTA B (online via WhatsApp):\n• n = 200, satisfechos = 152, p\u0302 = 76%\n\nDiferencia: 14 puntos porcentuales. \u00bfError de medicion o diferencia real?",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Confiar en la encuesta B (n mas grande)",
+          description: "n=200 > n=80. Mayor muestra, mayor precision.",
+          cost: 3000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["practical"],
+          feedback: "\u26a0\ufe0f Tamano no lo es todo. La encuesta presencial puede tener sesgo de cortesia (la gente dice 'si' de frente).\n\ud83d\udcda Concepto: Variabilidad muestral Y sesgo. n grande reduce SE pero no elimina sesgo sistematico.",
+          next: "dat-11"
+        },
+        {
+          id: "B",
+          label: "Las dos miden cosas diferentes - no son comparables",
+          description: "Presencial vs online captura poblaciones distintas. Ambas son validas en su contexto.",
+          cost: 2000000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["analytical"],
+          feedback: "\u2705 Correcto! Diferentes metodos = diferentes sesgos = diferentes estimaciones. p\u0302 depende del COMO se mide.\n\ud83d\udcda Concepto: Variabilidad entre estudios \u2260 error. Diferentes muestras pueden estimar parametros DIFERENTES.",
+          next: "dat-11"
+        },
+        {
+          id: "C",
+          label: "Promediar: (90%+76%)/2 = 83%",
+          description: "Promedio de las dos. La verdad esta en el medio.",
+          cost: 1000000,
+          revenue: 15000000,
+          bsc: { bsc_financial: 4, bsc_customer: 4, bsc_internal: 4, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["simplistic"],
+          feedback: "\u26a0\ufe0f Promediar sin ponderar por precision ni ajustar por sesgo mezcla manzanas con naranjas.\n\ud83d\udcda Concepto: Promedio ponderado por inverso de varianza es mejor. Y si hay sesgo, primero corregirlo.",
+          next: "dat-11"
+        },
+        {
+          id: "D",
+          label: "Hacer una tercera encuesta con metodologia hibrida",
+          description: "Disenar una encuesta que combine presencial y online con muestreo aleatorio.",
+          cost: 8000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 4, bsc_customer: 5, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["thorough"],
+          feedback: "\u2705 Muestreo aleatorio + metodo estandarizado reduce AMBOS: sesgo y variabilidad muestral.\n\ud83d\udcda Concepto: El diseno de la encuesta importa tanto como el tamano. Aleatorio + estandarizado = gold standard.",
+          next: "dat-11"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       DAT-11 | Dia 22 | Intervalos de prediccion
+       -------------------------------------------------------- */
+    "dat-11": {
+      id: "dat-11",
+      day: 22,
+      title: "Modelo de costos vs realidad",
+      context: "Tu modelo predijo costos de $145M para noviembre. La realidad fue $162M. \u00bfEl modelo esta malo?\n\n📊 DATOS DEL MODELO:\n• Prediccion: $145M\n• Realidad: $162M\n• Diferencia: +$17M (11.7% mas)\n• \u03c3 del modelo (historico): $12M\n• Intervalo de prediccion 95%: $145M \u00b1 $23.5M = [$121.5M, $168.5M]",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "El modelo esta bien - $162M cae dentro del intervalo",
+          description: "$162M esta dentro de [$121.5M, $168.5M]. No hay evidencia de falla.",
+          cost: 3000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["analytical"],
+          feedback: "\u2705 Correcto. Z = (162-145)/12 = 1.42. P(Z>1.42) = 7.8%. No es extremo. Dentro de lo esperado.\n\ud83d\udcda Concepto: Intervalo de prediccion incluye incertidumbre del modelo. Si el dato cae dentro, el modelo no fallo.",
+          next: "dat-12"
+        },
+        {
+          id: "B",
+          label: "El modelo subestima - hay que recalibrarlo",
+          description: "$17M de diferencia es mucho. Algo cambio que el modelo no captura.",
+          cost: 10000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 7, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["cautious"],
+          feedback: "\u26a0\ufe0f $17M suena mucho pero Z=1.42 dice que es fluctuacion normal. Recalibrar por UN dato atipico es sobreajustar.\n\ud83d\udcda Concepto: No recalibres por un solo dato. Si 3+ meses consecutivos salen arriba, ahi si hay tendencia.",
+          next: "dat-12"
+        },
+        {
+          id: "C",
+          label: "Monitorear los proximos 3 meses antes de decidir",
+          description: "Un mes no es patron. Si diciembre y enero tambien salen altos, hay problema.",
+          cost: 2000000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Excelente. Un dato no es tendencia. Si 3 meses consecutivos salen por encima, P(3 consecutivos por azar) es baja.\n\ud83d\udcda Concepto: Distinguir senal de ruido requiere multiples observaciones. Un dato fuera de lo esperado puede ser azar.",
+          next: "dat-12"
+        },
+        {
+          id: "D",
+          label: "Descartar el modelo y usar promedios simples",
+          description: "Si el modelo falla $17M, mejor usar el promedio historico.",
+          cost: 0,
+          revenue: 12000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: -3, bsc_learning: -5 },
+          crossEffects: [],
+          tags: ["regressive"],
+          feedback: "\u274c El modelo NO fallo. $162M esta dentro del intervalo. Tirarlo por un dato normal es destruir valor.\n\ud83d\udcda Concepto: Evalua modelos con el intervalo de prediccion, no con un solo dato. Todo modelo tiene error.",
+          next: "dat-12"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       DAT-12 | Dia 24 | Sintesis de metodos estadisticos
+       -------------------------------------------------------- */
+    "dat-12": {
+      id: "dat-12",
+      day: 24,
+      title: "Reporte final para inversionistas",
+      context: "El inversionista de Bogota pide tu reporte final antes de decidir si invierte. Necesitas presentar el desempeno de PlataniCracks con rigor.\n\n📊 RESUMEN DEL ANO:\n• Ventas: X\u0304=$285M/mes, s=$42M, n=12\n• Defectos: 1.8%, n=500\n• Satisfaccion: 78%, n=300\n• Crecimiento: 8% anual",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Reporte con IC para cada KPI y analisis integrado",
+          description: "Cada metrica con su intervalo de confianza, escenarios y proyecciones.",
+          cost: 10000000,
+          revenue: 38000000,
+          bsc: { bsc_financial: 10, bsc_customer: 8, bsc_internal: 8, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["professional"],
+          feedback: "\u2705 IC ventas: [$258M, $312M]. IC defectos: [0.6%, 3.0%]. IC satisfaccion: [73%, 83%]. Cada KPI con su precision.\n\ud83d\udcda Concepto: Sintesis estadistica. Todo lo del semestre en un reporte: IC, proporciones, diferencias, estimaciones.",
+          next: null
+        },
+        {
+          id: "B",
+          label: "Solo los numeros headline sin intervalos",
+          description: "Ventas $285M, defectos 1.8%, satisfaccion 78%, crecimiento 8%. Limpio y directo.",
+          cost: 3000000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: 3, bsc_learning: -5 },
+          crossEffects: [],
+          tags: ["simplistic"],
+          feedback: "\u274c Un inversionista serio preguntara '\u00bfcon que confianza?' y '\u00bfcual es el peor escenario?'. Sin IC no hay respuesta.\n\ud83d\udcda Concepto: Estimacion sin incertidumbre es incompleta. El inversionista necesita el rango, no solo el punto.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Presentacion optimista enfocada en crecimiento",
+          description: "Resaltar el 8% de crecimiento y el potencial futuro. Los inversionistas quieren vision.",
+          cost: 5000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["marketing-style"],
+          feedback: "\u26a0\ufe0f Presentar solo lo bueno destruye credibilidad. Un inversionista detecta cherry-picking de datos.\n\ud83d\udcda Concepto: Presentar datos completos (buenos y malos) con IC genera mas confianza que solo lo positivo.",
+          next: null
+        },
+        {
+          id: "D",
+          label: "Dashboard interactivo con datos en vivo",
+          description: "Acceso en tiempo real a todos los datos. Que el inversionista explore por su cuenta.",
+          cost: 15000000,
+          revenue: 33000000,
+          bsc: { bsc_financial: 6, bsc_customer: 7, bsc_internal: 6, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["tech-forward"],
+          feedback: "\ud83d\udca1 Impresionante pero necesita narracion. Datos sin interpretacion son numeros. Combina dashboard + analisis narrativo.\n\ud83d\udcda Concepto: Los datos cuentan una historia solo si alguien la narra con contexto estadistico adecuado.",
           next: null
         }
       ]
     }
-
   }
 };

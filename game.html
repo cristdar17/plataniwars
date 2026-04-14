@@ -472,26 +472,27 @@
     }
 
     function renderGameState(day, companies, areas, students, decisions, events) {
-      // --- CHECK JUNTA FIRST ---
+      // --- CHECK JUNTA FIRST (always takes priority on junta days) ---
       const isJuntaDay = (CONFIG.JUNTA_DAYS || []).includes(day);
       if (isJuntaDay && window.TREE_JUNTA) {
         const juntaNode = Object.values(window.TREE_JUNTA.nodes).find(n => n.day === day);
         if (juntaNode) {
+          // Check if THIS player already voted in the junta (uses area_code to avoid UNIQUE conflict)
           const myJuntaVote = decisions.find(d =>
-            d.company_id === session.company && d.area_code === session.area &&
-            d.day === day && d.node_id.startsWith('junta-')
+            d.company_id === session.company && d.decided_by === session.id &&
+            d.node_id === juntaNode.id
           );
+          // All junta votes from my company
           const allJuntaVotes = decisions.filter(d =>
-            d.company_id === session.company && d.day === day && d.node_id.startsWith('junta-')
+            d.company_id === session.company && d.node_id === juntaNode.id
           );
 
           if (myJuntaVote) {
             renderJuntaResult(juntaNode, allJuntaVotes, myJuntaVote, students);
-            return;
           } else {
             renderJuntaVote(day, juntaNode, allJuntaVotes, students, areas);
-            return;
           }
+          return;
         }
       }
 
@@ -499,15 +500,17 @@
       const myArea = areas.find(a => a.company_id === session.company && a.area_code === session.area);
       const currentNode = Engine.getCurrentNode(session.area, myArea?.current_node);
 
+      // Check if area already decided today (exclude junta votes)
       const alreadyDecided = decisions.some(d =>
-        d.company_id === session.company && d.area_code === session.area && d.day === day
+        d.company_id === session.company && d.area_code === session.area &&
+        d.day === day && !d.node_id.startsWith('junta-')
       );
       const nodeAvailable = currentNode && currentNode.day <= day;
       const decisionMaker = Engine.getDecisionMaker(session.area, session.company, students, day);
       const isMyTurn = decisionMaker && decisionMaker.id === session.id;
 
       const latestDecision = decisions
-        .filter(d => d.company_id === session.company && d.area_code === session.area)
+        .filter(d => d.company_id === session.company && d.area_code === session.area && !d.node_id.startsWith('junta-'))
         .sort((a, b) => b.day - a.day)[0];
 
       if (alreadyDecided && latestDecision && latestDecision.day === day) {

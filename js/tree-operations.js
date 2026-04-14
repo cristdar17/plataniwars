@@ -216,8 +216,8 @@ window.TREE_OPERATIONS = {
           label: "La planta aguanta - no contratar turno extra",
           description: "Con capacidad de 8,000 y demanda promedio de 7,200, hay 800 paquetes de colchon. Suficiente.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: -5, bsc_customer: -6, bsc_financial: 4, bsc_learning: -2 },
+          revenue: 24000000,
+          bsc: { bsc_internal: -5, bsc_customer: -6, bsc_financial: 7, bsc_learning: -2 },
           crossEffects: [
             { area: "hr", bsc: { bsc_internal: -2 }, narrative: "Los operarios existentes terminan haciendo horas extras agotadores sin planificacion." }
           ],
@@ -230,10 +230,10 @@ window.TREE_OPERATIONS = {
           label: "Contratar turno extra completo (capacidad +4,000/dia)",
           description: "Turno nocturno de 8 horas. Capacidad sube a 12,000 paquetes/dia. Costo alto pero cero riesgo.",
           cost: 35000000,
-          revenue: 50000000,
-          bsc: { bsc_internal: 5, bsc_customer: 8, bsc_financial: -5, bsc_learning: 3 },
+          revenue: 100000000,
+          bsc: { bsc_internal: 8, bsc_customer: 11, bsc_financial: -5, bsc_learning: 6 },
           crossEffects: [
-            { area: "hr", bsc: { bsc_learning: 3 }, narrative: "Talento Humano gana experiencia gestionando turnos rotativos y contratacion temporal." }
+            { area: "hr", bsc: { bsc_learning: 6 }, narrative: "Talento Humano gana experiencia gestionando turnos rotativos y contratacion temporal." }
           ],
           tags: ["safe", "expensive"],
           feedback: "⚠️ DECISION SEGURA PERO SOBREDIMENSIONADA\n\nCon capacidad de 12,000:\nP(demanda > 12,000) = P(Z > (12000-7200)/600) = P(Z > 8.0) ≈ 0%\n\nCero riesgo de faltante, pero estas pagando capacidad para 12,000 cuando la demanda maxima razonable (μ + 3σ) es 7,200 + 1,800 = 9,000. Sobran 3,000 paquetes de capacidad ociosa.\n\nCosto del turno extra: $35M. ¿Valia la pena ese exceso?\n\n📚 Concepto: Probabilidad normal. La regla practica dice que el 99.7% de los datos cae dentro de μ ± 3σ. Capacidad = μ + 3σ = 9,000 hubiera sido suficiente.",
@@ -244,8 +244,8 @@ window.TREE_OPERATIONS = {
           label: "Turno extra parcial: subir capacidad a 9,500/dia",
           description: "Medio turno nocturno. Capacidad sube de 8,000 a 9,500 paquetes/dia. Balance entre costo y cobertura.",
           cost: 18000000,
-          revenue: 22000000,
-          bsc: { bsc_internal: 8, bsc_customer: 7, bsc_financial: 1, bsc_learning: 5 },
+          revenue: 44000000,
+          bsc: { bsc_internal: 11, bsc_customer: 10, bsc_financial: 4, bsc_learning: 8 },
           crossEffects: [],
           tags: ["balanced", "data-driven"],
           feedback: "✅ DECISION OPTIMA\n\nCon capacidad de 9,500:\nP(demanda > 9,500) = P(Z > (9500-7200)/600) = P(Z > 3.83) = 0.00006 = 0.006%\n\nPracticamente cero riesgo de faltante. Y el costo es $18M vs $35M del turno completo.\n\nEn 15 dias pico:\nP(al menos un dia corto) = 1 - (1-0.00006)^15 = 0.0009 = 0.09%\n\nMenos del 0.1% de riesgo. Excelente relacion costo-beneficio.\n\n📚 Concepto: Probabilidad normal (area bajo la curva). La clave es cuantificar el riesgo con P(X > capacidad) y luego decidir cuanto riesgo estas dispuesto a aceptar. Subir capacidad a μ + 3.83σ te da seguridad casi total.",
@@ -256,8 +256,8 @@ window.TREE_OPERATIONS = {
           label: "Producir inventario extra esta semana para cubrir la temporada",
           description: "En vez de contratar gente, producir mas esta semana y almacenar. 1,000 paquetes extra por dia durante 5 dias = 5,000 en inventario.",
           cost: 8000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 4, bsc_customer: 3, bsc_financial: 0, bsc_learning: 2 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 7, bsc_customer: 6, bsc_financial: 0, bsc_learning: 5 },
           crossEffects: [],
           tags: ["creative", "moderate"],
           feedback: "💡 DECISION INTELIGENTE PERO LIMITADA\n\nCon 5,000 paquetes de inventario + 8,000/dia de capacidad, tu capacidad efectiva sube... pero el inventario se agota.\n\nSi la demanda es > 8,000 varios dias seguidos, el buffer se acaba rapido.\n\nEjemplo: Si 3 dias la demanda es 8,500, necesitas 1,500 extra = 4,500 del buffer. Al cuarto dia ya no tienes colchon.\n\nP(demanda > 8,000 en 3+ dias) en 15 dias pico es alta: C(15,3) × 0.0918³ × 0.9082^12 ≈ 16%\n\n📚 Concepto: Probabilidad acumulada. Un buffer finito protege contra picos puntuales, no contra tendencias sostenidas. Para temporada larga, necesitas capacidad, no inventario.",
@@ -281,10 +281,10 @@ window.TREE_OPERATIONS = {
           label: "Investigar causas de la diferencia nocturna",
           description: "Hay una diferencia real y significativa. Antes de sancionar, investigar: ¿iluminacion?, ¿fatiga?, ¿supervision?",
           cost: 5000000,
-          revenue: 18000000,
-          bsc: { bsc_internal: 10, bsc_customer: 3, bsc_financial: 1, bsc_learning: 8 },
+          revenue: 36000000,
+          bsc: { bsc_internal: 13, bsc_customer: 6, bsc_financial: 4, bsc_learning: 11 },
           crossEffects: [
-            { area: "hr", bsc: { bsc_learning: 3 }, narrative: "La investigacion revela oportunidades de mejora en condiciones laborales nocturnas." }
+            { area: "hr", bsc: { bsc_learning: 6 }, narrative: "La investigacion revela oportunidades de mejora en condiciones laborales nocturnas." }
           ],
           tags: ["data-driven", "proactive"],
           feedback: "✅ DECISION ACERTADA\n\nDiferencia de medias:\nX̄₁ - X̄₂ = 7,450 - 7,180 = 270 paquetes/dia\n\nError estandar de la diferencia:\nSE = √(s₁²/n₁ + s₂²/n₂) = √(320²/30 + 410²/30)\nSE = √(3,413.3 + 5,603.3) = √9,016.7 = 94.96\n\nZ = (270 - 0) / 94.96 = 2.84\nP(Z > 2.84) = 0.0023 (0.23%)\n\nLa diferencia ES estadisticamente significativa (p < 0.01). El turno de noche produce genuinamente menos. Investigar las causas antes de actuar es la decision correcta.\n\n📚 Concepto: Diferencia de medias (dos muestras independientes). SE de la diferencia = √(s₁²/n₁ + s₂²/n₂). Con Z = 2.84, la probabilidad de que esta diferencia sea por azar es menos del 0.5%.",
@@ -295,8 +295,8 @@ window.TREE_OPERATIONS = {
           label: "Cambiar al coordinador nocturno",
           description: "Si el turno de noche produce menos, es culpa de quien lo lidera. Poner un coordinador nuevo.",
           cost: 8000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 3, bsc_customer: 2, bsc_financial: -2, bsc_learning: -3 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 6, bsc_customer: 5, bsc_financial: -2, bsc_learning: -3 },
           crossEffects: [
             { area: "hr", bsc: { bsc_internal: -4 }, narrative: "Despedir al coordinador sin investigar genera malestar y desconfianza en los demas empleados." }
           ],
@@ -309,8 +309,8 @@ window.TREE_OPERATIONS = {
           label: "No es significativo - 270 paquetes es poca diferencia",
           description: "De 7,400 paquetes, 270 es apenas el 3.6%. No vale la pena hacer cambios por eso.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 1, bsc_learning: -6 },
+          revenue: 24000000,
+          bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 4, bsc_learning: -6 },
           crossEffects: [],
           tags: ["dismissive"],
           feedback: "❌ DECISION EQUIVOCADA\n\nZ = 270 / 94.96 = 2.84, con p = 0.0023. La diferencia es ALTAMENTE significativa.\n\n270 paquetes/dia × 30 dias/mes = 8,100 paquetes/mes perdidos\n8,100 × $2,500 precio/paquete = $20,250,000/mes de produccion perdida\n\n¿$20M al mes te parece 'poca diferencia'?\n\n📚 Concepto: Significancia estadistica vs significancia practica. Aqui AMBAS son relevantes. Estadisticamente la diferencia es real (Z = 2.84). Practicamente son $20M mensuales. Ignorar evidencia cuesta plata.",
@@ -321,7 +321,7 @@ window.TREE_OPERATIONS = {
           label: "Eliminar el turno nocturno y producir todo de dia",
           description: "Si el turno de noche es peor, para que tenerlo. Concentrar produccion en un super-turno de dia de 12 horas.",
           cost: 10000000,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -3, bsc_customer: -5, bsc_financial: -4, bsc_learning: -2 },
           crossEffects: [
             { area: "hr", bsc: { bsc_internal: -5, bsc_customer: -2 }, narrative: "Eliminar turno nocturno implica despidos o reasignaciones que generan conflicto laboral." }
@@ -348,50 +348,416 @@ window.TREE_OPERATIONS = {
           label: "Recomendar la inversion con analisis estadistico completo",
           description: "Presentar a la junta el analisis de ahorro esperado con intervalos de confianza y periodo de retorno.",
           cost: 180000000,
-          revenue: 60000000,
-          bsc: { bsc_internal: 12, bsc_customer: 6, bsc_financial: -5, bsc_learning: 10 },
+          revenue: 120000000,
+          bsc: { bsc_internal: 15, bsc_customer: 9, bsc_financial: -5, bsc_learning: 13 },
           crossEffects: [
-            { area: "finance", bsc: { bsc_financial: 5 }, narrative: "El analisis estadistico solido facilita la aprobacion del credito bancario para la inversion." },
-            { area: "analyst", bsc: { bsc_learning: 3 }, narrative: "El caso de automatizacion se convierte en referencia para futuros analisis de inversion." }
+            { area: "finance", bsc: { bsc_financial: 8 }, narrative: "El analisis estadistico solido facilita la aprobacion del credito bancario para la inversion." },
+            { area: "analyst", bsc: { bsc_learning: 6 }, narrative: "El caso de automatizacion se convierte en referencia para futuros analisis de inversion." }
           ],
           tags: ["data-driven", "investment"],
           feedback: "✅ DECISION ACERTADA CON FUNDAMENTO\n\nEstimacion del ahorro mensual:\nDesperdicio actual: IC 95% = 4.2% ± 1.96 × (1.1/√60) = 4.2% ± 0.278% = [3.92%, 4.48%]\nDesperdicio automatizado: 1.8% (dato del proveedor)\n\nReduccion estimada: 4.2% - 1.8% = 2.4 puntos porcentuales\nSE de la diferencia: √((1.1²/60) + (0.6²/60)) = √(0.02017 + 0.006) = 0.162%\n\nPaquetes salvados/mes: 200,000 × 0.024 = 4,800\nAhorro mensual: 4,800 × $2,500 = $12,000,000\n\nIC 95% del ahorro: $12M ± 1.96 × (200,000 × 0.00162 × $2,500)\n= $12M ± $1.59M = [$10.41M, $13.59M]\n\nRetorno de inversion: $180M / $12M = 15 meses\nEscenario pesimista: $180M / $10.41M = 17.3 meses\n\n📚 Concepto: Estimacion con error estandar para decisiones de inversion. El IC te permite presentar escenarios (optimista, esperado, pesimista) con fundamento estadistico.",
-          next: null
+          next: "ops-07"
         },
         {
           id: "B",
           label: "Rechazar - la inversion es muy alta y riesgosa",
           description: "$180 millones es mucha plata. Mejor seguir como estamos y controlar desperdicios manualmente.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 3, bsc_learning: -5 },
+          revenue: 24000000,
+          bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 6, bsc_learning: -5 },
           crossEffects: [],
           tags: ["conservative", "risk-averse"],
           feedback: "❌ DECISION COSTOSA A LARGO PLAZO\n\nEstas perdiendo $12M/mes en desperdicios evitables. En 15 meses, las perdidas acumuladas ($180M) igualan la inversion que rechazaste.\n\nDespues de 15 meses, cada mes que pasa pierdes $12M que podrias estar ahorrando.\n\nEn 3 anos: Costo de NO automatizar = 36 × $12M = $432M\nCosto de automatizar = $180M\nDiferencia: $252M a favor de automatizar\n\nIncluso en el escenario pesimista (ahorro de $10.41M/mes):\n36 × $10.41M - $180M = $194.76M de ahorro neto\n\n📚 Concepto: El costo de la inaccion tambien se mide. El SE y el IC te permiten cuantificar incluso el escenario mas conservador y compararlo con no hacer nada.",
-          next: null
+          next: "ops-07"
         },
         {
           id: "C",
           label: "Pedir al proveedor una prueba piloto de 3 meses",
           description: "Que instale la maquina en prueba. Si los numeros se confirman en nuestra planta, compramos.",
           cost: 30000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 5, bsc_customer: 2, bsc_financial: -1, bsc_learning: 12 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: -1, bsc_learning: 15 },
           crossEffects: [],
           tags: ["cautious", "analytical"],
           feedback: "💡 DECISION INTELIGENTE\n\nUna prueba piloto te permite recoger DATOS PROPIOS en vez de confiar solo en los del proveedor.\n\nCon 3 meses (≈90 dias) de datos de tu planta:\nSE = 0.6/√90 = 0.063%\nIC 95% = desperdicio_real ± 0.124%\n\nTendrias un intervalo muy preciso del desperdicio REAL en tu planta. Si confirma que baja a ~1.8%, la decision de compra se justifica con tus propios datos.\n\nRiesgo: el proveedor puede no aceptar una prueba de 3 meses. Y el costo de $30M es plata que no recuperas si decides no comprar.\n\n📚 Concepto: Datos propios vs datos del proveedor. El proveedor reporta condiciones ideales. Tu planta tiene sus particularidades. Recoger muestra propia reduce la incertidumbre.",
-          next: null
+          next: "ops-07"
         },
         {
           id: "D",
           label: "Automatizar solo la mitad de la linea",
           description: "Invertir $95M en automatizar la mitad. Comparar linea manual vs automatizada en paralelo.",
           cost: 95000000,
-          revenue: 50000000,
-          bsc: { bsc_internal: 7, bsc_customer: 4, bsc_financial: -3, bsc_learning: 8 },
+          revenue: 100000000,
+          bsc: { bsc_internal: 10, bsc_customer: 7, bsc_financial: -3, bsc_learning: 11 },
           crossEffects: [],
           tags: ["moderate", "experimental"],
           feedback: "⚠️ DECISION DE COMPROMISO\n\nAutomatizar la mitad te da un experimento controlado perfecto:\n• Grupo tratamiento: linea automatizada\n• Grupo control: linea manual\n• Misma materia prima, mismos operarios\n\nDespues de n dias, puedes comparar desperdicios con una prueba de diferencia de medias y tener CERTEZA estadistica.\n\nPero el costo unitario de la maquina sube (economia de escala perdida): $95M por media linea vs $180M por la completa. Estas pagando 53% del precio por 50% de capacidad.\n\n📚 Concepto: Diseno experimental en la vida real. La mitad automatizada vs la mitad manual es literalmente un experimento con grupo control. Costoso pero genera evidencia irrefutable.",
+          next: "ops-07"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       OPS-07 | Dia 15 | Planificacion de capacidad con distribucion normal
+       -------------------------------------------------------- */
+    "ops-07": {
+      id: "ops-07",
+      day: 15,
+      title: "Lote urgente para D1",
+      context: "D1 quiere 10.000 paquetes en 48 horas. Tu capacidad promedio es 4.500/dia con desviacion de 800.\n\n📊 DATOS:\n• Capacidad diaria: \u03bc=4500, \u03c3=800\n• Pedido: 10.000 en 2 dias\n• Penalidad si no cumples: $30M",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Aceptar y meter turno extra",
+          description: "Doble turno para cumplir. Cuesta mas pero aseguras el pedido grande.",
+          cost: 12000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 8, bsc_customer: 10, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u2705 Buena jugada. Con turno extra la capacidad en 2 dias sube a ~10.500. P(cumplir) > 90%.\n\ud83d\udcda Concepto: Suma de normales. Si X1 y X2 son normales independientes, X1+X2 ~ N(\u03bc1+\u03bc2, \u03c31\u00b2+\u03c32\u00b2).",
+          next: "ops-08"
+        },
+        {
+          id: "B",
+          label: "Rechazar - muy arriesgado",
+          description: "No alcanzamos con certeza. Mejor no prometer lo que no podemos cumplir.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: 3, bsc_customer: -5, bsc_internal: 4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f Seguro pero perdiste $35M en ventas. P(cumplir sin turno extra) = P(X1+X2 > 10000) con \u03bc=9000, \u03c3=1131... apenas 19%.\n\ud83d\udcda El riesgo era real pero manejable con turno extra.",
+          next: "ops-08"
+        },
+        {
+          id: "C",
+          label: "Aceptar parcial: ofrecer 8.000 paquetes",
+          description: "Contraoferta realista. 4.000 por dia es seguro y D1 recibe algo.",
+          cost: 5000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 6, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 Negociacion inteligente. P(producir 8000 en 2 dias) = P(X1+X2 > 8000) con \u03bc=9000 \u2248 81%. Muy factible.\n\ud83d\udcda Concepto: Usar la distribucion normal para fijar compromisos realistas.",
+          next: "ops-08"
+        },
+        {
+          id: "D",
+          label: "Aceptar y subcontratar el faltante",
+          description: "Lo que no alcances, lo maquila un tercero. Mas caro pero cumples seguro.",
+          cost: 18000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 5, bsc_customer: 8, bsc_internal: 3, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["creative"],
+          feedback: "\ud83d\udca1 Pragmatico. Subcontratar cuesta mas por unidad pero garantiza cumplimiento al 100%.\n\ud83d\udcda A veces reducir incertidumbre (\u03c3\u21920) vale mas que optimizar el costo esperado.",
+          next: "ops-08"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       OPS-08 | Dia 17 | Valor esperado en mantenimiento
+       -------------------------------------------------------- */
+    "ops-08": {
+      id: "ops-08",
+      day: 17,
+      title: "La maquina hace ruidos raros",
+      context: "La empacadora principal empezo a vibrar. El tecnico dice que tiene 30% de probabilidad de fallar esta semana. Repararla ahora cuesta $8M; si falla en produccion, cuesta $40M.\n\n📊 DATOS:\n• P(falla esta semana) = 0.30\n• Costo preventivo: $8M\n• Costo correctivo si falla: $40M",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Mantenimiento preventivo YA",
+          description: "Parar 4 horas, reparar y seguir tranquilo. $8M y listo.",
+          cost: 8000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 10, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["proactive"],
+          feedback: "\u2705 E(costo de no reparar) = 0.30 \u00d7 $40M = $12M. Reparar por $8M es mas barato que el valor esperado del dano.\n\ud83d\udcda Concepto: Valor esperado. E(X) = \u03a3 xi\u00b7P(xi). Siempre compara costo seguro vs costo esperado.",
+          next: "ops-09"
+        },
+        {
+          id: "B",
+          label: "Esperar y rezar",
+          description: "70% de que NO falle. Me la juego.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: -3, bsc_customer: -4, bsc_internal: -6, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["risky"],
+          feedback: "\u274c E(costo) = 0.30 \u00d7 $40M = $12M > $8M del preventivo. Jugaste a la ruleta rusa con la produccion.\n\ud83d\udcda El valor esperado dice que esperar es mas caro en promedio.",
+          next: "ops-09"
+        },
+        {
+          id: "C",
+          label: "Reducir velocidad al 50% mientras monitoreas",
+          description: "Menos produccion pero menos estres en la maquina. Reduce P(falla) a 10%.",
+          cost: 5000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 4, bsc_customer: 3, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["moderate"],
+          feedback: "\ud83d\udca1 E(costo) ahora = 0.10 \u00d7 $40M = $4M. Mas los $5M de produccion perdida = $9M total. Casi empata con reparar ($8M).\n\ud83d\udcda Comparar valores esperados de multiples opciones es la clave.",
+          next: "ops-09"
+        },
+        {
+          id: "D",
+          label: "Programar mantenimiento para el fin de semana",
+          description: "No parar produccion hoy. Reparar sabado cuando no se produce.",
+          cost: 10000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 5, bsc_customer: 6, bsc_internal: 7, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\u2705 Reparas sin perder produccion. Cuesta $2M mas (fin de semana) pero E(valor) sigue positivo.\n\ud83d\udcda Optimizar CUANDO reparar tambien es una decision bajo incertidumbre.",
+          next: "ops-09"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       OPS-09 | Dia 18 | Riesgo vs recompensa con incertidumbre
+       -------------------------------------------------------- */
+    "ops-09": {
+      id: "ops-09",
+      day: 18,
+      title: "Proveedor ofrece descuento por volumen",
+      context: "Tu proveedor de platano verde ofrece 20% de descuento si compras 3 meses de inventario de una vez. Pero el precio del platano varia y podrias perder si baja.\n\n📊 DATOS:\n• Consumo mensual: 5 toneladas\n• Precio actual: $2M/tonelada\n• Precio con descuento (15 ton): $1.6M/ton\n• Volatilidad historica del precio: \u03c3 = $0.4M/ton",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Comprar las 15 toneladas con descuento",
+          description: "Ahorro de $6M garantizado. El platano no se va a desplomar tanto.",
+          cost: 24000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 8, bsc_customer: 4, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u2705 Ahorro = 15 \u00d7 ($2M - $1.6M) = $6M. Para perder, el precio tendria que caer a < $1.6M. P(precio < $1.6) = P(Z < -1) = 16%.\n\ud83d\udcda Concepto: El descuento es seguro; la caida de precio es incierta. Compara certeza vs probabilidad.",
+          next: "ops-10"
+        },
+        {
+          id: "B",
+          label: "Comprar solo 1 mes - no arriesgar",
+          description: "Seguir comprando mensual. Si el precio baja, compro mas barato despues.",
+          cost: 10000000,
+          revenue: 15000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: 4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f Pierdes $6M de ahorro seguro por miedo a una baja que tiene solo 16% de probabilidad.\n\ud83d\udcda Concepto: Aversion al riesgo excesiva puede ser costosa cuando los datos muestran ventaja clara.",
+          next: "ops-10"
+        },
+        {
+          id: "C",
+          label: "Comprar 2 meses (10 ton) - termino medio",
+          description: "Descuento del 15% por 10 toneladas. Menos riesgo, menos ahorro.",
+          cost: 17000000,
+          revenue: 24000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 5, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\ud83d\udca1 Ahorro moderado con riesgo moderado. Diversificas temporalmente las compras.\n\ud83d\udcda Concepto: No siempre es todo o nada. Distribuir el riesgo en el tiempo es una estrategia valida.",
+          next: "ops-10"
+        },
+        {
+          id: "D",
+          label: "Negociar descuento del 10% por 1 mes grande",
+          description: "Contraoferta: compro 7 toneladas este mes a 10% de descuento.",
+          cost: 12600000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 4, bsc_customer: 3, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["negotiation"],
+          feedback: "\ud83d\udca1 Creativo. Menos descuento pero menos riesgo de almacenamiento y deterioro.\n\ud83d\udcda Concepto: El riesgo no es solo precio — incluye almacenamiento, deterioro y costo de oportunidad.",
+          next: "ops-10"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       OPS-10 | Dia 20 | Control de calidad y proporcion
+       -------------------------------------------------------- */
+    "ops-10": {
+      id: "ops-10",
+      day: 20,
+      title: "INVIMA viene de visita",
+      context: "Llego carta del INVIMA: inspeccion en 3 dias. Tu ultima muestra interna de 200 paquetes encontro 11 con problemas (5.5%). El limite legal es 5%.\n\n📊 DATOS:\n• Muestra interna: n=200, defectos=11\n• p\u0302 = 0.055 (5.5%)\n• Limite INVIMA: 5%\n• Multa por incumplimiento: $50M",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Parar y corregir ANTES de la visita",
+          description: "Recalibrar todo, hacer limpieza profunda, revisar protocolos. 2 dias de parada.",
+          cost: 15000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 6, bsc_customer: 8, bsc_internal: 10, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["proactive"],
+          feedback: "\u2705 Con p\u0302=5.5% y limite 5%, IC 95% = [2.3%, 8.7%]. El 5% esta DENTRO del IC, asi que podrias estar OK... o no.\n\ud83d\udcda Concepto: IC para proporcion. Mejor prevenir cuando tu estimado supera el limite aunque no sea significativo.",
+          next: "ops-11"
+        },
+        {
+          id: "B",
+          label: "No hacer nada - 5.5% esta cerca del 5%",
+          description: "Es solo 0.5% arriba. Puede que la muestra del INVIMA salga bien.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: -4, bsc_customer: -6, bsc_internal: -8, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["risky"],
+          feedback: "\u274c Si INVIMA toma n=100, P(encontrar >5 defectos) es considerable. Con p real=5.5%, te juegas la multa de $50M.\n\ud83d\udcda Concepto: La proporcion muestral varia. Tu 5.5% podria salir 7% en la muestra de INVIMA.",
+          next: "ops-11"
+        },
+        {
+          id: "C",
+          label: "Hacer inspeccion interna masiva y descartar lotes malos",
+          description: "Revisar los ultimos 5.000 paquetes, separar los defectuosos, reempacar.",
+          cost: 10000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 5, bsc_customer: 7, bsc_internal: 8, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["thorough"],
+          feedback: "\u2705 Buena estrategia. Reduces la proporcion real de defectos en inventario antes de la visita.\n\ud83d\udcda Concepto: Puedes cambiar el parametro poblacional (p real) con accion directa, no solo estimarlo.",
+          next: "ops-11"
+        },
+        {
+          id: "D",
+          label: "Preparar la documentacion y capacitar al equipo",
+          description: "INVIMA revisa procesos, no solo producto. Tener todo en orden puede compensar.",
+          cost: 5000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 4, bsc_customer: 5, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\ud83d\udca1 INVIMA valora procesos documentados. Pero si la muestra sale mal, la documentacion no salva de la multa.\n\ud83d\udcda Concepto: La proporcion muestral es lo que miden. Complementa con evidencia de procesos pero no ignores los datos.",
+          next: "ops-11"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       OPS-11 | Dia 22 | Beneficio esperado con demanda incierta
+       -------------------------------------------------------- */
+    "ops-11": {
+      id: "ops-11",
+      day: 22,
+      title: "Turno extra de fin de semana",
+      context: "Diciembre se acerca y la demanda se dispara. Un turno extra los sabados cuesta $12M/mes pero podria generar $30M en ventas adicionales... si la demanda se mantiene.\n\n📊 DATOS:\n• P(demanda alta en diciembre) = 0.75\n• Ingreso si demanda alta: $30M\n• Ingreso si demanda baja: $8M\n• Costo del turno extra: $12M/mes",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Abrir turno extra todo diciembre",
+          description: "75% de demanda alta es suficiente. A producir platanitos navidenos!",
+          cost: 12000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 7, bsc_customer: 8, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u2705 E(ingreso) = 0.75\u00d7$30M + 0.25\u00d7$8M = $24.5M. Beneficio esperado = $24.5M - $12M = $12.5M. Positivo!\n\ud83d\udcda Concepto: E(beneficio) = E(ingreso) - costo. Si E(beneficio) > 0, la decision tiene sentido en promedio.",
+          next: "ops-12"
+        },
+        {
+          id: "B",
+          label: "No abrir turno - diciembre es impredecible",
+          description: "Puede que este ano no se venda tanto. No arriesgar los $12M.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: 3, bsc_customer: -5, bsc_internal: 3, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f Perdiste E(beneficio) = $12.5M. Con P(alta)=75%, la probabilidad estaba muy a tu favor.\n\ud83d\udcda Concepto: No actuar tambien tiene costo de oportunidad. Comparar siempre vs el valor esperado.",
+          next: "ops-12"
+        },
+        {
+          id: "C",
+          label: "Turno extra solo las 2 primeras semanas",
+          description: "Probar 2 semanas y si funciona, extender. Costo: $6M.",
+          cost: 6000000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 6, bsc_customer: 6, bsc_internal: 6, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 Estrategia adaptativa. Reduces riesgo a $6M y recoges datos reales antes de comprometer mas.\n\ud83d\udcda Concepto: Muestreo secuencial. Tomar datos antes de decidir reduce la incertidumbre.",
+          next: "ops-12"
+        },
+        {
+          id: "D",
+          label: "Turno extra solo si los pedidos de la semana 1 superan X",
+          description: "Definir umbral: si pedidos semana 1 > $8M, abrir turno extra el resto del mes.",
+          cost: 4000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 7, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Decision basada en evidencia en tiempo real. Usas la semana 1 como muestra para estimar la demanda del mes.\n\ud83d\udcda Concepto: Actualizacion de probabilidades con datos nuevos. La semana 1 es informacion que reduce incertidumbre.",
+          next: "ops-12"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       OPS-12 | Dia 24 | Tamano de muestra adecuado
+       -------------------------------------------------------- */
+    "ops-12": {
+      id: "ops-12",
+      day: 24,
+      title: "Nueva receta: platanitos con limon",
+      context: "I+D creo platanitos con limon. Un focus group de 40 personas probo el producto: 28 dijeron que lo comprarian (70%).\n\n📊 DATOS:\n• n = 40 personas\n• Favorables: 28 (70%)\n• Inversion necesaria para lanzar: $25M\n• Meta minima de aceptacion: 60%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Lanzar - 70% de aceptacion es excelente",
+          description: "28 de 40 es contundente. A producir platanitos con limon!",
+          cost: 25000000,
+          revenue: 40000000,
+          bsc: { bsc_financial: 7, bsc_customer: 10, bsc_internal: 5, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u26a0\ufe0f IC 95% con n=40: 70% \u00b1 14.2% = [55.8%, 84.2%]. El limite inferior esta DEBAJO de tu meta de 60%.\n\ud83d\udcda Concepto: Con n=40, el margen de error es grande. La muestra es pequena para una decision de $25M.",
+          next: null
+        },
+        {
+          id: "B",
+          label: "Ampliar la muestra a 200 personas antes de decidir",
+          description: "40 personas es poco. Necesitamos mas datos para una inversion de $25M.",
+          cost: 8000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 6, bsc_customer: 8, bsc_internal: 6, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Con n=200, SE = \u221a(0.7\u00d70.3/200) = 3.2%. IC = 70% \u00b1 6.3%. Mucho mas preciso para decidir.\n\ud83d\udcda Concepto: El tamano de muestra importa. SE = \u221a(pq/n). Cuadruplicar n reduce SE a la mitad.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Lanzar edicion limitada de prueba",
+          description: "2.000 paquetes en 10 tiendas. Datos reales de venta, no solo opinion.",
+          cost: 10000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 5, bsc_customer: 7, bsc_internal: 7, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 Excelente. Datos de COMPRA real > datos de intencion. La conversion real suele ser 30-50% de la intencion declarada.\n\ud83d\udcda Concepto: Validez externa. Un focus group mide intencion, no comportamiento. El piloto mide lo que importa.",
+          next: null
+        },
+        {
+          id: "D",
+          label: "Descartar - el mercado de limon es nicho",
+          description: "70% en focus group pero eso no se traduce al mercado. Muy arriesgado.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: 3, bsc_customer: -3, bsc_internal: 3, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f Con 70% de aceptacion, descartar sin mas analisis es desperdiciar una oportunidad. Al menos amplia la muestra.\n\ud83d\udcda Concepto: No decidir tambien es una decision. El costo de oportunidad existe.",
           next: null
         }
       ]

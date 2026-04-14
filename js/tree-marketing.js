@@ -213,8 +213,8 @@ window.TREE_MARKETING = {
           label: "Si, 266 es suficiente - incluso sobra con la correccion por poblacion finita",
           description: "La formula da n = 385 para poblacion infinita, pero Marsella tiene solo 8,200 hogares. Con la correccion, 266 puede bastar.",
           cost: 3192000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 6, bsc_customer: 4, bsc_financial: 2, bsc_learning: 10 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 9, bsc_customer: 7, bsc_financial: 5, bsc_learning: 13 },
           crossEffects: [],
           tags: ["data-driven", "efficient"],
           feedback: "⚠️ VEAMOS SI ES CIERTO\n\nSin correccion (poblacion infinita):\nn₀ = 1.96² × 0.5 × 0.5 / 0.05² = 384.16 ≈ 385\n\nCon correccion por poblacion finita (N = 8,200):\nn = n₀ / (1 + (n₀ - 1)/N) = 385 / (1 + 384/8200)\nn = 385 / 1.04683 = 367.7 ≈ 368\n\n266 < 368. NO es suficiente. Te faltan 102 encuestas.\n\nCon n = 266, tu margen de error real seria:\nE = 1.96 × √(0.5×0.5/266) × √((8200-266)/(8200-1))\nE = 1.96 × 0.03067 × √(0.9676) = 1.96 × 0.03067 × 0.9837\nE = 0.0591 = ±5.91%\n\nExcede tu meta de ±5%.\n\n📚 Concepto: Correccion por poblacion finita. n_corr = n₀/(1 + (n₀-1)/N). Reduce el n necesario cuando la muestra es proporcion grande de N. Pero la reduccion aqui es solo de 385 a 368 (poblacion de 8,200 es 'grande').",
@@ -225,8 +225,8 @@ window.TREE_MARKETING = {
           label: "No, necesito mas presupuesto - pedir $4,500,000",
           description: "Hacer los calculos bien: necesito 368 hogares × $12,000 = $4,416,000. Pedir un poco mas de presupuesto.",
           cost: 4416000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: -2, bsc_learning: 12 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 11, bsc_customer: 8, bsc_financial: -2, bsc_learning: 15 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -1 }, narrative: "Marketing solicita ampliacion de presupuesto de investigacion." }
           ],
@@ -239,8 +239,8 @@ window.TREE_MARKETING = {
           label: "Encuestar solo 100 hogares - es un pueblo chiquito",
           description: "Marsella es un pueblo. 100 hogares ya es mas del 1% de la poblacion. Con eso basta.",
           cost: 1200000,
-          revenue: 12000000,
-          bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 3, bsc_learning: -7 },
+          revenue: 24000000,
+          bsc: { bsc_internal: -5, bsc_customer: -2, bsc_financial: 6, bsc_learning: -7 },
           crossEffects: [],
           tags: ["insufficient", "wrong-logic"],
           feedback: "❌ DECISION CON LOGICA INCORRECTA\n\nEl argumento '1% de la poblacion es suficiente' es un MITO estadistico.\n\nCon n = 100:\nE = 1.96 × √(0.5×0.5/100) × √((8200-100)/(8200-1))\nE = 1.96 × 0.05 × 0.9939 = 0.0974 = ±9.74%\n\nCasi el doble de tu meta (±5%). Un resultado como 'entre 40% y 60% consume platanitos' no te sirve para decidir.\n\nEl tamano de muestra necesario depende del MARGEN DE ERROR deseado y de la variabilidad, NO del porcentaje de la poblacion.\n\n📚 Concepto: El tamano de muestra NO depende del tamano de la poblacion (excepto la correccion por poblacion finita, que es menor). n = 385 es necesario para ±5% ya sea en Marsella (8,200) o en Bogota (3,000,000).",
@@ -251,8 +251,8 @@ window.TREE_MARKETING = {
           label: "Encuestar a TODOS los 8,200 hogares (censo)",
           description: "Es un pueblo chiquito. Hacemos censo y punto. Cero incertidumbre.",
           cost: 98400000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 5, bsc_customer: 3, bsc_financial: -15, bsc_learning: -3 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 8, bsc_customer: 6, bsc_financial: -15, bsc_learning: -3 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -8 }, narrative: "El gasto de $98M en un censo de un pueblo de 32,000 habitantes es desproporcional." }
           ],
@@ -278,8 +278,8 @@ window.TREE_MARKETING = {
           label: "Campana A - Tradicion (segura)",
           description: "Retorno estable, error estandar bajo, riesgo controlado. En negocio de alimentos, la consistencia gana.",
           cost: 30000000,
-          revenue: 45000000,
-          bsc: { bsc_internal: 5, bsc_customer: 5, bsc_financial: 5, bsc_learning: 2 },
+          revenue: 90000000,
+          bsc: { bsc_internal: 8, bsc_customer: 8, bsc_financial: 8, bsc_learning: 5 },
           crossEffects: [],
           tags: ["conservative", "safe"],
           feedback: "✅ DECISION SOLIDA\n\nIC 95% del retorno esperado:\nCampana A: $45M ± 1.96 × $1.46M = [$42.1M, $47.9M]\nCampana B: $62M ± 1.96 × $8.08M = [$46.2M, $77.8M]\n\nCampana A: rango de $5.8M (muy predecible)\nCampana B: rango de $31.6M (alta incertidumbre)\n\nEl SE de la Campana A ($1.46M) es 5.5x mas bajo que el de B ($8.08M). Esto significa que la estimacion del retorno de A es mucho mas CONFIABLE.\n\nAunque B promete mas, podria dar tan poco como $46M (apenas mas que A) o tanto como $78M. Con A sabes que obtendras entre $42M y $48M. Para una empresa que necesita predecibilidad, A es la eleccion racional.\n\n📚 Concepto: SE como medida de riesgo. Menor SE = mayor precision en la estimacion = menor incertidumbre = menor riesgo. En finanzas y marketing, el SE es analogamente una medida de riesgo.",
@@ -290,8 +290,8 @@ window.TREE_MARKETING = {
           label: "Campana B - Viral (arriesgada)",
           description: "$62M vs $45M — $17M mas de retorno esperado. El riesgo vale la pena.",
           cost: 30000000,
-          revenue: 62000000,
-          bsc: { bsc_internal: 2, bsc_customer: 8, bsc_financial: 3, bsc_learning: 5 },
+          revenue: 124000000,
+          bsc: { bsc_internal: 5, bsc_customer: 11, bsc_financial: 6, bsc_learning: 8 },
           crossEffects: [],
           tags: ["risky", "high-reward"],
           feedback: "⚠️ DECISION VALIENTE PERO RIESGOSA\n\nEl retorno esperado es $17M mayor. Pero miremos el riesgo:\n\nCoeficiente de variacion (CV = σ/X̄):\nCV_A = 8/45 = 0.178 (17.8%)\nCV_B = 28/62 = 0.452 (45.2%)\n\nB tiene 2.5x mas riesgo relativo que A.\n\nProbabilidad de que B rinda MENOS que el promedio de A:\nP(B < 45) = P(Z < (45-62)/28) = P(Z < -0.607) = 0.272 = 27.2%\n\nHay 27% de probabilidad de que la campana viral rinda MENOS que la campana segura. ¿Estas dispuesto a aceptar ese riesgo?\n\n📚 Concepto: Relacion riesgo-retorno. Mayor retorno esperado generalmente viene con mayor variabilidad (riesgo). El SE y el CV te permiten comparar el riesgo entre alternativas.",
@@ -302,8 +302,8 @@ window.TREE_MARKETING = {
           label: "Dividir presupuesto: 60% Tradicion, 40% Viral",
           description: "No apostar todo a una sola carta. Diversificar el riesgo.",
           cost: 30000000,
-          revenue: 52000000,
-          bsc: { bsc_internal: 4, bsc_customer: 6, bsc_financial: 4, bsc_learning: 6 },
+          revenue: 104000000,
+          bsc: { bsc_internal: 7, bsc_customer: 9, bsc_financial: 7, bsc_learning: 9 },
           crossEffects: [],
           tags: ["balanced", "diversified"],
           feedback: "💡 DECISION DE DIVERSIFICACION\n\nRetorno esperado ponderado:\nE(mezcla) = 0.6 × $45M + 0.4 × $62M = $27M + $24.8M = $51.8M\n\nVarianza ponderada (asumiendo independencia):\nVar(mezcla) = 0.6² × 8² + 0.4² × 28² = 0.36 × 64 + 0.16 × 784\n= 23.04 + 125.44 = 148.48\nσ(mezcla) = √148.48 = $12.19M\n\nSE(mezcla) mucho menor que si fuera 100% Viral ($28M), pero mayor que 100% Tradicion ($8M).\n\nRetorno/Riesgo:\nA pura: 45/8 = 5.63\nB pura: 62/28 = 2.21\nMezcla: 51.8/12.19 = 4.25\n\nLa mezcla tiene mejor ratio retorno/riesgo que B pura.\n\n📚 Concepto: Diversificacion y varianzas. Cuando combinas estrategias independientes, la varianza total es la suma ponderada de varianzas. Diversificar reduce el riesgo total sin reducir proporcionalmente el retorno.",
@@ -314,8 +314,8 @@ window.TREE_MARKETING = {
           label: "No hacer ninguna - guardar el presupuesto",
           description: "El mercado esta inestable. Mejor guardar la plata y esperar mejor momento.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: -3, bsc_customer: -10, bsc_financial: 3, bsc_learning: -5 },
+          revenue: 24000000,
+          bsc: { bsc_internal: -3, bsc_customer: -10, bsc_financial: 6, bsc_learning: -5 },
           crossEffects: [
             { area: "operations", bsc: { bsc_customer: -3 }, narrative: "Sin campana de marketing, las ventas bajan y operaciones tiene que reducir produccion." }
           ],
@@ -341,51 +341,417 @@ window.TREE_MARKETING = {
           label: "No firmar - los datos dicen que no alcanzamos",
           description: "Promedio de 2,750 contra compromiso de 3,000. Estamos cortos. No arriesgar.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: 3, bsc_customer: -5, bsc_financial: 2, bsc_learning: 5 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 6, bsc_customer: -5, bsc_financial: 5, bsc_learning: 8 },
           crossEffects: [],
           tags: ["cautious", "data-driven"],
           feedback: "✅ DECISION FUNDAMENTADA\n\nIC al 95% para la demanda promedio:\nSE = s/√n = 480/√18 = 113.14\nt₀.₀₂₅,₁₇ = 2.110 (n pequeno, usamos t)\nIC = 2,750 ± 2.110 × 113.14 = 2,750 ± 238.7\nIC = [2,511, 2,989]\n\nEl limite superior del IC (2,989) NO alcanza 3,000. Con 95% de confianza, la demanda real promedio esta por debajo de 3,000.\n\nProbabilidad de que la demanda promedio real sea ≥ 3,000:\nt = (3000 - 2750) / 113.14 = 2.21\nP(t > 2.21) con 17 gl ≈ 0.021 = 2.1%\n\nSolo 2.1% de probabilidad de cumplir el compromiso. Firmar seria una apuesta muy arriesgada.\n\n📚 Concepto: Estimacion de demanda con datos muestrales. El IC te dice si puedes cumplir compromisos. Cuando el valor comprometido queda FUERA del IC, la evidencia dice que no.",
-          next: null
+          next: "mkt-07"
         },
         {
           id: "B",
           label: "Firmar - con buena promocion subimos la demanda",
           description: "2,750 es el promedio SIN estar en D1. Con la visibilidad de D1, la demanda sube seguro.",
           cost: 15000000,
-          revenue: 40000000,
-          bsc: { bsc_internal: -5, bsc_customer: 3, bsc_financial: -3, bsc_learning: -3 },
+          revenue: 80000000,
+          bsc: { bsc_internal: -5, bsc_customer: 6, bsc_financial: -3, bsc_learning: -3 },
           crossEffects: [
             { area: "operations", bsc: { bsc_internal: -4 }, narrative: "El compromiso de 3,000/semana por tienda × 45 tiendas = 135,000 paquetes semanales adicionales presiona la capacidad de planta." }
           ],
           tags: ["risky", "optimistic"],
           feedback: "❌ DECISION BASADA EN ESPERANZA, NO EN DATOS\n\n'Seguro que sube' no es un analisis. ¿Cuanto sube? ¿Hay datos que respalden ese 'seguro'?\n\nPara cumplir 3,000/semana, necesitas que la demanda suba un 9.1% = (3000-2750)/2750.\n\nSin datos de cuanto sube la demanda al entrar en D1, estas apostando a ciegas. El IC actual [2,511, 2,989] dice que ni el escenario optimista alcanza.\n\nSi firmas y no cumples en 45 tiendas, pierdes el espacio Y la inversion de posicionamiento.\n\n📚 Concepto: No mezclar estimaciones con deseos. El IC se basa en datos OBSERVADOS. Si crees que la demanda subira, necesitas datos de situaciones similares, no intuicion.",
-          next: null
+          next: "mkt-07"
         },
         {
           id: "C",
           label: "Negociar compromiso de 2,500/semana en vez de 3,000",
           description: "Contraoferta: acepto el espacio pero con compromiso de 2,500. Eso si lo puedo cumplir con los datos.",
           cost: 5000000,
-          revenue: 35000000,
-          bsc: { bsc_internal: 7, bsc_customer: 6, bsc_financial: 6, bsc_learning: 8 },
+          revenue: 70000000,
+          bsc: { bsc_internal: 10, bsc_customer: 9, bsc_financial: 9, bsc_learning: 11 },
           crossEffects: [
-            { area: "operations", bsc: { bsc_internal: 3 }, narrative: "El compromiso de 2,500/semana es manejable con la capacidad actual de la planta." }
+            { area: "operations", bsc: { bsc_internal: 6 }, narrative: "El compromiso de 2,500/semana es manejable con la capacidad actual de la planta." }
           ],
           tags: ["negotiation", "data-driven"],
           feedback: "✅ DECISION OPTIMA\n\nIC al 95%: [2,511, 2,989]\n\nCon compromiso de 2,500:\nP(demanda real > 2,500):\nt = (2500 - 2750) / 113.14 = -2.21\nP(t > -2.21) con 17 gl ≈ 0.979 = 97.9%\n\nHay 97.9% de probabilidad de que la demanda promedio real supere 2,500. Puedes firmar con alta confianza.\n\nComparacion:\n• Compromiso 3,000: P(cumplir) = 2.1% (suicidio comercial)\n• Compromiso 2,750: P(cumplir) = 50% (moneda al aire)\n• Compromiso 2,500: P(cumplir) = 97.9% (apuesta segura)\n\n📚 Concepto: Usar el IC para negociar. El limite inferior del IC (2,511) te dice el minimo que puedes comprometer con alta confianza. Negociar cerca del limite inferior es inteligente.",
-          next: null
+          next: "mkt-07"
         },
         {
           id: "D",
           label: "Pedir a D1 una prueba piloto de 5 tiendas primero",
           description: "Antes de comprometerse con 45 tiendas, probar en 5 para medir la demanda real en D1.",
           cost: 8000000,
-          revenue: 22000000,
-          bsc: { bsc_internal: 4, bsc_customer: 4, bsc_financial: 0, bsc_learning: 10 },
+          revenue: 44000000,
+          bsc: { bsc_internal: 7, bsc_customer: 7, bsc_financial: 0, bsc_learning: 13 },
           crossEffects: [],
           tags: ["cautious", "experimental"],
           feedback: "💡 EXCELENTE PARA REDUCIR INCERTIDUMBRE\n\nCon 5 tiendas D1 durante, digamos, 8 semanas:\n• 5 × 8 = 40 observaciones de demanda semanal en D1\n• SE nuevo = s/√40 (mucho mas preciso)\n\nSi el piloto da X̄ = 2,900 con s = 350:\nSE = 350/√40 = 55.3\nIC 95% = [2,787, 3,013]\n\nAhora el IC INCLUYE 3,000. La decision de firmar las 45 tiendas seria mas informada.\n\nEl costo del piloto ($8M) es seguro contra la inversion. Si el piloto muestra que no alcanzas 3,000, perdiste $8M en vez de arriesgar $40M+.\n\n📚 Concepto: Reduccion de incertidumbre con datos. El piloto te da datos PROPIOS del canal D1 (no extrapolados de tiendas similares). Reduce el SE y puede cambiar la conclusion del IC.",
+          next: "mkt-07"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       MKT-07 | Dia 15 | Riesgo de extrapolacion
+       -------------------------------------------------------- */
+    "mkt-07": {
+      id: "mkt-07",
+      day: 15,
+      title: "TikTok viral",
+      context: "Un influencer con 500K seguidores posteo un video comiendo tus platanitos. Ya tiene 2M de vistas y las ventas online subieron 300% en 2 dias.\n\n📊 DATOS:\n• Ventas normales online: 200 pedidos/dia\n• Ventas post-viral: 800 pedidos/dia (2 dias)\n• Inventario disponible: 3.000 paquetes\n• Costo de produccion urgente: $15M por 10.000 extra",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Producir 10.000 paquetes extra de urgencia",
+          description: "Aprovechar la ola viral. Meter turno extra y producir como locos.",
+          cost: 15000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 7, bsc_customer: 10, bsc_internal: 4, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u26a0\ufe0f Cuidado con extrapolar 2 dias al futuro. Los virales duran 3-7 dias tipicamente. Podrias quedarte con inventario.\n\ud83d\udcda Concepto: Extrapolacion con datos insuficientes. n=2 dias NO es muestra para predecir tendencia.",
+          next: "mkt-08"
+        },
+        {
+          id: "B",
+          label: "Producir 3.000 extra y monitorear",
+          description: "Cantidad moderada. Si sigue la demanda, producir mas.",
+          cost: 6000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 6, bsc_customer: 7, bsc_internal: 6, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 Produccion adaptativa. Esperas 2-3 dias mas de datos antes de comprometer mas recursos.\n\ud83d\udcda Concepto: Muestreo secuencial. No decides todo con los primeros datos; recoges mas y ajustas.",
+          next: "mkt-08"
+        },
+        {
+          id: "C",
+          label: "Contactar al influencer para alianza pagada",
+          description: "Si ya le gusto gratis, que lo promocione por plata. $5M por una campana de 1 semana.",
+          cost: 5000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 8, bsc_customer: 8, bsc_internal: 4, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\u2705 Conviertes suerte en estrategia. Si el influencer ya genera traccion organica, la pagada amplifica.\n\ud83d\udcda Concepto: Pasar de dato observacional (espontaneo) a experimental (controlado) mejora la predictibilidad.",
+          next: "mkt-08"
+        },
+        {
+          id: "D",
+          label: "No hacer nada - los virales pasan rapido",
+          description: "Manana hay otro video viral de otro producto. No invertir en humo.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: 3, bsc_customer: -4, bsc_internal: 3, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["passive"],
+          feedback: "\u26a0\ufe0f Puede que tengas razon, pero $0 de inversion cuando la demanda sube 300% es desperdiciar oportunidad.\n\ud83d\udcda Concepto: Costo de oportunidad. Aunque el viral sea temporal, hay ganancia inmediata real.",
+          next: "mkt-08"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       MKT-08 | Dia 17 | Tendencias de proporcion
+       -------------------------------------------------------- */
+    "mkt-08": {
+      id: "mkt-08",
+      day: 17,
+      title: "Competencia baja precios 20%",
+      context: "PlataniMax (tu rival) bajo precios 20%. Tu market share ya cayo de 35% a 30% en 2 semanas.\n\n📊 DATOS:\n• Tu market share hace 1 mes: 35%\n• Tu market share hoy: 30% (n=500 encuestas)\n• Precio PlataniMax: $2,400 (antes $3,000)\n• Tu precio: $3,200",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Bajar precios para igualar",
+          description: "Guerra de precios. Si ellos bajan, tu bajas. No perder mas market share.",
+          cost: 20000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: -3, bsc_customer: 6, bsc_internal: 4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["reactive"],
+          feedback: "\u26a0\ufe0f Bajar a $2,400 destruye tu margen. Ellos pueden tener costos mas bajos. Guerra de precios solo sirve si tienes ventaja en costos.\n\ud83d\udcda Concepto: Antes de reaccionar, analiza si el cambio de proporcion es significativo o temporal.",
+          next: "mkt-09"
+        },
+        {
+          id: "B",
+          label: "Diferenciarse en calidad, no en precio",
+          description: "Campana de 'platanitos premium' - ingredientes naturales, empaque especial.",
+          cost: 12000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 6, bsc_customer: 8, bsc_internal: 6, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\u2705 La proporcion que importa no es market share sino RENTABILIDAD por unidad. Si tu margen es 2x el de ellos, 30% share puede dar mas ganancia.\n\ud83d\udcda Concepto: Proporcion de mercado \u2260 proporcion de ganancias. Mide lo que importa.",
+          next: "mkt-09"
+        },
+        {
+          id: "C",
+          label: "Lanzar linea economica aparte",
+          description: "Platanitos 'PlataniPop' a $2,200 para competir, sin tocar la marca premium.",
+          cost: 18000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 5, bsc_customer: 8, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["creative"],
+          feedback: "\u2705 Segmentas el mercado. La linea economica captura el share perdido sin dañar la marca premium.\n\ud83d\udcda Concepto: Dos proporciones, dos segmentos. Mide cada uno por separado.",
+          next: "mkt-09"
+        },
+        {
+          id: "D",
+          label: "Esperar - puede que PlataniMax no aguante esos precios",
+          description: "A $2,400 su margen es minimo. En 2 meses suben de nuevo.",
+          cost: 0,
+          revenue: 12000000,
+          bsc: { bsc_financial: 4, bsc_customer: -3, bsc_internal: 3, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["wait-and-see"],
+          feedback: "\ud83d\udca1 Puede funcionar si tienes datos de que su margen es insostenible. Pero perder 5pp de share tiene costo real.\n\ud83d\udcda Concepto: Monitorear la tendencia de la proporcion en el tiempo para decidir cuando actuar.",
+          next: "mkt-09"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       MKT-09 | Dia 18 | ROI esperado
+       -------------------------------------------------------- */
+    "mkt-09": {
+      id: "mkt-09",
+      day: 18,
+      title: "Feria gastronomica en Pereira",
+      context: "La Feria Gastronomica del Eje Cafetero es en 2 semanas. Un stand cuesta $8M. Historicamente, marcas similares venden entre $15M y $40M en la feria.\n\n📊 DATOS DE FERIAS ANTERIORES (marcas de snacks):\n• Promedio de ventas: $25M\n• Desviacion: $10M\n• n = 8 marcas participantes\n• SE = $10M/\u221a8 = $3.54M",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Participar con stand premium ($12M)",
+          description: "Stand grande, degustaciones, merchandising. Maximo impacto.",
+          cost: 12000000,
+          revenue: 32000000,
+          bsc: { bsc_financial: 7, bsc_customer: 10, bsc_internal: 5, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["aggressive"],
+          feedback: "\u2705 E(ROI) = E(ventas) - costo = $25M - $12M = $13M. IC ventas 95%: [$18M, $32M]. Hasta pesimista da ganancia.\n\ud83d\udcda Concepto: Si el limite inferior del IC de ingresos > costo, la inversion es segura estadisticamente.",
+          next: "mkt-10"
+        },
+        {
+          id: "B",
+          label: "Stand basico ($8M)",
+          description: "Lo minimo para estar presente. Si funciona, el proximo ano invertir mas.",
+          cost: 8000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 6, bsc_customer: 7, bsc_internal: 5, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["moderate"],
+          feedback: "\u2705 E(ganancia) = $25M - $8M = $17M. Excelente retorno esperado con inversion minima.\n\ud83d\udcda Concepto: ROI = (ingreso - costo)/costo. A veces menos inversion = mejor ROI.",
+          next: "mkt-10"
+        },
+        {
+          id: "C",
+          label: "No participar - muy caro",
+          description: "$8M es mucha plata para un evento de 3 dias.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: 3, bsc_customer: -5, bsc_internal: 3, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["passive"],
+          feedback: "\u274c E(ventas) = $25M con IC [$18M, $32M]. Incluso el peor escenario ($18M) supera el costo de $8M.\n\ud83d\udcda Concepto: Cuando todo el IC de ingresos esta por encima del costo, no participar es irracional.",
+          next: "mkt-10"
+        },
+        {
+          id: "D",
+          label: "Patrocinar un evento dentro de la feria",
+          description: "En vez de stand, patrocinar la competencia de cocina. Mas visibilidad, $10M.",
+          cost: 10000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 5, bsc_customer: 8, bsc_internal: 4, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["creative"],
+          feedback: "\ud83d\udca1 Diferente formato pero sin datos historicos de retorno de patrocinios. Mayor incertidumbre (\u03c3 desconocida).\n\ud83d\udcda Concepto: Sin datos historicos, tu estimacion de retorno tiene SE desconocido. Mas riesgo informacional.",
+          next: "mkt-10"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       MKT-10 | Dia 20 | Margen de error con muestra pequena
+       -------------------------------------------------------- */
+    "mkt-10": {
+      id: "mkt-10",
+      day: 20,
+      title: "Lanzar app de pedidos",
+      context: "Encuesta a clientes: 68% dice que usaria una app para pedir platanitos directo. Pero solo encuestaste 50 personas.\n\n📊 DATOS:\n• n = 50\n• Favorables: 34 (68%)\n• Inversion en app: $35M\n• SE = \u221a(0.68\u00d70.32/50) = 6.6%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Desarrollar la app completa",
+          description: "68% es altisimo. Meter los $35M y lanzar.",
+          cost: 35000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 3, bsc_customer: 6, bsc_internal: 4, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["risky"],
+          feedback: "\u26a0\ufe0f IC 95% = 68% \u00b1 12.9% = [55.1%, 80.9%]. Rango de 26 puntos! Con n=50, la incertidumbre es enorme.\n\ud83d\udcda Concepto: Margen de error con n pequeno. SE = \u221a(pq/n). Con n=50, el IC es demasiado ancho para una inversion de $35M.",
+          next: "mkt-11"
+        },
+        {
+          id: "B",
+          label: "Ampliar encuesta a 300 personas primero",
+          description: "Con n=300, el margen de error baja a \u00b15.3%. Mucho mas confiable.",
+          cost: 5000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 5, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Con n=300, SE = 2.7%, IC = \u00b15.3%. Reduces la incertidumbre antes de invertir $35M.\n\ud83d\udcda Concepto: Multiplicar n por 6 reduce SE a la mitad. El costo de mas datos ($5M) << costo de mala decision ($35M).",
+          next: "mkt-11"
+        },
+        {
+          id: "C",
+          label: "MVP basico (pagina web de pedidos) por $8M",
+          description: "En vez de app completa, una pagina web simple para pedidos. Prueba el concepto.",
+          cost: 8000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 6, bsc_customer: 7, bsc_internal: 6, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["lean"],
+          feedback: "\u2705 MVP valida con COMPORTAMIENTO real, no solo intencion declarada. Mucho mas confiable que encuesta.\n\ud83d\udcda Concepto: Datos de comportamiento > datos de intencion. La conversion real puede ser 30-50% de la declarada.",
+          next: "mkt-11"
+        },
+        {
+          id: "D",
+          label: "Descartar - la gente dice si a todo en encuestas",
+          description: "68% en encuesta = 30% en realidad. No vale la pena.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: 3, bsc_customer: -3, bsc_internal: 3, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["skeptical"],
+          feedback: "\ud83d\udca1 Buen punto sobre sesgo de cortesia, pero descartar sin validar tambien es un error.\n\ud83d\udcda Concepto: Sesgo en encuestas es real pero cuantificable. Ajusta por sesgo, no descartes los datos.",
+          next: "mkt-11"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       MKT-11 | Dia 22 | Punto de equilibrio con estimaciones
+       -------------------------------------------------------- */
+    "mkt-11": {
+      id: "mkt-11",
+      day: 22,
+      title: "Alianza con Rappi",
+      context: "Rappi ofrece meter tus platanitos en su app. Comision: 18% sobre cada venta. Pero el volumen podria subir mucho.\n\n📊 DATOS:\n• Ventas actuales: 15.000 paquetes/mes\n• Precio: $3,200/paquete\n• Margen actual: $600/paquete\n• Comision Rappi: 18% = $576/paquete\n• Volumen esperado adicional por Rappi: 3,000-8,000 paquetes/mes",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Aceptar la alianza",
+          description: "18% es alto pero el volumen adicional compensa. Mas platanitos en mas manos.",
+          cost: 5000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 5, bsc_customer: 8, bsc_internal: 4, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["growth"],
+          feedback: "\u26a0\ufe0f Margen por paquete en Rappi: $600 - $576 = $24. Necesitas vender MUCHOS para que valga la pena.\n\ud83d\udcda Concepto: Punto de equilibrio. Costos fijos de alianza / margen unitario = volumen minimo necesario.",
+          next: "mkt-12"
+        },
+        {
+          id: "B",
+          label: "Negociar comision al 12%",
+          description: "18% es abusivo. Proponer 12% y hacer numeros con ese margen.",
+          cost: 3000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 7, bsc_customer: 7, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["negotiation"],
+          feedback: "\u2705 Al 12%, comision = $384. Margen = $216/paquete. Con 5.000 extra = $1.08M de ganancia adicional/mes.\n\ud83d\udcda Concepto: Sensibilidad. Pequenos cambios en la comision tienen gran impacto en el punto de equilibrio.",
+          next: "mkt-12"
+        },
+        {
+          id: "C",
+          label: "Crear tu propia plataforma de delivery",
+          description: "Cero comisiones. App propia + domiciliarios propios.",
+          cost: 30000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 4, bsc_customer: 5, bsc_internal: 3, bsc_learning: 5 },
+          crossEffects: [],
+          tags: ["ambitious"],
+          feedback: "\ud83d\udca1 Cero comision pero costo fijo de $30M + operacion de delivery. \u00bfCuantos paquetes para recuperar $30M?\n\ud83d\udcda Concepto: Costo fijo alto vs costo variable bajo. El break-even depende del volumen estimado.",
+          next: "mkt-12"
+        },
+        {
+          id: "D",
+          label: "Rechazar - el delivery no es nuestro negocio",
+          description: "Somos una fabrica de platanitos, no una empresa de tecnologia.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: 3, bsc_customer: -4, bsc_internal: 4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["conservative"],
+          feedback: "\u26a0\ufe0f El canal digital crece 25% anual. Ignorarlo es perder mercado a largo plazo.\n\ud83d\udcda Concepto: Las tendencias de proporcion en canales de venta son datos que no debes ignorar.",
+          next: "mkt-12"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       MKT-12 | Dia 24 | Comparar efectividad
+       -------------------------------------------------------- */
+    "mkt-12": {
+      id: "mkt-12",
+      day: 24,
+      title: "Campana de Navidad",
+      context: "Presupuesto de $20M para campana navidena. Dos opciones con datos de conversion historicos.\n\n📊 DIGITAL (Instagram + TikTok):\n• Conversion promedio: 3.2%\n• n = 15 campanas previas, s = 1.1%\n\n📊 TRADICIONAL (Radio + perifoneo):\n• Conversion promedio: 2.1%\n• n = 20 campanas previas, s = 0.6%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "100% digital",
+          description: "3.2% vs 2.1% de conversion. Digital gana por goleada.",
+          cost: 20000000,
+          revenue: 38000000,
+          bsc: { bsc_financial: 7, bsc_customer: 8, bsc_internal: 5, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["digital"],
+          feedback: "\u26a0\ufe0f Ojo: SE digital = 1.1/\u221a15 = 0.28%, SE tradicional = 0.6/\u221a20 = 0.13%. Digital tiene mas variabilidad.\n\ud83d\udcda Concepto: Compara medias Y variabilidades. Mayor promedio con mayor varianza no siempre es mejor.",
+          next: null
+        },
+        {
+          id: "B",
+          label: "100% tradicional",
+          description: "Radio y perifoneo llegan al pueblo donde estan nuestros clientes de verdad.",
+          cost: 20000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 5, bsc_customer: 6, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["traditional"],
+          feedback: "\u26a0\ufe0f Conversion mas baja pero mas estable. IC 95%: 2.1% \u00b1 0.26% vs digital 3.2% \u00b1 0.56%.\n\ud83d\udcda Concepto: Menor varianza = mayor predictibilidad. Para presupuesto limitado, la certeza tiene valor.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Dividir 60% digital, 40% tradicional",
+          description: "Lo mejor de ambos mundos. Digital para jovenes, radio para pueblos.",
+          cost: 20000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 7, bsc_customer: 9, bsc_internal: 5, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 E(conversion mezcla) = 0.6\u00d73.2% + 0.4\u00d72.1% = 2.76%. Varianza reducida por diversificacion.\n\ud83d\udcda Concepto: Diversificacion. La mezcla tiene retorno intermedio pero varianza menor que 100% digital.",
+          next: null
+        },
+        {
+          id: "D",
+          label: "A/B test: mitad ciudades digital, mitad tradicional",
+          description: "Asignar aleatoriamente ciudades a cada canal y medir cual convierte mas.",
+          cost: 20000000,
+          revenue: 33000000,
+          bsc: { bsc_financial: 5, bsc_customer: 7, bsc_internal: 5, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["experimental"],
+          feedback: "\u2705 Diseno experimental real. Despues de Navidad tendras datos PROPIOS para decidir el 2027.\n\ud83d\udcda Concepto: A/B testing. Asignacion aleatoria + medicion = evidencia causal de efectividad.",
           next: null
         }
       ]

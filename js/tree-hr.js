@@ -210,8 +210,8 @@ window.TREE_HR = {
           label: "Top 25% (percentil 75) - produccion >= 1,201 piezas",
           description: "El cuartil superior. Bonificar al 25% mas productivo, que serian 30 operarios (justo el presupuesto).",
           cost: 15000000,
-          revenue: 18000000,
-          bsc: { bsc_internal: 8, bsc_customer: 3, bsc_financial: 0, bsc_learning: 7 },
+          revenue: 36000000,
+          bsc: { bsc_internal: 11, bsc_customer: 6, bsc_financial: 0, bsc_learning: 10 },
           crossEffects: [],
           tags: ["data-driven", "balanced"],
           feedback: "✅ DECISION BIEN CALIBRADA\n\nPercentil 75 en distribucion normal:\nP75 = μ + Z₇₅ × σ = 1,100 + 0.6745 × 150 = 1,100 + 101.2 = 1,201 piezas\n\nOperarios con produccion ≥ 1,201: 25% de 120 = 30 operarios\nPresupuesto: 30 × $500,000 = $15,000,000 (ajuste perfecto)\n\nEste criterio:\n• Es objetivo (basado en datos, no en opinion del supervisor)\n• Es transparente (todos saben el umbral)\n• Es alcanzable (1 de cada 4 lo logra)\n• Cabe en el presupuesto\n\n📚 Concepto: Percentiles en la distribucion normal. P = μ + Z_p × σ. El Z para P75 es 0.6745. La distribucion normal te permite convertir percentiles en puntos de corte exactos.",
@@ -222,8 +222,8 @@ window.TREE_HR = {
           label: "Top 10% (percentil 90) - solo los mejores de los mejores",
           description: "'Excepcional' debe ser realmente excepcional. Solo el top 10%. Dar $1,250,000 a cada uno.",
           cost: 15000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 5, bsc_customer: 2, bsc_financial: 0, bsc_learning: 5 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: 0, bsc_learning: 8 },
           crossEffects: [],
           tags: ["selective", "elitist"],
           feedback: "⚠️ MATEMATICAMENTE SOLIDO, MOTIVACIONALMENTE CUESTIONABLE\n\nPercentil 90:\nP90 = μ + Z₉₀ × σ = 1,100 + 1.2816 × 150 = 1,100 + 192.2 = 1,292 piezas\n\nOperarios que califican: 10% de 120 = 12 personas\nBonificacion: $15M / 12 = $1,250,000 cada uno\n\nEstadisticamente perfecto. Pero motivacionalmente:\n• 108 operarios (90%) no reciben nada → desmotivacion masiva\n• El corte (1,292) es demasiado alto para la mayoria → 'para que esforzarse'\n• Concentras la motivacion en los que YA son buenos\n\nLa teoria de incentivos dice que el corte debe ser alcanzable para al menos 20-30% para maximizar el esfuerzo general.\n\n📚 Concepto: Percentil 90 = μ + 1.28σ. Estadisticamente correcto pero la decision no es solo estadistica — es de gestion. Los percentiles son herramientas, no respuestas automaticas.",
@@ -234,8 +234,8 @@ window.TREE_HR = {
           label: "Todos los que superen el promedio (> 1,100 piezas)",
           description: "'Excepcional' = por encima del promedio. Bonificar al 50% superior.",
           cost: 15000000,
-          revenue: 22000000,
-          bsc: { bsc_internal: 3, bsc_customer: 3, bsc_financial: -3, bsc_learning: 2 },
+          revenue: 44000000,
+          bsc: { bsc_internal: 6, bsc_customer: 6, bsc_financial: -3, bsc_learning: 5 },
           crossEffects: [
             { area: "finance", bsc: { bsc_financial: -2 }, narrative: "Bonificar al 50% implica 60 operarios × $500K = $30M, el doble del presupuesto aprobado." }
           ],
@@ -248,7 +248,7 @@ window.TREE_HR = {
           label: "Que el supervisor elija a los 30 mejores",
           description: "El supervisor conoce a su gente. Que el decida quien merece la bonificacion.",
           cost: 15000000,
-          revenue: 12000000,
+          revenue: 24000000,
           bsc: { bsc_internal: -8, bsc_customer: -3, bsc_financial: 0, bsc_learning: -10 },
           crossEffects: [],
           tags: ["subjective", "biased"],
@@ -273,8 +273,8 @@ window.TREE_HR = {
           label: "Si es significativo - tenemos un problema de retencion",
           description: "23.33% vs 18% del sector. Hay que investigar por que se nos va la gente y actuar rapido.",
           cost: 8000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 5, bsc_customer: 2, bsc_financial: -2, bsc_learning: 6 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: -2, bsc_learning: 9 },
           crossEffects: [],
           tags: ["cautious"],
           feedback: "⚠️ LA CONCLUSION ES CORRECTA PERO HAGAMOS EL TEST\n\nTest de proporcion (una muestra):\nH₀: p = 0.18 (somos iguales al sector)\nH₁: p > 0.18 (somos peores)\n\nZ = (p̂ - p₀) / √(p₀(1-p₀)/n)\nZ = (0.2333 - 0.18) / √(0.18 × 0.82 / 120)\nZ = 0.0533 / √(0.001230)\nZ = 0.0533 / 0.03507 = 1.52\n\nP(Z > 1.52) = 0.0643 = 6.43%\n\nCon α = 0.05, NO es significativo (p > 0.05). Con α = 0.10, SI es significativo.\n\nLa evidencia es MARGINAL. No es concluyente, pero la tendencia es preocupante. Investigar es prudente aunque no sea estadisticamente significativo al 5%.\n\n📚 Concepto: Test de proporcion. Z = (p̂ - p₀)/√(p₀q₀/n). Con Z = 1.52 y p = 0.064, estamos en zona gris. La decision depende de tu tolerancia al riesgo.",
@@ -285,8 +285,8 @@ window.TREE_HR = {
           label: "No es significativo - es variacion normal",
           description: "Solo 5.33 puntos mas que el sector. Con 120 empleados, eso puede ser casualidad.",
           cost: 0,
-          revenue: 12000000,
-          bsc: { bsc_internal: -5, bsc_customer: -3, bsc_financial: 2, bsc_learning: -4 },
+          revenue: 24000000,
+          bsc: { bsc_internal: -5, bsc_customer: -3, bsc_financial: 5, bsc_learning: -4 },
           crossEffects: [],
           tags: ["dismissive"],
           feedback: "⚠️ TECNICAMENTE CORRECTO PERO PELIGROSO\n\nZ = 1.52, p = 0.064. Con α = 0.05, no rechazamos H₀. Tecnicamente, no hay evidencia 'significativa' al 5%.\n\nPERO:\n1. p = 0.064 esta MUY cerca de 0.05. Es evidencia 'casi significativa'.\n2. No rechazar H₀ NO significa que H₀ sea verdad. Significa que no hay SUFICIENTE evidencia para descartarla.\n3. Cada rotacion cuesta ~$5M (reclutamiento + capacitacion). 28 vs 22 esperadas = 6 extras × $5M = $30M de costo adicional.\n\nIgnorar una senal preocupante porque 'no llega al 5%' es como ignorar fiebre de 37.4°C porque 'fiebre empieza en 38°C'.\n\n📚 Concepto: No rechazar H₀ ≠ aceptar H₀. La ausencia de evidencia no es evidencia de ausencia. Con p = 0.064, la senal esta ahi — solo es debil.",
@@ -297,10 +297,10 @@ window.TREE_HR = {
           label: "Calcular un IC para nuestra tasa real y comparar",
           description: "En vez de solo testear, construir un intervalo para saber en que rango esta nuestra tasa verdadera.",
           cost: 2000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 7, bsc_customer: 2, bsc_financial: -1, bsc_learning: 12 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 10, bsc_customer: 5, bsc_financial: -1, bsc_learning: 15 },
           crossEffects: [
-            { area: "analyst", bsc: { bsc_learning: 3 }, narrative: "El enfoque de intervalos de confianza se adopta como estandar para reportes de RRHH." }
+            { area: "analyst", bsc: { bsc_learning: 6 }, narrative: "El enfoque de intervalos de confianza se adopta como estandar para reportes de RRHH." }
           ],
           tags: ["data-driven", "analytical"],
           feedback: "✅ EXCELENTE ENFOQUE\n\nIC 95% para nuestra tasa de rotacion:\np̂ = 0.2333\nSE = √(0.2333 × 0.7667 / 120) = √(0.001490) = 0.03861\nIC = 0.2333 ± 1.96 × 0.03861\nIC = 0.2333 ± 0.0757\nIC = [15.76%, 30.90%]\n\nEl IC INCLUYE el 18% del sector. Esto es consistente con el test (Z = 1.52, no significativo al 5%).\n\nPero ojo: el IC tambien incluye valores de hasta 31%. En el peor caso, nuestra rotacion podria ser casi el doble del sector.\n\nEl IC te da MAS informacion que el test: no solo 'si o no', sino el RANGO plausible de tu tasa real.\n\n📚 Concepto: IC vs test de hipotesis. El IC da informacion sobre magnitud (¿cuanto?), no solo direccion (¿si o no?). Un IC que incluye el valor de referencia es equivalente a no rechazar H₀.",
@@ -311,8 +311,8 @@ window.TREE_HR = {
           label: "Comparar con otras empresas de platanitos, no con todo el sector",
           description: "El sector de alimentos incluye desde Alpina hasta tiendas de barrio. No es comparable. Buscar empresas similares.",
           cost: 5000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 4, bsc_customer: 0, bsc_financial: -2, bsc_learning: 7 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 7, bsc_customer: 0, bsc_financial: -2, bsc_learning: 10 },
           crossEffects: [],
           tags: ["strategic", "contextual"],
           feedback: "💡 EXCELENTE PUNTO SOBRE COMPARABILIDAD\n\nEl 18% del sector incluye empresas de todos los tamanos y subsectores. Tu empresa de 120 empleados no es comparable con Alpina (10,000+ empleados).\n\nFactores que afectan la comparacion:\n• Tamano de empresa (pymes vs grandes)\n• Tipo de producto (snacks vs lacteos vs carnicos)\n• Ubicacion (Eje Cafetero vs Bogota)\n• Tipo de empleado (operarios vs administrativos)\n\nSin embargo, el dato del sector (18%) es lo MEJOR que tienes. Comparar con un grupo mas especifico requiere datos que probablemente no existen.\n\nLo ideal: comparar p̂ = 23.33% vs el 18% del sector PERO interpretar con cautela.\n\n📚 Concepto: Representatividad de la referencia. La prueba de proporcion compara tu dato vs una referencia. Si la referencia no es comparable, la conclusion puede ser invalida aunque la estadistica sea correcta.",
@@ -336,49 +336,415 @@ window.TREE_HR = {
           label: "80% a operarios, 20% a administrativos",
           description: "Los operarios tienen el doble de intencion de renuncia. Enfocar recursos donde esta el problema.",
           cost: 40000000,
-          revenue: 35000000,
-          bsc: { bsc_internal: 8, bsc_customer: 5, bsc_financial: 2, bsc_learning: 8 },
+          revenue: 70000000,
+          bsc: { bsc_internal: 11, bsc_customer: 8, bsc_financial: 5, bsc_learning: 11 },
           crossEffects: [
-            { area: "operations", bsc: { bsc_internal: 5 }, narrative: "El plan de retencion enfocado en operarios estabiliza la linea de produccion." }
+            { area: "operations", bsc: { bsc_internal: 8 }, narrative: "El plan de retencion enfocado en operarios estabiliza la linea de produccion." }
           ],
           tags: ["data-driven", "focused"],
           feedback: "✅ DECISION BIEN FUNDAMENTADA\n\nIC 95% para operarios:\np̂ = 0.3235, SE = √(0.3235 × 0.6765 / 68) = 0.0567\nIC = [0.2124, 0.4346] = [21.2%, 43.5%]\n\nIC 95% para administrativos:\np̂ = 0.1667, SE = √(0.1667 × 0.8333 / 36) = 0.0622\nIC = [0.0448, 0.2886] = [4.5%, 28.9%]\n\nDiferencia de proporciones:\np̂₁ - p̂₂ = 0.3235 - 0.1667 = 0.1568\nSE_diff = √(0.0567² + 0.0622²) = √(0.003213 + 0.003869) = 0.0841\nZ = 0.1568 / 0.0841 = 1.864\nIC diff = [−0.008, 0.322]\n\nLa diferencia es marginalmente significativa (p ≈ 0.031 unilateral). Los operarios PROBABLEMENTE tienen mayor intencion de renuncia.\n\nEnfocar 80/20 esta alineado con la evidencia.\n\n📚 Concepto: IC para proporcion por grupos. Comparar intervalos te permite priorizar recursos donde el problema es mayor. El IC te da el rango de la proporcion real para cada grupo.",
-          next: null
+          next: "hr-07"
         },
         {
           id: "B",
           label: "50/50 - tratar a todos por igual",
           description: "Equidad: el mismo presupuesto por persona, sin importar el cargo.",
           cost: 40000000,
-          revenue: 22000000,
-          bsc: { bsc_internal: 2, bsc_customer: 2, bsc_financial: -2, bsc_learning: -3 },
+          revenue: 44000000,
+          bsc: { bsc_internal: 5, bsc_customer: 5, bsc_financial: -2, bsc_learning: -3 },
           crossEffects: [],
           tags: ["egalitarian", "inefficient"],
           feedback: "⚠️ DECISION EQUITATIVA PERO INEFICIENTE\n\nDistribuir 50/50 ignora que los grupos tienen riesgos MUY diferentes:\n\nIC operarios: [21.2%, 43.5%] de intencion de renuncia\nIC administrativos: [4.5%, 28.9%] de intencion de renuncia\n\nIncluso en el MEJOR escenario, los operarios (21.2%) tienen mas riesgo que el promedio de los administrativos (16.7%).\n\nGastar $20M en retener administrativos que ya tienen baja intencion de renuncia es ineficiente. Ese dinero tendria mas impacto en operarios.\n\nCosto de rotacion de 1 operario: ~$4M\nCosto de rotacion de 1 administrativo: ~$8M\n\nAun con mayor costo unitario de admin, el VOLUMEN de riesgo esta en operarios.\n\n📚 Concepto: Eficiencia en asignacion de recursos basada en IC. Los intervalos de confianza por grupo te dicen DONDE esta el mayor riesgo. Asignar proporcionalmente al riesgo es mas eficiente que distribuir uniformemente.",
-          next: null
+          next: "hr-07"
         },
         {
           id: "C",
           label: "100% a operarios - los administrativos estan bien",
           description: "16.67% es bajo. Los operarios con 32.35% son la prioridad total.",
           cost: 40000000,
-          revenue: 50000000,
-          bsc: { bsc_internal: 5, bsc_customer: 3, bsc_financial: 0, bsc_learning: 3 },
+          revenue: 100000000,
+          bsc: { bsc_internal: 8, bsc_customer: 6, bsc_financial: 0, bsc_learning: 6 },
           crossEffects: [],
           tags: ["aggressive", "risky"],
           feedback: "⚠️ OJO CON LOS INTERVALOS\n\nIC administrativos: [4.5%, 28.9%]\n\nEl limite superior es 28.9%. Aunque el punto estimado (16.67%) parece bajo, la realidad podria ser hasta 29%. Dejar a los administrativos sin NADA de retencion es arriesgado.\n\nAdemas, un administrativo clave que renuncia (contador, jefe de compras) puede impactar mas que varios operarios.\n\nEl IC amplio de los administrativos (rango de 24.4pp) se debe a n = 36 (muestra pequena). Hay MUCHA incertidumbre sobre su tasa real.\n\n📚 Concepto: Amplitud del IC y tamano de muestra. Con n = 36, el IC es muy ancho. La incertidumbre es alta. 'No hay evidencia de problema' no significa 'no hay problema' — puede significar 'no tengo suficientes datos para verlo'.",
-          next: null
+          next: "hr-07"
         },
         {
           id: "D",
           label: "Entrevistar individualmente a los 28 que quieren irse",
           description: "Antes de gastar $40M en planes genericos, hablar con cada uno. ¿Que los retiene? ¿Que los espanta?",
           cost: 3000000,
-          revenue: 12000000,
-          bsc: { bsc_internal: 10, bsc_customer: 0, bsc_financial: 1, bsc_learning: 12 },
+          revenue: 24000000,
+          bsc: { bsc_internal: 13, bsc_customer: 0, bsc_financial: 4, bsc_learning: 15 },
           crossEffects: [],
           tags: ["qualitative", "empathetic"],
           feedback: "💡 COMPLEMENTO PERFECTO AL ANALISIS CUANTITATIVO\n\nLos ICs te dicen CUANTOS piensan irse. Las entrevistas te dicen POR QUE.\n\nSi los 22 operarios dicen 'el salario es bajo', el plan de retencion es aumento salarial.\nSi dicen 'el turno nocturno me esta matando', el plan es reestructurar turnos.\nSi dicen 'no veo futuro aqui', el plan es un programa de desarrollo.\n\nCada causa requiere intervencion diferente. Gastar $40M en 'bonos de retencion' puede ser inutil si el problema es el ambiente laboral.\n\nEstrategia optima: entrevistas PRIMERO ($3M), luego plan focalizado con los $37M restantes.\n\n📚 Concepto: Datos cuantitativos (proporciones, ICs) te dicen QUE pasa y CUANTO. Datos cualitativos (entrevistas) te dicen POR QUE. La mejor decision combina ambos.",
+          next: "hr-07"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       HR-07 | Dia 15 | Comparar con parametro poblacional
+       -------------------------------------------------------- */
+    "hr-07": {
+      id: "hr-07",
+      day: 15,
+      title: "Empleado estrella pide aumento",
+      context: "Tu mejor operario pide aumento de $1.8M a $2.2M. Dice que el mercado paga mas. Necesitas datos para decidir.\n\n📊 DATOS:\n• Salario actual del empleado: $1,800,000\n• Salario que pide: $2,200,000\n• Salario promedio sector (encuesta DANE): \u03bc = $2,050,000\n• \u03c3 sector = $300,000\n• Tu empresa: X\u0304 = $1,750,000 (n=48 operarios)",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Subir a $2,050,000 (promedio del sector)",
+          description: "Igualar el mercado. Ni mas ni menos de lo que el sector paga.",
+          cost: 5000000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 8, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["data-driven"],
+          feedback: "\u2705 Si \u03bc del sector = $2.05M y tu pagas $1.75M, estas 1 desviacion estandar por debajo. Eso explica la rotacion.\n\ud83d\udcda Concepto: Z = (X-\u03bc)/\u03c3 = (1.75-2.05)/0.3 = -1.0. Tu empresa paga en el percentil 16 del sector. Bajo!",
+          next: "hr-08"
+        },
+        {
+          id: "B",
+          label: "Dar los $2,200,000 que pide",
+          description: "Es tu mejor empleado. Perderlo cuesta mas que el aumento.",
+          cost: 8000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 4, bsc_customer: 5, bsc_internal: 9, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["generous"],
+          feedback: "\u26a0\ufe0f $2.2M esta en el percentil 69 del sector. Genial para el, pero \u00bfque pasa cuando los otros 47 pidan lo mismo?\n\ud83d\udcda Concepto: Z = (2.2-2.05)/0.3 = 0.5 \u2192 P69. Ajuste individual sin politica general genera problemas.",
+          next: "hr-08"
+        },
+        {
+          id: "C",
+          label: "Negar el aumento - no hay presupuesto",
+          description: "Si le subo a uno, todos van a pedir. No podemos abrir esa puerta.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: 4, bsc_customer: -3, bsc_internal: -8, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["stingy"],
+          feedback: "\u274c Costo de reemplazo: $8-12M (reclutamiento + capacitacion). El aumento costaba $4.8M/ano. Mas barato retener.\n\ud83d\udcda Concepto: E(costo de rotacion) > costo de aumento cuando el empleado es clave.",
+          next: "hr-08"
+        },
+        {
+          id: "D",
+          label: "Revisar TODA la escala salarial vs el sector",
+          description: "El problema no es un empleado — es que toda la empresa paga bajo. Revision general.",
+          cost: 15000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 10, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\u2705 Si X\u0304 empresa = $1.75M y \u03bc sector = $2.05M, Z = -1.0. Tu empresa COMPLETA esta por debajo del mercado.\n\ud83d\udcda Concepto: Comparar tu media muestral con el parametro del sector. Si Z < -1, tienes un problema sistemico.",
+          next: "hr-08"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       HR-08 | Dia 17 | Test de proporcion
+       -------------------------------------------------------- */
+    "hr-08": {
+      id: "hr-08",
+      day: 17,
+      title: "3 operarios se enfermaron",
+      context: "Esta semana faltaron 3 de 48 operarios por enfermedad. El supervisor dice que es normal. Tu tasa historica de ausentismo es 2% semanal.\n\n📊 DATOS:\n• Operarios: 48\n• Ausentes esta semana: 3\n• p\u0302 = 3/48 = 6.25%\n• p historica = 2%\n• Epoca de gripe en la region",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Investigar - 6.25% es el triple del normal",
+          description: "Algo esta pasando. Puede ser brote de gripe, problema de ventilacion, o coincidencia.",
+          cost: 3000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 4, bsc_customer: 4, bsc_internal: 8, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["proactive"],
+          feedback: "\u2705 Z = (0.0625-0.02)/\u221a(0.02\u00d70.98/48) = 0.0425/0.0202 = 2.10. P=0.018. Significativo al 5%!\n\ud83d\udcda Concepto: Test de proporcion. La diferencia es estadisticamente significativa. No es coincidencia.",
+          next: "hr-09"
+        },
+        {
+          id: "B",
+          label: "Es normal - epoca de gripe",
+          description: "Es invierno, la gente se enferma. No exagerar.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: -4, bsc_learning: 3 },
+          crossEffects: [],
+          tags: ["dismissive"],
+          feedback: "\u274c Z=2.10 dice que NO es normal. Aunque la gripe sea la causa, actuar previene que empeore.\n\ud83d\udcda Concepto: 'Es epoca de gripe' explica la causa pero no elimina el problema. Significativo = actua.",
+          next: "hr-09"
+        },
+        {
+          id: "C",
+          label: "Implementar protocolo de salud preventivo",
+          description: "Gel, tapabocas, ventilacion. Prevenir es mas barato que curar.",
+          cost: 2000000,
+          revenue: 15000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 8, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["preventive"],
+          feedback: "\u2705 Accion preventiva basada en la senal estadistica. Si p sigue subiendo la proxima semana, escalar medidas.\n\ud83d\udcda Concepto: No esperes a que el problema crezca. Una proporcion anormal temprana es una alerta.",
+          next: "hr-09"
+        },
+        {
+          id: "D",
+          label: "Esperar una semana mas de datos",
+          description: "Una semana no es suficiente para concluir. Si la proxima tambien es alta, actuar.",
+          cost: 0,
+          revenue: 10000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: 3, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["analytical"],
+          feedback: "\ud83d\udca1 Razonable pero arriesgado. Si es un brote, 1 semana mas de inaccion puede significar 10 ausentes.\n\ud83d\udcda Concepto: Balance entre datos suficientes y urgencia de accion. Con Z=2.10, ya hay evidencia.",
+          next: "hr-09"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       HR-09 | Dia 18 | Media muestral como predictor
+       -------------------------------------------------------- */
+    "hr-09": {
+      id: "hr-09",
+      day: 18,
+      title: "Practicantes de la UTP",
+      context: "La UTP ofrece 5 practicantes de ingenieria industrial. Sin costo salarial pero hay que invertir en capacitacion y supervision.\n\n📊 DATOS HISTORICOS DE PRACTICANTES:\n• Productividad promedio (6 cohortes): 70% de un operario regular\n• Desviacion: 15%\n• Costo de supervision por practicante: $800,000/mes\n• Duracion: 6 meses",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Aceptar los 5 practicantes",
+          description: "Mano de obra gratis al 70% de productividad. Los numeros dan.",
+          cost: 4000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 6, bsc_customer: 4, bsc_internal: 5, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["growth"],
+          feedback: "\u2705 E(productividad) = 70% de operario = $1.4M de produccion. Costo = $800K. Neto = $600K/practicante/mes.\n\ud83d\udcda Concepto: X\u0304 historica como predictor. Con 6 cohortes, el 70% es estimacion razonable pero con \u03c3=15%.",
+          next: "hr-10"
+        },
+        {
+          id: "B",
+          label: "Aceptar 2 como prueba",
+          description: "Empezar con 2, si funcionan, pedir mas el proximo semestre.",
+          cost: 1600000,
+          revenue: 15000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 5, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["cautious"],
+          feedback: "\u2705 Reduces riesgo. Si estos 2 rinden bien, datos propios refuerzan la decision de ampliar.\n\ud83d\udcda Concepto: Muestra piloto. Recoges datos de TU contexto antes de escalar.",
+          next: "hr-10"
+        },
+        {
+          id: "C",
+          label: "Rechazar - los practicantes mas estorban que ayudan",
+          description: "Hay que ensernarles todo. Los supervisores pierden tiempo.",
+          cost: 0,
+          revenue: 5000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: 3, bsc_learning: -5 },
+          crossEffects: [],
+          tags: ["skeptical"],
+          feedback: "\u26a0\ufe0f Con X\u0304=70% y \u03c3=15%, P(productividad < 50%) = P(Z < -1.33) = 9%. Solo 9% de chance de que sean malos.\n\ud83d\udcda Concepto: Usa los datos para decidir, no la intuicion. 6 cohortes dicen que funcionan en promedio.",
+          next: "hr-10"
+        },
+        {
+          id: "D",
+          label: "Aceptar pero con KPIs claros desde el dia 1",
+          description: "Contrato con metas: producir al menos 60% de un operario regular o se van.",
+          cost: 4000000,
+          revenue: 25000000,
+          bsc: { bsc_financial: 6, bsc_customer: 4, bsc_internal: 7, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["structured"],
+          feedback: "\u2705 Excelente. Defines umbral minimo basado en datos: \u03bc - \u03c3 = 70% - 15% = 55%. Pedir 60% es razonable.\n\ud83d\udcda Concepto: Usar \u03bc y \u03c3 para definir umbrales realistas. 1\u03c3 debajo de la media = percentil 16.",
+          next: "hr-10"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       HR-10 | Dia 20 | Comparar dos grupos
+       -------------------------------------------------------- */
+    "hr-10": {
+      id: "hr-10",
+      day: 20,
+      title: "Conflicto entre supervisores",
+      context: "Dos supervisores se echan la culpa de la baja productividad. Mides sus equipos por separado.\n\n📊 EQUIPO SUPERVISOR A (n=25):\n• Produccion promedio: 1,150 piezas/dia\n• Desviacion: 180 piezas\n\n📊 EQUIPO SUPERVISOR B (n=23):\n• Produccion promedio: 1,020 piezas/dia\n• Desviacion: 200 piezas",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Los datos muestran que B es peor - tomar accion",
+          description: "130 piezas de diferencia es significativa. B necesita mejorar o ser reemplazado.",
+          cost: 5000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 7, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["decisive"],
+          feedback: "\u2705 SE = \u221a(180\u00b2/25 + 200\u00b2/23) = \u221a(1296+1739) = 55.1. Z = 130/55.1 = 2.36. P=0.009. Significativo!\n\ud83d\udcda Concepto: Diferencia de medias. Z=2.36 confirma que la diferencia NO es azar. Hay problema real en equipo B.",
+          next: "hr-11"
+        },
+        {
+          id: "B",
+          label: "Investigar CAUSAS antes de culpar al supervisor",
+          description: "Puede ser maquinaria, materiales, turno, experiencia del personal...",
+          cost: 3000000,
+          revenue: 20000000,
+          bsc: { bsc_financial: 5, bsc_customer: 4, bsc_internal: 8, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["analytical"],
+          feedback: "\u2705 Correcto. Z=2.36 dice que HAY diferencia pero no dice POR QUE. Puede ser el supervisor o variables confusoras.\n\ud83d\udcda Concepto: Significancia estadistica \u2260 causalidad. Antes de atribuir causa, controla variables confusoras.",
+          next: "hr-11"
+        },
+        {
+          id: "C",
+          label: "Rotar los equipos y medir de nuevo",
+          description: "Que A supervise al equipo de B y viceversa. Si el patron se repite, es el supervisor.",
+          cost: 3000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 4, bsc_customer: 4, bsc_internal: 6, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["experimental"],
+          feedback: "\u2705 Diseno experimental perfecto! Controlas la variable 'equipo' y aislas el efecto 'supervisor'.\n\ud83d\udcda Concepto: Experimento controlado. Rotar elimina variables confusoras y establece causalidad.",
+          next: "hr-11"
+        },
+        {
+          id: "D",
+          label: "No es significativo - 130 piezas es poco",
+          description: "De 1,100 piezas, 130 es solo 12%. No vale la pena el conflicto.",
+          cost: 0,
+          revenue: 8000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: -5, bsc_learning: -3 },
+          crossEffects: [],
+          tags: ["dismissive"],
+          feedback: "\u274c Z=2.36, p=0.009. ES significativo. 130 piezas \u00d7 22 dias \u00d7 $2,500 = $7.15M/mes de diferencia. Nada despreciable.\n\ud83d\udcda Concepto: No confundas porcentaje con significancia. El SE determina si la diferencia es real, no tu intuicion.",
+          next: "hr-11"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       HR-11 | Dia 22 | Combinar estimaciones
+       -------------------------------------------------------- */
+    "hr-11": {
+      id: "hr-11",
+      day: 22,
+      title: "Evaluacion de desempeno anual",
+      context: "Disenas la evaluacion anual. Tres metricas disponibles: produccion, calidad y puntualidad. \u00bfComo combinarlas en una nota final justa?\n\n📊 DATOS (48 operarios):\n• Produccion: \u03bc=1100 piezas, \u03c3=150\n• Calidad: \u03bc=95% sin defectos, \u03c3=3%\n• Puntualidad: \u03bc=92%, \u03c3=8%",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Promedio simple de las 3 metricas (estandarizadas)",
+          description: "Convertir a Z-scores y promediar. Todas pesan igual.",
+          cost: 2000000,
+          revenue: 18000000,
+          bsc: { bsc_financial: 4, bsc_customer: 4, bsc_internal: 7, bsc_learning: 8 },
+          crossEffects: [],
+          tags: ["fair"],
+          feedback: "\u2705 Z-score estandariza: Zi = (Xi-\u03bci)/\u03c3i. Pone todas las metricas en la misma escala.\n\ud83d\udcda Concepto: Z-score permite comparar metricas en diferentes unidades. Promedio de Z = nota integrada.",
+          next: "hr-12"
+        },
+        {
+          id: "B",
+          label: "Ponderado: 50% produccion, 30% calidad, 20% puntualidad",
+          description: "Produccion es lo que genera plata. Debe pesar mas.",
+          cost: 3000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 6, bsc_customer: 4, bsc_internal: 8, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["strategic"],
+          feedback: "\u2705 Promedio ponderado: Nota = 0.5\u00d7Zprod + 0.3\u00d7Zcal + 0.2\u00d7Zpunt. Refleja prioridades del negocio.\n\ud83d\udcda Concepto: Promedios ponderados. Los pesos deben reflejar la importancia relativa de cada metrica.",
+          next: "hr-12"
+        },
+        {
+          id: "C",
+          label: "Solo produccion - lo demas es subjetivo",
+          description: "Piezas producidas es objetivo y medible. Lo unico que cuenta.",
+          cost: 1000000,
+          revenue: 12000000,
+          bsc: { bsc_financial: 4, bsc_customer: -3, bsc_internal: -4, bsc_learning: -3 },
+          crossEffects: [],
+          tags: ["simplistic"],
+          feedback: "\u274c Calidad (\u03c3=3%) y puntualidad (\u03c3=8%) son tan medibles como produccion. Ignorarlas incentiva cantidad sin calidad.\n\ud83d\udcda Concepto: Optimizar UNA metrica ignorando otras genera distorsiones. Multidimensional > unidimensional.",
+          next: "hr-12"
+        },
+        {
+          id: "D",
+          label: "Que el supervisor evalue cualitativamente",
+          description: "Los numeros no capturan todo. El supervisor conoce a su gente.",
+          cost: 1000000,
+          revenue: 8000000,
+          bsc: { bsc_financial: 3, bsc_customer: 3, bsc_internal: -5, bsc_learning: -5 },
+          crossEffects: [],
+          tags: ["subjective"],
+          feedback: "\u274c Tienes datos OBJETIVOS y propones evaluacion subjetiva. Sesgo garantizado.\n\ud83d\udcda Concepto: Datos cuantitativos > opinion cuando los datos existen. Estandariza con Z y pondera.",
+          next: "hr-12"
+        }
+      ]
+    },
+
+    /* --------------------------------------------------------
+       HR-12 | Dia 24 | Percentiles y metas
+       -------------------------------------------------------- */
+    "hr-12": {
+      id: "hr-12",
+      day: 24,
+      title: "Plan de incentivos 2027",
+      context: "Disenas el plan de bonos para el proximo ano. Necesitas umbrales basados en datos, no en opinion.\n\n📊 DATOS DE PRODUCCION 2026 (distribucion normal):\n• \u03bc = 1,100 piezas/mes\n• \u03c3 = 150 piezas/mes\n• Presupuesto de bonos: $20M\n• 48 operarios",
+      type: "choice",
+      options: [
+        {
+          id: "A",
+          label: "Bono al top 25% (P75 = 1,201 piezas)",
+          description: "12 operarios reciben bono de $1.67M cada uno. Alcanzable y motivador.",
+          cost: 20000000,
+          revenue: 30000000,
+          bsc: { bsc_financial: 6, bsc_customer: 5, bsc_internal: 10, bsc_learning: 7 },
+          crossEffects: [],
+          tags: ["balanced"],
+          feedback: "\u2705 P75 = \u03bc + 0.6745\u03c3 = 1,201. 25% del equipo lo alcanza. Buen equilibrio motivacion/presupuesto.\n\ud83d\udcda Concepto: Percentiles para fijar umbrales. P75 es alcanzable para 1 de cada 4. Suficiente para motivar.",
+          next: null
+        },
+        {
+          id: "B",
+          label: "Bono escalonado: bronce (P60), plata (P75), oro (P90)",
+          description: "3 niveles de bono. Mas operarios motivados a distintos niveles.",
+          cost: 20000000,
+          revenue: 35000000,
+          bsc: { bsc_financial: 5, bsc_customer: 5, bsc_internal: 10, bsc_learning: 10 },
+          crossEffects: [],
+          tags: ["sophisticated"],
+          feedback: "\u2705 P60=1,138, P75=1,201, P90=1,292. 40% recibe algo. Maximiza motivacion con presupuesto fijo.\n\ud83d\udcda Concepto: Multiples percentiles como umbrales. Cada nivel corresponde a un Z-score especifico.",
+          next: null
+        },
+        {
+          id: "C",
+          label: "Bono para todos los que superen la media",
+          description: "Premiar a la mitad superior. $833K por persona.",
+          cost: 20000000,
+          revenue: 22000000,
+          bsc: { bsc_financial: 3, bsc_customer: 4, bsc_internal: 5, bsc_learning: 4 },
+          crossEffects: [],
+          tags: ["generous"],
+          feedback: "\u26a0\ufe0f 24 operarios \u00d7 $833K. El monto individual es bajo y no se siente como premio. Diluyes el incentivo.\n\ud83d\udcda Concepto: El 50% siempre esta arriba del promedio en una normal. 'Superar la media' no es excepcional.",
+          next: null
+        },
+        {
+          id: "D",
+          label: "Sin bonos fijos - pagar por pieza extra sobre la media",
+          description: "Cada pieza por encima de 1,100 paga $5,000 extra. Incentivo marginal.",
+          cost: 20000000,
+          revenue: 28000000,
+          bsc: { bsc_financial: 6, bsc_customer: 4, bsc_internal: 7, bsc_learning: 6 },
+          crossEffects: [],
+          tags: ["variable"],
+          feedback: "\ud83d\udca1 Incentivo continuo. E(bono) = E(piezas extra) \u00d7 $5K. Cada operario tiene su propio objetivo.\n\ud83d\udcda Concepto: Incentivo variable alinea esfuerzo con recompensa. El E(bono) depende de cada trabajador.",
           next: null
         }
       ]
